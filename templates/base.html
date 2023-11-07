@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facepounds</title>
+    <link rel="stylesheet" href="/CSS/base.css">
+    <link rel="shortcut icon" href="#" />
+    <script src="/JS/base.js"></script>
+    {% block head %}
+    {% endblock head %}
+</head>
+
+<body>
+    <div class="header-block">
+        <div class="header">
+            <div class="web-title">face磅取</div>
+            <div class="nav">
+                <div class="login">註冊/登入</div>
+                <div class="login">會員中心</div>
+            </div>
+        </div>
+    </div>
+    <div class="search-flex">
+        <div class="search-area">
+            <div class="search-title">FacePounds | 甜點，隨時拍</div>
+            <div class="search-floor-1">
+                <select class="area">
+                    <option value="none">地區</option>
+                    <option value="基隆市">基隆市</option>
+                    <option value="臺北市">臺北市</option>
+                    <option value="新北市">新北市</option>
+                    <option value="桃園市">桃園市</option>
+                    <option value="新竹市">新竹市</option>
+                    <option value="新竹縣">新竹縣</option>
+                    <option value="苗栗縣">苗栗縣</option>
+                    <option value="臺中市">臺中市</option>
+                    <option value="彰化縣">彰化縣</option>
+                    <option value="南投縣">南投縣</option>
+                    <option value="雲林縣">雲林縣</option>
+                    <option value="嘉義市">嘉義市</option>
+                    <option value="嘉義縣">嘉義縣</option>
+                    <option value="臺南市">臺南市</option>
+                    <option value="高雄市">高雄市</option>
+                    <option value="屏東縣">屏東縣</option>
+                    <option value="臺東縣">臺東縣</option>
+                    <option value="花蓮縣">花蓮縣</option>
+                    <option value="澎湖縣">澎湖縣</option>
+                    <option value="金門縣">金門縣</option>
+                    <option value="連江縣">連江縣</option>
+                </select>
+                <input type="text" class="tag" placeholder="標  籤">
+                <input type="text" class="much" placeholder="份  數">
+            </div>
+            <div class="search-floor-2">
+                <div class="product">
+                    <img src="/images/icons/search.png" class="search-icon">
+                    <input type="text" placeholder="產  品  名  稱">
+                </div>
+                <span class="search-btn">開 始 搜 尋</span>
+            </div>
+        </div>
+    </div>
+    {% block content %}
+    {% endblock content %}
+</body>
+
+</html>
