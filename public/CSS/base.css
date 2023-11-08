@@ -145,3 +145,18 @@ body {
     cursor: pointer;
     user-select: none;
 }
+
+*::-webkit-scrollbar {
+    height: 8px;
+}
+
+/* *::-webkit-scrollbar-track {
+
+    background-color: #ffffff; 
+    border: none;
+    
+} */
+*::-webkit-scrollbar-thumb {
+    background-color: #c8c8c8; 
+    border-radius: 10px;
+}
