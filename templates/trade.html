@@ -3,4 +3,40 @@
 <link rel="stylesheet" href="/CSS/trade.css">
 {% endblock head %}
 {% block content %}
+<div class="trade-area-flex">
+    <div class="order-info-area">
+        <img src="/images/image/test.jpg">
+        <div class="order-info">
+            <div class="order-text">
+                <div>產品名稱：《 <span class="product-name">香蕉粒子報蛋糕</span>》</div>
+                <div>&emsp;&emsp;數量：<span class="product-amount">15</span>份</div>
+                <div>&emsp;&emsp;價格：NT$&ensp;<span class="product-price">852</span></div>
+                <div>&emsp;&emsp;地點：<span class="product-site">蕉粒子報</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="order-check-area">
+        <div class="check-area">
+            <div>產品名稱：<input type="text" class="name-check"><span class="check-btn">確認</span></div>
+            <div>&emsp;&emsp;數量：<input type="text" class="amount-check"><span class="check-btn">確認</span></div>
+            <div>&emsp;&emsp;價格：<input type="text" class="price-check"><span class="check-btn">確認</span></div>
+            <div>面交地點：<input type="text" class="site-check"><span class="check-btn">確認</span></div>
+            <div>面交時間：<input type="text" class="time-check"><span class="check-btn">確認</span></div>
+        </div>
+    </div>
+
+    <div class="member-talk-area">
+        <div class="message-box">
+            <div>141414141414<span>2023/01/13 9:30</span></div>
+
+        </div>
+    </div>
+    <div class="btn-area">
+        <div class="delete-btn">取消交易</div>
+        <div class="wait-btn">暫緩交易</div>
+        <div class="order-btn">確認本次交易</div>
+    </div>
+
+</div>
 {% endblock content %}

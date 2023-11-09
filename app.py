@@ -25,6 +25,8 @@ def index():
 def product():
 	return render_template("product.html")
 
-
+@app.route("/trade")
+def trade():
+	return render_template("trade.html")
 
 app.run(host="0.0.0.0", port=3000, debug=True)
