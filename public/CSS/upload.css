@@ -1,0 +1,92 @@
+.upload-area-flex {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 80px;
+    margin-right: 80px;
+
+    >.upload-title {
+        margin: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        >.upload-icon {
+            width: 50px;
+        }
+
+        >.upload-title-text {
+            font-size: 28px;
+            font-weight: bold;
+        }
+    }
+
+    >.upload-info {
+        width: 100%;
+        max-width: 1000px;
+        height: auto;
+        border-radius: 10px;
+        border: 2px solid rgb(207, 207, 207);
+        padding: 40px;
+
+        >div {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        >input,
+        textarea {
+            border: 1.5px solid rgb(207, 207, 207);
+            width: 100%;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        >textarea {
+            height: 200px;
+        }
+    }
+
+    >.upload-img-area {
+        width: 100%;
+        max-width: 1000px;
+        height: auto;
+        border-radius: 10px;
+        border: 2px solid rgb(207, 207, 207);
+        padding: 40px;
+        margin-top: 30px;
+
+        >.upload-img-title {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        >.img-preview {
+            display: flex;
+            flex-shrink: 1;
+            flex-wrap: wrap;
+
+            >img {
+                object-fit: cover;
+                width: 230px;
+                height: 230px;
+                border-radius: 10px;
+                margin: 5px;
+            }
+        }
+    }
+    >.upload-btn{
+        width: 100%; max-width: 500px;
+        text-align: center;
+        padding:12px 0px ;
+        margin-top: 15px;
+        background-color: #EC4B57;
+        border-radius: 5px;
+        font-size: 24px;color: white;
+        margin-bottom: 80px;
+    }
+}

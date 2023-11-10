@@ -29,4 +29,8 @@ def product():
 def trade():
 	return render_template("trade.html")
 
+@app.route("/upload")
+def upload():
+	return render_template("upload.html")
+
 app.run(host="0.0.0.0", port=3000, debug=True)

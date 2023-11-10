@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="/CSS/upload.css">
+<script src="/js/upload.js"></script>
+{% endblock head %}
+{% block content %}
+<div class="upload-area-flex">
+    <div class="upload-title">
+        <img src="/images/icons/cart.png" class="upload-icon">
+        <span class="upload-title-text">新增販售項目</span>
+    </div>
+    <div class="upload-info">
+        <div class="product-name-title">新增產品名稱：</div>
+        <input type="text" class="product-name-value" placeholder="名稱">
+
+        <div class="product-tag-title">新增標籤別：</div>
+        <input type="text" class="product-tag-value" placeholder="第一個標籤">
+        <input type="text" class="product-tag-value" placeholder="第二個標籤">
+        <input type="text" class="product-tag-value" placeholder="第三個標籤">
+
+        <div class="product-introduce-title">新增介紹：</div>
+        <textarea class="product-introduce-value" placeholder="字數限制 1000字"></textarea>
+
+        <div class="product-price-title">商品價格(新台幣)：</div>
+        <input type="text" class="product-price-value" placeholder="單位數量價格">
+        
+        <div class="product-amount-title">庫存數量：</div>
+        <input type="text" class="product-amount-value" placeholder="單位">
+
+        <div class="product-site-title">期望面交地點：</div>
+        <input type="text" class="product-site-value" placeholder="請填寫正確地址">
+
+        <div class="product-where-title">縣市別：</div>
+        <input type="text" class="product-where-value" placeholder="ex:台北市">
+        
+    </div>
+
+    <div class="upload-img-area">
+        <div class="upload-img-title">上傳產品照片</div>
+        <input type="file" data-target="file-uploader" class="img-upload" accept="image/*" multiple="multiple" onchange="previewImage();">
+        <div class="img-preview"></div>
+    </div>
+
+    <div class="upload-btn">確認上架該產品</div>
+</div>
+
+</div>
+{% endblock content %}
