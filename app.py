@@ -3,7 +3,8 @@ import mysql.connector
 from dotenv import *
 from api.product import product_system
 from api.index import index_system
-from model import *
+from api.upload import upload_system
+from model.query_make import *
 
 load_dotenv()
 app = Flask(__name__, static_folder="public", static_url_path="/")
@@ -16,6 +17,7 @@ app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.json.ensure_ascii = False
 app.register_blueprint(index_system)
 app.register_blueprint(product_system)
+app.register_blueprint(upload_system)
 
 @app.route("/")
 def index():
