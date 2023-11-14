@@ -1,16 +1,16 @@
 from flask import *
-from model.jwt_token import *
-from model.rds_pool import *
+from model.member_Auth import *
+from model.service_connect.rds_pool import *
 from model.query_make import *
 
-cnxpool=connect_to_pool()
 member_system = Blueprint("member_system", __name__)
 
 @member_system.route("/api/user", methods=["POST"])
-def register():
-	try:
+def member_register():
+	# try:
 		data=request.get_json()
 		source = found_user(data)
+		print(bool(source))
 		if source:
 			return {
 			"error": True,
@@ -21,11 +21,12 @@ def register():
 			return {
 				"ok": True
 			}, 200
-	except:
-		return {
-			"error": True,
-			"message": "伺服器內部錯誤"
-		}, 500
+	# except Exception as err:
+	# 	print("ss",err)
+	# 	return {
+	# 		"error": True,
+	# 		"message": "伺服器內部錯誤"
+	# 	}, 500
 	
 @member_system.route("/api/user/auth", methods=["GET"])
 def userLogin():
@@ -63,3 +64,5 @@ def login():
 			"error": True,
 			"message": "伺服器內部錯誤"
 		}, 500
+	
+	

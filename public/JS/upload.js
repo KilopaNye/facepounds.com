@@ -21,6 +21,70 @@ function previewImage() {
     }
 }
 
+
+
+function uploadProduct() {
+    let token = localStorage.getItem('token');
+    if (token) {
+        let img = document.querySelector('.img-upload');
+        let result = img.files
+        let formData = new FormData();
+        for (let i = 0; i < result.length; i++) {
+            formData.append('file', result[i]);
+        }
+
+        let productName = document.querySelector(".product-name-value").value;
+        let tagName = document.querySelectorAll('.product-tag-value')
+        let tagResult = []
+        for (let i = 0; i < tagName.length; i++) {
+            let tag = tagName[i].value
+            if (tag)
+                tagResult.push(tag)
+        }
+
+        let introduce = document.querySelector(".product-introduce-value").value;
+        let price = document.querySelector(".product-price-value").value;
+        let amount = document.querySelector(".product-amount-value").value;
+        let site = document.querySelector(".product-site-value").value;
+        let where = document.querySelector(".product-where-value").value;
+        productInfo = {
+            productName: productName,
+            tagResult: tagResult,
+            introduce: introduce,
+            price: price,
+            amount: amount,
+            site: site,
+            where: where
+        }
+        console.log(productInfo)
+        formData.append('message', JSON.stringify(productInfo));
+        if (productName && introduce && price && amount && site && where) {
+            fetch('/product/upload', {
+                method: 'POST',
+                headers: { 'enctype': "multipart/form-data" },
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // window.location.href="/";
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    }
+}
+
+
+// let tagName =document.querySelectorAll('.product-tag-value')
+// let tagResult=[]
+// for (let i=0;i<ab.length;i++){
+//     let tag = tagName[i].value
+//     tagResult.push(tag)
+// }
+// console.log(tagResult)
+
 function uploadProduct() {
     let token = localStorage.getItem('token');
     if (token) {
@@ -102,61 +166,3 @@ function uploadProduct() {
         loginBlock();
     }
 }
-
-
-function imgUpload() {
-    let img = document.querySelector('.img-upload');
-    let result = img.files
-    let formData = new FormData();
-    for (let i = 0; i < result.length; i++) {
-        formData.append('file', result[i]);
-    }
-    let productName = document.querySelector(".product-name-value").value;
-    let tagName = document.querySelectorAll('.product-tag-value')
-    let tagResult = []
-    for (let i = 0; i < tagName.length; i++) {
-        let tag = tagName[i].value
-        if (tag)
-            tagResult.push(tag)
-    }
-    let introduce = document.querySelector(".product-introduce-value").value;
-    let price = document.querySelector(".product-price-value").value;
-    let amount = document.querySelector(".product-amount-value").value;
-    let site = document.querySelector(".product-site-value").value;
-    let where = document.querySelector(".product-where-value").value;
-    productInfo = {
-        productName: productName,
-        tagResult: tagResult,
-        introduce: introduce,
-        price: price,
-        amount: amount,
-        site: site,
-        where: where
-    }
-    console.log(productInfo )
-
-    formData.append('message', JSON.stringify(productInfo));
-    
-    fetch('/product/upload', {
-        method: 'POST',
-        headers: { 'enctype': "multipart/form-data" },
-        body: formData
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            // window.location.href="/";
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
-
-
-// let tagName =document.querySelectorAll('.product-tag-value')
-// let tagResult=[]
-// for (let i=0;i<ab.length;i++){
-//     let tag = tagName[i].value
-//     tagResult.push(tag)
-// }
-// console.log(tagResult)

@@ -32,8 +32,6 @@ def upload_to_s3(files):
                 file, AWS_S3_BUCKET, filename, ExtraArgs={'ContentType': "image/jpeg"}
             )
 
-            print(f"上傳成功: {filename}")
-
         except Exception as err:
             print(err)
             return False

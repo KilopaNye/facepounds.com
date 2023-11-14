@@ -109,11 +109,17 @@ body {
 
 .login {
     font-size: 16px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
 }
 
 .web-title {
     font-size: 34px;
     font-family: system-ui;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
 }
 
 .search-flex {

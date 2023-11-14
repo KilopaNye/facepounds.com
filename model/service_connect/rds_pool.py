@@ -13,6 +13,6 @@ def connect_to_pool():
     host=os.getenv("host"),
     database="facepounds",
     pool_name="mypool",
-    pool_size=10,
+    pool_size=5,
     )
     return cnxpool
