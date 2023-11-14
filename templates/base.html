@@ -7,7 +7,6 @@
     <title>Facepounds</title>
     <link rel="stylesheet" href="/CSS/base.css">
     <link rel="shortcut icon" href="#" />
-    <script src="/JS/base.js"></script>
     {% block head %}
     <script src="/JS/auth.js"></script>
     {% endblock head %}
@@ -89,12 +88,13 @@
             <div class="search-floor-2">
                 <div class="product">
                     <img src="/images/icons/search.png" class="search-icon">
-                    <input type="text" placeholder="產  品  名  稱">
+                    <input type="text" class="searchTxt" placeholder="產  品  名  稱">
                 </div>
-                <span class="search-btn">開 始 搜 尋</span>
+                <span class="search-btn" onclick="searchProductBar();">開 始 搜 尋</span>
             </div>
         </div>
     </div>
+    <script src="/JS/base.js"></script>
     {% block content %}
     {% endblock content %}
 </body>

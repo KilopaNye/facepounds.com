@@ -124,3 +124,53 @@ def product_upload_sql(message_dict,owner_id):
         con.close()
 
 
+def get_product(param):
+    try:
+        con = cnxpool.get_connection()
+        cursor = con.cursor(dictionary=True)
+        if param['param']==None:
+            cursor.execute(
+                "SELECT * FROM product_info",
+            )
+            response=cursor.fetchall()
+            con.commit()
+            return response
+        else:
+            # param=[param["param"]["tag"],
+            #     param["param"]["tag"],
+            #     param["param"]["tag"],
+            #     param["param"]["tag"],
+            #     param["param"]["tag"],
+            #     param["param"]["tag"],
+            #     param["param"]["tag"],
+            #     param["param"]["tag"],]
+            query_values = []
+            data = param["param"]
+            tags = ["tag", "much", "text", "area"]
+            for tag in tags:
+                query_values.append(data[tag])
+                query_values.append(data[tag])
+            print(query_values)
+            query = """
+            SELECT * FROM product_info
+            JOIN product_tag_relation ON product_info.id = product_tag_relation.product_info_id
+            JOIN product_tag ON product_tag_relation.tag_id = product_tag.id
+            WHERE 
+            (product_tag.tag_name = %s OR %s IS NULL)
+            AND (product_info.product_amount = %s OR %s IS NULL)
+            AND (product_info.product_name LIKE %s OR %s IS NULL)
+            AND (product_info.county_site = %s OR %s IS NULL);
+            """
+            cursor.execute(
+                query,query_values
+            )
+            response=cursor.fetchall()
+            print(response)
+            con.commit()
+            return response
+    except Exception as err:
+        print(err)
+        return False
+    finally:
+        cursor.close()
+        con.close()
