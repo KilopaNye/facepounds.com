@@ -4,6 +4,7 @@ from dotenv import *
 from api.product import product_system
 from api.index import index_system
 from api.upload import upload_system
+from api.member import member_system
 from model.query_make import *
 
 load_dotenv()
@@ -18,6 +19,7 @@ app.json.ensure_ascii = False
 app.register_blueprint(index_system)
 app.register_blueprint(product_system)
 app.register_blueprint(upload_system)
+app.register_blueprint(member_system)
 
 @app.route("/")
 def index():

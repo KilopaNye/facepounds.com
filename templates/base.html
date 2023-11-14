@@ -8,16 +8,48 @@
     <link rel="stylesheet" href="/CSS/base.css">
     <link rel="shortcut icon" href="#" />
     <script src="/JS/base.js"></script>
+    <script src="/JS/auth.js"></script>
     {% block head %}
     {% endblock head %}
 </head>
 
 <body>
+    <div style="display:none;" class="login-class"></div>
+    <div class="login-box" style="display:none;">
+        <img src="/images/icons/close.png" class="close-png" onclick="closeInput();">
+        <div style="background-color: #489; height: 10px; width: 100%; border-radius: 6px 6px 0 0;"></div>
+        <div style="display: flex; justify-content: center;font-size: 24px; font-weight: bold; margin: 15px;">登入會員帳號
+        </div>
+        <input type="text" placeholder="輸入電子信箱" class="text-input login-email">
+        <input type="password" placeholder="輸入密碼" class="text-input login-password">
+        <div class="login-text" onclick="login();">登入帳戶</div>
+        <div class="message"></div>
+        <div style="font-size: 16px; margin-bottom: 15px;font-weight: bold; cursor: pointer;" onclick="goRegister();">
+            還沒有帳戶? 點此註冊</div>
+    </div>
+
+    <div class="register-box" style="display:none;">
+        <img src="/images/icons/close.png" class="close-png" onclick="closeRegister();">
+        <div style="background-color: #489; height: 10px; width: 100%; border-radius: 6px 6px 0 0;"></div>
+        <div style="display: flex; justify-content: center;font-size: 24px; font-weight: bold;   margin: 15px;">註冊會員帳號
+        </div>
+        <input type="text" placeholder="輸入姓名" class="text-input name-text">
+        <input type="text" placeholder="輸入電子信箱" class="text-input email-text">
+        <input type="password" placeholder="輸入密碼" class="text-input password-text">
+        <div class="login-text" onclick="register();">註冊新帳戶</div>
+        <div class="error-message"></div>
+        <div style="font-size: 16px; margin-bottom: 15px;font-weight: bold; cursor: pointer;" onclick="goLogin();">
+            已經有帳戶了? 點此登入</div>
+    </div>
+
+
+
     <div class="header-block">
         <div class="header">
             <div class="web-title">face磅取</div>
             <div class="nav">
-                <div class="login">註冊/登入</div>
+                <div class="login" id="login-button" style="display: none;" onclick="loginBlock();">登入</div>
+                <div class="login " id="logout-button" style="display: none;" onclick="logoutBlock();">登出</div>
                 <div class="login">會員中心</div>
             </div>
         </div>
