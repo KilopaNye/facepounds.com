@@ -18,7 +18,9 @@ def product_upload():
 			owner_id = decoded_token['id']
 			print(message_str)
 			print(message_dict)
-			product_upload_sql(message_dict,owner_id)
+			images_name = upload_to_s3(files,decoded_token['username'])
+			product_upload_sql(message_dict,owner_id,images_name)
+			
 			
 			# upload_to_s3(files)
 			return jsonify({'data':True})

@@ -20,20 +20,19 @@ s3 = boto3.client(
 )
 
 
-def upload_to_s3(files):
+def upload_to_s3(files,username):
     s3 = boto3.client("s3")
-
+    image_name=[]
     for file in files:
         try:
-            filename = str(uuid.uuid4()) + ".jpeg"
+            filename = username +"-"+ str(uuid.uuid4()) + ".jpeg"
+            image_name.append(filename)
 
-            # 使用 upload_fileobj 上傳檔案
             s3.upload_fileobj(
                 file, AWS_S3_BUCKET, filename, ExtraArgs={'ContentType': "image/jpeg"}
             )
-
         except Exception as err:
             print(err)
             return False
 
-    return True
+    return image_name

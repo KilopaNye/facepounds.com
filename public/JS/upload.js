@@ -1,3 +1,12 @@
+function userCheck() {
+    let token = localStorage.getItem('token');
+    if (token) {
+        return true;
+    }else{
+        window.location.href = "/";
+    }
+}
+userCheck()
 
 function previewImage() {
     let fileInput = document.querySelector('.img-upload');
@@ -35,18 +44,31 @@ function uploadProduct() {
 
         let productName = document.querySelector(".product-name-value").value;
         let tagName = document.querySelectorAll('.product-tag-value')
-        let tagResult = []
-        for (let i = 0; i < tagName.length; i++) {
-            let tag = tagName[i].value
-            if (tag)
-                tagResult.push(tag)
-        }
-
         let introduce = document.querySelector(".product-introduce-value").value;
         let price = document.querySelector(".product-price-value").value;
         let amount = document.querySelector(".product-amount-value").value;
         let site = document.querySelector(".product-site-value").value;
         let where = document.querySelector(".product-where-value").value;
+
+        function isValidIntro(introduce){
+            if(introduce.length>1000){
+                return false;
+            }else{
+                return true;
+            };
+        };
+        
+        const numericPattern = /^[1-9]\d*$/;
+        function isValidPrice(price){
+            return numericPattern.test(price);
+        }
+        let tagResult = []
+        for (let i = 0; i < tagName.length; i++) {
+            let tag = tagName[i].value;
+            if (tag){
+                tagResult.push(tag)
+            }
+        }
         productInfo = {
             productName: productName,
             tagResult: tagResult,
@@ -58,7 +80,7 @@ function uploadProduct() {
         }
         console.log(productInfo)
         formData.append('message', JSON.stringify(productInfo));
-        if (productName && introduce && price && amount && site && where) {
+        if (productName && isValidIntro(introduce) && isValidPrice(price) && isValidPrice(amount) && site && where) {
             fetch('/product/upload', {
                 method: 'POST',
                 headers: { 'enctype': "multipart/form-data",
@@ -68,7 +90,8 @@ function uploadProduct() {
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
-                    // window.location.href="/";
+                    alert("上傳成功")
+                    window.location.href="/upload";
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -78,6 +101,8 @@ function uploadProduct() {
         }
     }
 }
+
+
 
 
 // let tagName =document.querySelectorAll('.product-tag-value')

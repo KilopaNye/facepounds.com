@@ -32,7 +32,7 @@ function loginBlock() {
 }
 function logoutBlock() {
     window.localStorage.removeItem('token');
-    window.location.href = window.location.pathname;
+    window.location.href = "/";
 }
 
 function register() {
@@ -150,13 +150,3 @@ function userLoginCheck() {
     })
 }
 userLoginCheck();
-
-let uploadCheck=window.location.pathname 
-if(uploadCheck === "/upload" && userLoginBool){
-    window.location.href="/"
-}
-
-let tradeCheck=window.location.pathname 
-if(uploadCheck === "/trade" && userLoginBool){
-    window.location.href="/"
-}
