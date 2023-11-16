@@ -25,8 +25,8 @@ app.register_blueprint(member_system)
 def index():
 	return render_template("index.html")
 
-@app.route("/product")
-def product():
+@app.route("/product/<productId>")
+def product(productId):
 	return render_template("product.html")
 
 @app.route("/trade")

@@ -12,6 +12,9 @@
 
         >.product-main {
             width: 100%;
+            min-width: 750px;
+            height: auto;
+            min-height: 800px;
             max-width: 750px;
             background-color: rgb(255, 255, 255);
             margin-right: 15px;
@@ -22,10 +25,12 @@
                 font-size: 40px;
                 font-weight: bold;
                 margin: 20px;
+                min-height: 60px;
             }
 
             >.product-tag-area {
                 margin-left: 20px;
+                min-height: 20px;
 
                 >span {
                     text-align: center;
@@ -83,6 +88,7 @@
 
                 >img {
                     width: 230px;
+                    max-width: 230px;
                     height: 250px;
                     object-fit: cover;
                     border-radius: 8px 8px 0 0;
@@ -106,12 +112,14 @@
                 font-size: 38px;
                 font-weight: bold;
                 margin-bottom: 5px;
+                min-height: 48px;
             }
 
             >.order-cost {
                 font-size: 38px;
                 font-weight: bold;
                 margin-bottom: 20px;
+                min-height: 48px;
             }
 
             >.order-text {

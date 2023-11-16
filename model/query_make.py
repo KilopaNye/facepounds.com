@@ -97,10 +97,19 @@ def product_upload_sql(message_dict, owner_id, images_name):
                 "INSERT INTO product_images(product_id, image_url) VALUE(%s, %s)",
                 (product_info_id, img_name),
             )
+        # image_data = [(product_info_id, img_name) for img_name in images_name]
+
+        # # 使用 execute 插入多筆資料
+        # for data in image_data:
+        #     cursor.execute(
+        #         "INSERT INTO product_images(product_id, image_url) VALUES (%s, %s)",
+        #         data
+        #     )
 
         if message_dict["tagResult"]:
+            cursor = con.cursor(dictionary=True)
             for i in message_dict["tagResult"]:
-                cursor = con.cursor(dictionary=True)
+                
                 cursor.execute(
                     "SELECT id,tag_name FROM product_tag WHERE tag_name=%s", (i,)
                 ),
@@ -113,7 +122,6 @@ def product_upload_sql(message_dict, owner_id, images_name):
                     )
                     con.commit()
                     print("標籤已存在")
-                    cursor.close()
                 else:
                     cursor.execute("INSERT INTO product_tag(tag_name) VALUE(%s)", (i,))
                     con.commit()
@@ -129,7 +137,7 @@ def product_upload_sql(message_dict, owner_id, images_name):
                     )
                     con.commit()
                     print("標簽不存在")
-                    cursor.close()
+            cursor.close()
         return {"data": True}
     except Exception as err:
         print("product_upload_sql:", err)
@@ -150,7 +158,7 @@ def get_product(param):
         con.commit()
         if param["param"] == None:
             cursor.execute(
-                "SELECT a.id, a.product_name, a.product_price, a.product_amount, a.county_site, b.username, GROUP_CONCAT(tag.tag_name)as tag, GROUP_CONCAT(c.image_url) AS image_urls FROM product_info as a JOIN members as b ON a.owner_id = b.id JOIN product_images as c ON c.product_id = a.id JOIN product_tag_relation ON a.id = product_tag_relation.product_info_id JOIN product_tag as tag ON product_tag_relation.tag_id = tag.id",
+                "SELECT a.id, a.product_name, a.product_price, a.product_amount, a.county_site, b.username, GROUP_CONCAT(tag.tag_name)as tag, GROUP_CONCAT(c.image_url) AS image_urls FROM product_info as a JOIN members as b ON a.owner_id = b.id JOIN product_images as c ON c.product_id = a.id JOIN product_tag_relation ON a.id = product_tag_relation.product_info_id JOIN product_tag as tag ON product_tag_relation.tag_id = tag.id GROUP BY a.id",
             )
             response = cursor.fetchall()
             con.commit()
@@ -177,6 +185,29 @@ def get_product(param):
             print(response)
             con.commit()
             return response
+    except Exception as err:
+        print("get_product(param):", err)
+        return False
+    finally:
+        cursor.close()
+        con.close()
+
+
+def from_id_get_product(productId):
+    try:
+        con = cnxpool.get_connection()
+        cursor = con.cursor(dictionary=True)
+
+        cursor.execute(
+                "SET SESSION group_concat_max_len = 10000;"
+            )
+        con.commit()
+        cursor.execute(
+            "SELECT a.owner_pre_site, a.id, a.product_name, a.product_price, a.product_amount, a.product_intro, a.county_site, b.username, b.userImg,  GROUP_CONCAT(tag.tag_name)as tag, GROUP_CONCAT(DISTINCT c.image_url) AS image_urls FROM product_info as a JOIN members as b ON a.owner_id = b.id JOIN product_images as c ON c.product_id = a.id JOIN product_tag_relation ON a.id = product_tag_relation.product_info_id JOIN product_tag as tag ON product_tag_relation.tag_id = tag.id WHERE a.id = %s GROUP BY a.id",(productId,)
+        )
+        response = cursor.fetchone()
+        con.commit()
+        return response
     except Exception as err:
         print("get_product(param):", err)
         return False

@@ -36,10 +36,21 @@ function uploadProduct() {
     let token = localStorage.getItem('token');
     if (token) {
         let img = document.querySelector('.img-upload');
-        let result = img.files
+        let result = img.files;
+        let filesLen= result.length;
         let formData = new FormData();
-        for (let i = 0; i < result.length; i++) {
+        for (let i = 0; i < filesLen; i++) {
             formData.append('file', result[i]);
+        }
+
+        function img_result_check(filesLen){
+            if(filesLen<1) {
+                console.log("圖片數量錯誤")
+                return false;
+            }else{
+                return true;
+            }
+
         }
 
         let productName = document.querySelector(".product-name-value").value;
@@ -52,6 +63,7 @@ function uploadProduct() {
 
         function isValidIntro(introduce){
             if(introduce.length>1000){
+                console.log("文章長度錯誤")
                 return false;
             }else{
                 return true;
@@ -60,6 +72,9 @@ function uploadProduct() {
         
         const numericPattern = /^[1-9]\d*$/;
         function isValidPrice(price){
+            if(!numericPattern.test(price)){
+                console.log("price這邊錯了")
+            }
             return numericPattern.test(price);
         }
         let tagResult = []
@@ -79,8 +94,12 @@ function uploadProduct() {
             where: where
         }
         console.log(productInfo)
+        console.log("1",isValidIntro(introduce))
+        console.log("2",isValidPrice(price))
+        console.log("3",isValidPrice(amount))
+        console.log("4",img_result_check(filesLen))
         formData.append('message', JSON.stringify(productInfo));
-        if (productName && isValidIntro(introduce) && isValidPrice(price) && isValidPrice(amount) && site && where) {
+        if (productName && isValidIntro(introduce) && isValidPrice(price) && isValidPrice(amount) && site && where && img_result_check(filesLen)) {
             fetch('/product/upload', {
                 method: 'POST',
                 headers: { 'enctype': "multipart/form-data",
@@ -97,7 +116,7 @@ function uploadProduct() {
                     console.error('Error:', error);
                 });
         }else{
-            alert("請填寫正確內容")
+            alert("請確認填寫的內容格式是否正確或有缺漏")
         }
     }
 }

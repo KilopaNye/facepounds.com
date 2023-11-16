@@ -1,4 +1,10 @@
 
+
+function GoThisProduct(product){
+    let id=product.getAttribute('value')
+    window.location.href = `/product/${id}`
+}
+
 function createProductDom(data){
     for (let i = 0; i < data.length; i++) {
         let image = data[i]["image_urls"].split(',')
@@ -10,13 +16,19 @@ function createProductDom(data){
         productFlex.appendChild(productBox);
     
         let productImg = document.createElement("img");
-        productImg.src = "https://d3utiuvdbysk3c.cloudfront.net/"+image[0];
+        productImg.src = "https://d3utiuvdbysk3c.cloudfront.net/" + image[0];
         productBox.appendChild(productImg);
         let productTitle = document.createElement("div");
         productTitle.classList.add("product-title");
         productTitle.textContent = data[i]["product_name"];
         productBox.appendChild(productTitle);
-    
+        
+        let productIdOpacity = document.createElement('div');
+        productIdOpacity.setAttribute('value',data[i]['id']);
+        productIdOpacity.setAttribute('onclick',"GoThisProduct(this);");
+        productIdOpacity.classList.add('product-id-opacity');
+        productBox.appendChild(productIdOpacity);
+
         let productText = document.createElement("div");
         productText.classList.add("product-text");
         productBox.appendChild(productText);
@@ -96,3 +108,5 @@ getProductInfo()
 
 
 // https://d3utiuvdbysk3c.cloudfront.net/
+
+

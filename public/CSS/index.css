@@ -29,6 +29,7 @@
             flex-wrap: wrap;
             margin-bottom: 40px;
             flex-basis: auto;
+            position: relative;
 
             >.product-box {
                 width: 267px;
@@ -45,7 +46,15 @@
                     object-fit: cover;
                     border-radius: 8px 8px 0 0;
                 }
-
+                .product-id-opacity{
+                    width: 100%;
+                    height: 230px;
+                    background-color: #c8c8c8;
+                    opacity: 0;
+                    position:absolute;
+                    top:0;
+                    cursor: pointer;
+                }
                 >.product-title {
                     font-size: 20px;
                     font-weight: bold;
