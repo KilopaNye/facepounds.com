@@ -5,6 +5,8 @@ from api.product import product_system
 from api.index import index_system
 from api.upload import upload_system
 from api.member import member_system
+from api.ready_check import ready_check_system
+from api.trade import trade_system
 from model.query_make import *
 
 load_dotenv()
@@ -20,6 +22,8 @@ app.register_blueprint(index_system)
 app.register_blueprint(product_system)
 app.register_blueprint(upload_system)
 app.register_blueprint(member_system)
+app.register_blueprint(ready_check_system)
+app.register_blueprint(trade_system)
 
 @app.route("/")
 def index():
@@ -29,12 +33,16 @@ def index():
 def product(productId):
 	return render_template("product.html")
 
-@app.route("/trade")
-def trade():
+@app.route("/trade/<order_uuid>")
+def trade(order_uuid):
 	return render_template("trade.html")
 
 @app.route("/upload")
 def upload():
 	return render_template("upload.html")
+
+@app.route("/ready_check")
+def ready_check():
+	return render_template("ready_check.html")
 
 app.run(host="0.0.0.0", port=3000, debug=True)

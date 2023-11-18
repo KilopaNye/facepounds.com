@@ -12,7 +12,6 @@
 
         >.product-main {
             width: 100%;
-            min-width: 750px;
             height: auto;
             min-height: 800px;
             max-width: 750px;
@@ -53,6 +52,7 @@
                 font-size: 22px;
                 letter-spacing: 5px;
                 white-space: pre-line;
+                overflow:hidden;
             }
 
 
@@ -87,8 +87,8 @@
                 justify-content: space-between;
 
                 >img {
-                    width: 230px;
-                    max-width: 230px;
+                    width: 100%;
+                    max-width: 220px;
                     height: 250px;
                     object-fit: cover;
                     border-radius: 8px 8px 0 0;

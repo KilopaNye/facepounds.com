@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="/CSS/ready_check.css">
+{% endblock head %}
+{% block content %}
+<div class="change_serve"><span onclick="preOrderDom(order_data);">我是買家</span><span onclick="preOrderDom(seller_data);">我是賣家</span></div>
+<div class="trade-area-flex">
+    
+    <!-- <div class="order-info-area">
+        <img src="/images/image/test.jpg">
+        <div class="order-info">
+            <div class="order-text">
+                <div>產品名稱：《 <span class="product-name">香蕉粒子報蛋糕</span>》</div>
+                <div>&emsp;&emsp;數量：<span class="product-amount">15</span>份</div>
+                <div>&emsp;&emsp;價格：NT$&ensp;<span class="product-price">852</span></div>
+                <div>&emsp;&emsp;地點：<span class="product-site">蕉粒子報</span></div>
+                <div>&emsp;&emsp;賣家：<span class="seller">蕉粒子報</span></div>
+                <div>面交時間：<span class="product-site"></span></div>
+            </div>
+            <img src="/images/icons/chat-box.png" onclick="gotrade(uuid);">
+        </div>
+    </div> -->
+
+    
+    
+</div>
+
+<script src="/JS/auth.js"></script>
+<script src="/JS/ready_check.js"></script>
+{% endblock content %}

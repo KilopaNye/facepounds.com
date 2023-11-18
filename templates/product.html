@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block head %}
 <link rel="stylesheet" href="/CSS/product.css">
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
 {% endblock head %}
 
 {% block content %}
@@ -37,7 +38,7 @@
             <textarea class="order-message" placeholder="想與賣家說的話"></textarea>
             <div class="order-text">賣家期望面交地點</div>
             <div class="order-target"></div>
-            <div class="order-btn">確認拍拍</div>
+            <div class="order-btn" onclick="orderProduct(order_info);">確認拍拍</div>
         </div>
 
         <div class="store-owner">
@@ -66,4 +67,5 @@
 </div>
 <script src="/JS/auth.js"></script>
 <script src="/JS/product.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 {% endblock content %}

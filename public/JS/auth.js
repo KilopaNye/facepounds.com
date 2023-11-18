@@ -48,7 +48,7 @@ function register() {
         return emailPattern.test(email);
     }
 
-    const namePattern = /^[a-zA-Z_]+$/;
+    const namePattern = /^[\u4e00-\u9fa5a-zA-Z_]{1,8}$/;
     function isValidName(name) {
         return namePattern.test(name);
     }
@@ -136,12 +136,14 @@ function userLoginCheck() {
             logoutButton.style.display = "none"
             return userLoginBool = false;
         } else {
-            let uploadButton = document.querySelector("#go-upload-button")
-            uploadButton.style.display = "block"
+            let uploadButton = document.querySelector("#go-upload-button");
+            uploadButton.style.display = "block";
+            let checkButton = document.querySelector("#go-check-button");
+            checkButton.style.display = "block";
             let logInButton = document.querySelector('#login-button');
-            logInButton.style.display = "none"
+            logInButton.style.display = "none";
             let logoutButton = document.querySelector('#logout-button');
-            logoutButton.style.display = "block"
+            logoutButton.style.display = "block";
             return userLoginBool = true;
         }
     }).catch(error => {
