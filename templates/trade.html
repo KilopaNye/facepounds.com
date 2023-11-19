@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block head %}
 <link rel="stylesheet" href="/CSS/trade.css">
+<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 {% endblock head %}
 {% block content %}
 <div class="trade-area-flex">
@@ -31,7 +32,7 @@
             <div>141414141414<span>2023/01/13 9:30</span></div>
             
         </div>
-        <div class="input-message"><input type="text" placeholder="請輸入訊息"><div class="send-messagge">送出</div></div>
+        <div class="input-message"><input type="text" placeholder="請輸入訊息" class="input-message-box"><div class="send-messagge" onclick="sendMessage(user);">送出</div></div>
         
     </div>
     <div class="btn-area">
@@ -43,4 +44,5 @@
 </div>
 <script src="/JS/auth.js"></script>
 <script src="/JS/trade.js"></script>
+
 {% endblock content %}

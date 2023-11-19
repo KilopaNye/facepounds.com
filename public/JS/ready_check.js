@@ -78,7 +78,7 @@ function getPreOrder() {
         fetch(`/api/get_pre_order`, {
             headers: headers,
         }).then(response => response.json()).then(data => {
-            console.log(data);
+            // console.log(data);
             // if(data["data"]){
             order_data = data["data"]
             preOrderDom(order_data)
@@ -105,8 +105,9 @@ function getPreTrade() {
         fetch(`/api/get_pre_trade`, {
             headers: headers,
         }).then(response => response.json()).then(data => {
-            console.log(data);
+            // console.log(data);
             seller_data = data['data'];
+            preOrderDom(seller_data)
         }).catch(error => {
             console.log(error);
         })

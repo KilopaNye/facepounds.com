@@ -8,16 +8,16 @@ from api.member import member_system
 from api.ready_check import ready_check_system
 from api.trade import trade_system
 from model.query_make import *
+from flask_socketio import SocketIO,join_room,leave_room
 
 load_dotenv()
 app = Flask(__name__, static_folder="public", static_url_path="/")
 app.secret_key = "WGXaTKE7JR9MzzykHVp1O8ix7cnkx5eOb400I5gPxXJI3I8saAUWZjDLxs6056M"
-
-
-
+wsgi_app = app.wsgi_app
+socketio = SocketIO(app)
+# ,cors_allowed_origins='*',ping_interval=20, ping_timeout=60
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
-app.json.ensure_ascii = False
 app.register_blueprint(index_system)
 app.register_blueprint(product_system)
 app.register_blueprint(upload_system)
@@ -45,4 +45,65 @@ def upload():
 def ready_check():
 	return render_template("ready_check.html")
 
-app.run(host="0.0.0.0", port=3000, debug=True)
+# socketio.run(host="0.0.0.0", port=3000, debug=True)
+
+@socketio.on('connect')
+def test_connect():
+	print("連線了˙")
+	try:
+		socketio.emit('connect_response', {'message': '成功加入聊天室'})
+	except Exception as err:
+		print(err)
+
+@socketio.on('disconnect')
+def test_disconnect():
+	print("斷線˙")
+	try:
+		socketio.emit('response', {'data': 'Connectesssssssssssssssssssssd'})
+	except Exception as err:
+		print(err) 
+
+@socketio.on('message')
+def handle_message(message):
+	print("使用者說",message)
+	socketio.emit('response', {'data': 'Connected'})
+
+@socketio.on('send_message_to_room')
+def handle_send_message_to_room(data):
+	decoded_token = jwt.decode(
+            data['token'],
+            key="7451B034BF2BD44049C4879E2CD2A5E501061F55B30BFE734F319032A137EAD0",
+            algorithms="HS256",
+        )
+	if decoded_token["id"]:
+		username = decoded_token["username"]
+		room = data['room']
+		message = data['message']
+		socketio.emit('sendMessageResponse', {'message': message,'username':username}, room=room)
+
+@socketio.on('join')
+def on_join(info):
+	decoded_token = jwt.decode(
+            info['token'],
+            key="7451B034BF2BD44049C4879E2CD2A5E501061F55B30BFE734F319032A137EAD0",
+            algorithms="HS256",
+        )
+	if decoded_token["id"]:
+		room = info['room']
+		join_room(room)
+		user = decoded_token["username"]
+		# username = get_username(userId)
+		print("會員- "+decoded_token["username"],"連到房間囉")
+		socketio.emit('join_room_announcement', {'user': user, 'room': room}, room=room)
+
+@socketio.on('leave')
+def on_leave(data):
+	print("已離開房間")
+	username = data['username']
+	room = data['room']
+	leave_room(room)
+	socketio.emit('leave_room_announcement', {'user': username, 'room': room}, room=room)
+
+
+if __name__ == '__main__':
+    socketio.run(app,host="0.0.0.0",port=3000, debug=True)

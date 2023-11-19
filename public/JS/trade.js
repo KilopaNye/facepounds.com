@@ -2,7 +2,7 @@ let url = window.location.pathname;
 let length_URL = url.split("/");
 let order_uuid = length_URL.pop();
 
-function preOrderDomCreate(data){
+function preOrderDomCreate(data) {
     console.log(data)
     let title = document.querySelector('.product-name');
     let amount = document.querySelector('.product-amount');
@@ -27,6 +27,7 @@ function preOrderDomCreate(data){
 }
 
 
+let order_info_data;
 
 function getPreOrderByUUID() {
     let token = localStorage.getItem('token');
@@ -37,14 +38,12 @@ function getPreOrderByUUID() {
             "Authorization": `Bearer ${token}`
         }
 
-        fetch(`/api/get_order_trade/${ order_uuid }`, {
+        fetch(`/api/get_order_trade/${order_uuid}`, {
             headers: headers,
         }).then(response => response.json()).then(data => {
             console.log(data);
-            // if(data["data"]){
             preOrderDomCreate(data["data"]);
-            // }else{
-            // }
+            order_info_data = data['data']
         }).catch(error => {
             console.log(error);
         })
@@ -54,3 +53,54 @@ function getPreOrderByUUID() {
 }
 getPreOrderByUUID()
 
+var socket = io();
+
+function joinRoom(order_info_data) {
+    let token = localStorage.getItem('token');
+    let room = order_info_data['order_uuid'];
+    socket.emit('join', { token: token, room: room });
+}
+
+function leaveRoom() {
+    let room = document.getElementById('room').value;
+    socket.emit('leave', { username: username, room: room });
+}
+
+socket.on('connect_response', function () {
+    joinRoom(order_info_data);
+});
+
+let user = "";
+socket.on('join_room_announcement', function (data) {
+    console.log(data.user + ' has joined the room: ' + data.room);
+    user = data.user
+    console.log(user)
+});
+
+socket.on('leave_room_announcement', function (data) {
+    console.log(data.user + ' has left the room: ' + data.room);
+});
+
+
+function sendMessage() {
+    let token = localStorage.getItem('token');
+    let message = document.querySelector('.input-message-box').value;
+    message.value= "";
+    if (message) {
+        socket.emit('send_message_to_room', { 'token': token, 'room': order_info_data['order_uuid'], 'message': message })
+    }
+}
+socket.on('sendMessageResponse', function (data) {
+    let messageBox = document.querySelector('.message-box')
+    let messageDiv = document.createElement('div')
+    messageDiv.textContent = data.username + '：　' + data.message;
+    messageBox.appendChild(messageDiv)
+});
+
+let messageInput = document.querySelector('.input-message-box');
+messageInput.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+        messageInput.value= "";
+    }
+});

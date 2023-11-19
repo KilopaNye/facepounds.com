@@ -273,7 +273,7 @@ def get_pre_trade_info(seller_id):
         cursor = con.cursor(dictionary=True)
 
         cursor.execute(
-                "SELECT  members.username, img.image_url, pre.*, a.owner_pre_site, a.id, a.product_name, a.product_price, a.product_amount FROM pre_order_info as pre JOIN product_info as a ON pre.product_id = a.id JOIN product_images as img ON img.product_id = a.id JOIN members ON members.id = a.owner_id  WHERE pre.buyer_id = %s GROUP BY a.id",(seller_id,) 
+                "SELECT  members.username, img.image_url, pre.*, a.owner_pre_site, a.id, a.product_name, a.product_price, a.product_amount FROM pre_order_info as pre JOIN product_info as a ON pre.product_id = a.id JOIN product_images as img ON img.product_id = a.id JOIN members ON members.id = a.owner_id  WHERE pre.seller_id = %s GROUP BY a.id",(seller_id,) 
             )
         response = cursor.fetchall()
         return response
@@ -296,6 +296,23 @@ def get_pre_order_info_by_uuid(order_uuid):
         return response
     except Exception as err:
         print("get_pre_order_info(buyer_id):", err)
+        return False
+    finally:
+        cursor.close()
+        con.close()
+
+def get_username(user_id):
+    try:
+        con = cnxpool.get_connection()
+        cursor = con.cursor(dictionary=True)
+
+        cursor.execute(
+                "SELECT username as user FROM members WHERE id = %s",(user_id,)
+            )
+        response = cursor.fetchone()
+        return response
+    except Exception as err:
+        print("get_username:(user_id)", err)
         return False
     finally:
         cursor.close()
