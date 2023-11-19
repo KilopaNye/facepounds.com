@@ -66,15 +66,15 @@ function leaveRoom() {
     socket.emit('leave', { username: username, room: room });
 }
 
-socket.on('connect_response', function () {
+socket.on('connect_response', function (data) {
     joinRoom(order_info_data);
+    
 });
 
 let user = "";
 socket.on('join_room_announcement', function (data) {
-    console.log(data.user + ' has joined the room: ' + data.room);
-    user = data.user
-    console.log(user)
+
+
 });
 
 socket.on('leave_room_announcement', function (data) {
@@ -83,24 +83,71 @@ socket.on('leave_room_announcement', function (data) {
 
 
 function sendMessage() {
+    let time = getTimeNow();
     let token = localStorage.getItem('token');
     let message = document.querySelector('.input-message-box').value;
-    message.value= "";
+    message.value = "";
     if (message) {
-        socket.emit('send_message_to_room', { 'token': token, 'room': order_info_data['order_uuid'], 'message': message })
+        socket.emit('send_message_to_room', { 'token': token, "time": time, 'room': order_info_data['order_uuid'], 'message': message })
     }
 }
 socket.on('sendMessageResponse', function (data) {
-    let messageBox = document.querySelector('.message-box')
-    let messageDiv = document.createElement('div')
-    messageDiv.textContent = data.username + '：　' + data.message;
-    messageBox.appendChild(messageDiv)
+    let messageBox = document.querySelector('.message-box');
+    let messageDiv = document.createElement('div');
+    messageDiv.textContent = data.username + ':' + data.message;
+    messageBox.appendChild(messageDiv);
+    let timeSpan = document.createElement('span');
+    timeSpan.textContent = getTimeNow();
+    messageDiv.appendChild(timeSpan);
 });
 
 let messageInput = document.querySelector('.input-message-box');
 messageInput.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
         sendMessage();
-        messageInput.value= "";
+        messageInput.value = "";
     }
 });
+
+function getTimeNow() {
+    let now = new Date(); // 取得當前時間
+    let year = now.getFullYear();
+    let month = now.getMonth() + 1; // 月份是從0開始的，所以要加1
+    let day = now.getDate();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    let seconds = now.getSeconds();
+    function padZero(number) {
+        return number < 10 ? '0' + number : number;
+    }
+
+    // 格式化為24小時制日期時間
+    let formattedDateTime = `${year}-${padZero(month)}-${padZero(day)} ${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+    return formattedDateTime
+}
+
+function getMessageLoad(){
+    fetch(`/api/get_message_load/${order_uuid}`, {
+        headers: headers,
+    }).then(response => response.json()).then(data => {
+        console.log(data);
+        console.log(data.user + ' has joined the room: ' + data.room);
+        user = data.user
+        console.log(data)
+        let messageLoad = data["data"]
+        for (let i = 0; i < messageLoad.length; i++) {
+            let messageBox = document.querySelector('.message-box');
+            let messageDiv = document.createElement('div');
+            messageDiv.textContent = messageLoad[i]["username"] + ':' + messageLoad[i]['message'];
+            messageBox.appendChild(messageDiv);
+            let timeSpan = document.createElement('span');
+            timeSpan.textContent = messageLoad[i]['upload_time'];
+            messageDiv.appendChild(timeSpan);
+        }
+        // order_info_data = data['data']
+    }).catch(error => {
+        console.log(error);
+    })
+}
+
+getMessageLoad()

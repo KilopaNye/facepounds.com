@@ -21,4 +21,17 @@ def get_order(order_uuid):
     else:
         return jsonify({'error':"尚未登入"}),500
     
+@trade_system.route("/api/get_message_load/<order_uuid>",methods=["GET"])
+def get_message_load(order_uuid):
+    decoded_token=decode_jwt()
+    if decoded_token['id']:
+        try:
+            data = load_message(order_uuid)
+            return jsonify({'data':data})
+        except Exception as err:
+            print(err)
+            return jsonify({'error':"失敗"}),400
+    else:
+        return jsonify({'error':"尚未登入"}),500
+
 

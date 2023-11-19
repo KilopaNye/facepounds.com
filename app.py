@@ -54,12 +54,23 @@ def test_connect():
 		socketio.emit('connect_response', {'message': '成功加入聊天室'})
 	except Exception as err:
 		print(err)
+		
+
+@socketio.on('getmessage')
+def test_connect():
+	print("連線了˙")
+	try:
+		socketio.emit('getmessage_response', {'message': '成功加入聊天室'})
+	except Exception as err:
+		print(err)
 
 @socketio.on('disconnect')
 def test_disconnect():
 	print("斷線˙")
 	try:
-		socketio.emit('response', {'data': 'Connectesssssssssssssssssssssd'})
+		room = session.pop('room', None)
+		leave_room(room)
+		socketio.emit('response', {'data': 'Connectesd'})
 	except Exception as err:
 		print(err) 
 
@@ -77,9 +88,12 @@ def handle_send_message_to_room(data):
         )
 	if decoded_token["id"]:
 		username = decoded_token["username"]
+		user_id = decoded_token["id"]
+		timeNow = data["time"]
 		room = data['room']
 		message = data['message']
 		socketio.emit('sendMessageResponse', {'message': message,'username':username}, room=room)
+		upload_message(user_id, room, message, timeNow)
 
 @socketio.on('join')
 def on_join(info):
@@ -91,10 +105,11 @@ def on_join(info):
 	if decoded_token["id"]:
 		room = info['room']
 		join_room(room)
+		session['room'] = room
 		user = decoded_token["username"]
 		# username = get_username(userId)
 		print("會員- "+decoded_token["username"],"連到房間囉")
-		socketio.emit('join_room_announcement', {'user': user, 'room': room}, room=room)
+		socketio.emit('join_room_announcement', {'user': user, 'room': room, }, room=room)
 
 @socketio.on('leave')
 def on_leave(data):
