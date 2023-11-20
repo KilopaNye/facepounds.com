@@ -115,10 +115,10 @@
                     opacity: 0.6;
                     margin-left: 5px;
                     font-size: 10px;
+                    
                 }
             }
         }
-
         >.input-message {
             position: absolute;
             bottom: 0px;

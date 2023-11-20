@@ -1,6 +1,10 @@
 let url = window.location.pathname;
 let length_URL = url.split("/");
 let order_uuid = length_URL.pop();
+console.log(order_uuid)
+let currentUrl = window.location.href;
+
+let identity = currentUrl.split('=').pop()
 
 function preOrderDomCreate(data) {
     console.log(data)
@@ -15,19 +19,44 @@ function preOrderDomCreate(data) {
     price.textContent = data['total_price'];
     site.textContent = data['owner_pre_site'];
 
-    let nameCheck = document.querySelector('.name-check');
+    // let nameCheck = document.querySelector('.name-check');
     let amountCheck = document.querySelector('.amount-check');
     let priceCheck = document.querySelector('.price-check');
     let siteCheck = document.querySelector('.site-check');
     let timeCheck = document.querySelector('.time-check');
-    nameCheck.value = data['product_name'];
+
+    // nameCheck.setAttribute('state', '0');
+    amountCheck.setAttribute('state', '0');
+    priceCheck.setAttribute('state', '0');
+    siteCheck.setAttribute('state', '0');
+    timeCheck.setAttribute('state', '0');
+
+    // nameCheck.value = data['product_name'];
     amountCheck.value = data['product_amount']
     priceCheck.value = data['total_price']
     siteCheck.value = data['owner_pre_site']
+    if (identity == "buyer") {
+        let checkBtn = document.querySelectorAll('#check-btn')
+        checkBtn.forEach(function (checkBtn) {
+            checkBtn.textContent = '確認';
+            checkBtn.setAttribute('value', 'buyer')
+        });
+        nameCheck.setAttribute('readonly', 'true')
+        amountCheck.setAttribute('readonly', 'true')
+        priceCheck.setAttribute('readonly', 'true')
+        siteCheck.setAttribute('readonly', 'true')
+        timeCheck.setAttribute('readonly', 'true')
+    } else {
+        let checkBtn = document.querySelectorAll('#check-btn')
+        checkBtn.forEach(function (checkBtn) {
+            checkBtn.textContent = '更改';
+            checkBtn.setAttribute('value', 'seller')
+        });
+    }
 }
 
 
-let order_info_data;
+let order_info_data="";
 
 function getPreOrderByUUID() {
     let token = localStorage.getItem('token');
@@ -41,9 +70,9 @@ function getPreOrderByUUID() {
         fetch(`/api/get_order_trade/${order_uuid}`, {
             headers: headers,
         }).then(response => response.json()).then(data => {
-            console.log(data);
             preOrderDomCreate(data["data"]);
-            order_info_data = data['data']
+            order_info_data = data["data"];
+            console.log("sssss",order_info_data)
         }).catch(error => {
             console.log(error);
         })
@@ -55,9 +84,9 @@ getPreOrderByUUID()
 
 var socket = io();
 
-function joinRoom(order_info_data) {
+function joinRoom(order_uuid ) {
     let token = localStorage.getItem('token');
-    let room = order_info_data['order_uuid'];
+    let room = order_uuid ;
     socket.emit('join', { token: token, room: room });
 }
 
@@ -67,8 +96,7 @@ function leaveRoom() {
 }
 
 socket.on('connect_response', function (data) {
-    joinRoom(order_info_data);
-    
+    joinRoom(order_uuid );
 });
 
 let user = "";
@@ -126,7 +154,7 @@ function getTimeNow() {
     return formattedDateTime
 }
 
-function getMessageLoad(){
+function getMessageLoad() {
     fetch(`/api/get_message_load/${order_uuid}`, {
         headers: headers,
     }).then(response => response.json()).then(data => {
@@ -151,3 +179,48 @@ function getMessageLoad(){
 }
 
 getMessageLoad()
+
+
+function accept(identity) {
+    let user = identity.getAttribute('value')
+    let index = identity.getAttribute('index')
+    let info = document.querySelector(`.${index}-check`)
+    if (user == "buyer") {
+        saveOrder(info,index);
+    } else if (user == "seller") {
+        changeOrder(info,index);
+    }
+}
+
+function saveOrder(info,index) {
+    if (info.value) {
+        // info.style.backgroundColor = "#53FF53";
+        info.setAttribute('state', '1');
+        socket.emit('stage_check', {"index":index, 'room': order_uuid })
+    } else {
+        alert("不能是空白")
+    }
+}
+
+function changeOrder(info,index) {
+    if (info.value) {
+        info.setAttribute('state', '1');
+        socket.emit('stage_change', {"index":index, 'room': order_uuid,"message":info.value })
+    } else {
+        alert("不能是空白")
+    }
+}
+
+
+socket.on('stage_response', function (data) {
+    console.log(data)
+    let info = document.querySelector(`.${data.index}-check`)
+    info.style.backgroundColor = "#53FF53";
+});
+
+socket.on('stageChange_response', function (data) {
+    console.log(data)
+    let info = document.querySelector(`.${data.index}-check`)
+    info.value=data.message
+    info.style.backgroundColor = "#FFFFFF";
+});

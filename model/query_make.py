@@ -360,3 +360,125 @@ def load_message(room_uuid):
     finally:
         cursor.close()
         con.close()
+
+def change_pre_order_info(room_uuid,index):
+    try:
+        con = cnxpool.get_connection()
+        cursor = con.cursor(dictionary=True)
+        if "price" in index:
+            res = index['price']
+            cursor.execute(
+            'UPDATE pre_order_info SET total_price = %s WHERE order_uuid = %s',(res, room_uuid, )
+        )
+        # 如果 "time" 存在，執行第二個操作
+        elif "time" in index:
+            res = index['time']
+            cursor.execute(
+            'UPDATE pre_order_info SET trade_time = %s WHERE order_uuid = %s',(res, room_uuid, )
+        )
+        # 如果 "amount" 存在，執行第三個操作
+        elif "amount" in index:
+            res = index['amount']
+            cursor.execute(
+            'UPDATE pre_order_info SET order_amount = %s WHERE order_uuid = %s',(res, room_uuid, )
+        )
+
+        # cursor.execute(
+        #     'UPDATE pre_order_info SET %s = %s WHERE room_uuid = %s',(col, res, room_uuid, )
+        # )
+        # response = cursor.fetchall()
+        con.commit()
+        return True
+    except Exception as err:
+        print("load_message(room_uuid)", err)
+        return False
+    finally:
+        cursor.close()
+        con.close()
+
+
+
+# def name_check(name):
+#     try:
+#         con = cnxpool.get_connection()
+#         cursor = con.cursor(dictionary=True)
+#         cursor.execute(
+#             "UPDATE pre_order_state SET name_state = %s",(name)
+#         )
+#         response = cursor.fetchall()
+#         con.commit()
+#         return response
+#     except Exception as err:
+#         print("load_message(room_uuid)", err)
+#         return False
+#     finally:
+#         cursor.close()
+#         con.close()
+
+# def amount_check(amount):
+#     try:
+#         con = cnxpool.get_connection()
+#         cursor = con.cursor(dictionary=True)
+#         cursor.execute(
+#             "UPDATE pre_order_state SET amount_state = %s"
+#         ,(amount))
+#         response = cursor.fetchall()
+#         con.commit()
+#         return response
+#     except Exception as err:
+#         print("load_message(room_uuid)", err)
+#         return False
+#     finally:
+#         cursor.close()
+#         con.close()
+
+# def price_check(price):
+#     try:
+#         con = cnxpool.get_connection()
+#         cursor = con.cursor(dictionary=True)
+#         cursor.execute(
+#             "UPDATE pre_order_state SET price_state = %s"
+#         ,(price))
+#         response = cursor.fetchall()
+#         con.commit()
+#         return response
+#     except Exception as err:
+#         print("load_message(room_uuid)", err)
+#         return False
+#     finally:
+#         cursor.close()
+#         con.close()
+
+# def site_check(site):
+#     try:
+#         con = cnxpool.get_connection()
+#         cursor = con.cursor(dictionary=True)
+#         cursor.execute(
+#             "UPDATE pre_order_state SET site_state = %s"
+#         ,(site))
+#         response = cursor.fetchall()
+#         con.commit()
+#         return response
+#     except Exception as err:
+#         print("load_message(room_uuid)", err)
+#         return False
+#     finally:
+#         cursor.close()
+#         con.close()
+
+# def site_check(time):
+#     try:
+#         con = cnxpool.get_connection()
+#         cursor = con.cursor(dictionary=True)
+#         cursor.execute(
+#             "UPDATE pre_order_state SET time_state = %s"
+#         ,(time))
+#         response = cursor.fetchall()
+#         con.commit()
+#         return response
+#     except Exception as err:
+#         print("load_message(room_uuid)", err)
+#         return False
+#     finally:
+#         cursor.close()
+#         con.close()

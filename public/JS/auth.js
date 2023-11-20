@@ -127,7 +127,7 @@ function userLoginCheck() {
         method: "GET",
         headers: headers
     }).then(response => response.json()).then(data => {
-        console.log(Boolean(data['data']))
+        // console.log(data['data'])
         if (!data['data']) {
             console.log("尚未登入");
             let logInButton = document.querySelector('#login-button');

@@ -1,7 +1,3 @@
-function GoTrade(orderUuid) {
-    let order_uuid = orderUuid.getAttribute('value');
-    window.location.href = `/trade/${order_uuid}`
-}
 
 
 buyer = "buyer";
@@ -57,7 +53,7 @@ function preOrderDom(data,identity) {
         let sellerDiv = document.createElement('div');
         sellerDiv.textContent = '商家名稱：' + data[i]['username'];
         orderText.appendChild(sellerDiv);
-
+        
         let GoTrade = document.createElement('img');
         GoTrade.src = '/images/icons/chat-box.png';
         GoTrade.setAttribute('value', data[i]['order_uuid'])
@@ -130,3 +126,10 @@ function getPreTrade() {
 //         preOrderDom(seller_data,seller)
 //     }
 // } 
+
+function GoTrade(orderUuid) {
+    let order_uuid = orderUuid.getAttribute('value');
+    let identity = orderUuid.getAttribute('identity');
+    
+    window.location.href = `/trade/${order_uuid}?identity=${identity}`
+}

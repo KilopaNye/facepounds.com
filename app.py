@@ -44,6 +44,7 @@ def upload():
 def ready_check():
 	return render_template("ready_check.html")
 
+
 # socketio.run(host="0.0.0.0", port=3000, debug=True)
 
 @socketio.on('connect')
@@ -118,6 +119,29 @@ def on_leave(data):
 	leave_room(room)
 	socketio.emit('leave_room_announcement', {'user': username, 'room': room}, room=room)
 
+@socketio.on('stage_check')
+def stage_check(state):
+	room=state['room']
+	index=state['index']
+	socketio.emit('stage_response', {'index': index},room=room)
+
+@socketio.on('stage_change')
+def stage_change(state):
+	room=state['room']
+	index=state['index']
+	message=state['message']
+	socketio.emit('stageChange_response', {'message':message,'index': index},room=room)
+	res = {
+
+	}
+	if index == "amount":
+		res["amount"]=state['message']
+	elif index =="price":
+		res["price"]=state['message']
+	elif index =="site":
+		res["time"]=state['message']
+	print(res)
+	change_pre_order_info(room,res)
 
 if __name__ == '__main__':
     socketio.run(app,host="0.0.0.0",port=3000, debug=True)
