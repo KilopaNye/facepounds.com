@@ -1,3 +1,24 @@
+const showAlert = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '產品上架成功! ',
+        text: '請於<待處理的交易>介面查看相關內容',
+    }).then((result) => {
+        console.log(result)
+        if(result.isConfirmed){
+            window.location.href="/ready_check";
+        }
+    })
+}
+
+const showError = () => {
+    Swal.fire({
+        icon: 'error',
+        title: 'WoW',
+        text: '產品建立失敗，請檢查填寫內容或連繫客服。',
+    })
+}
+
 function userCheck() {
     let token = localStorage.getItem('token');
     if (token) {
@@ -33,6 +54,8 @@ function previewImage() {
 
 
 function uploadProduct() {
+    document.querySelector('.opacity-load').style.display="block";
+    document.querySelector('.cat-load').style.display="block";
     let token = localStorage.getItem('token');
     if (token) {
         let img = document.querySelector('.img-upload');
@@ -109,19 +132,26 @@ function uploadProduct() {
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
-                    alert("上傳成功")
+                    document.querySelector('.opacity-load').style.display="none";
+                    document.querySelector('.cat-load').style.display="none";
+                    showAlert();
                     window.location.href="/upload";
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
         }else{
-            alert("請確認填寫的內容格式是否正確或有缺漏")
+            document.querySelector('.opacity-load').style.display="none";
+            document.querySelector('.cat-load').style.display="none";
+            showError();
         }
     }
 }
 
-
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('.opacity-load').style.display="none";
+    document.querySelector('.cat-load').style.display="none";
+});
 
 
 // let tagName =document.querySelectorAll('.product-tag-value')

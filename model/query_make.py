@@ -156,7 +156,7 @@ def get_product(param):
         con.commit()
         if param["param"] == None:
             cursor.execute(
-                "SELECT a.id, a.product_name, a.product_price, a.product_amount, a.county_site, b.username, GROUP_CONCAT(DISTINCT tag.tag_name)as tag, GROUP_CONCAT(c.image_url) AS image_urls FROM product_info as a JOIN members as b ON a.owner_id = b.id JOIN product_images as c ON c.product_id = a.id JOIN product_tag_relation ON a.id = product_tag_relation.product_info_id JOIN product_tag as tag ON product_tag_relation.tag_id = tag.id GROUP BY a.id",
+                "SELECT a.id, a.product_name, a.product_price, a.product_amount, a.county_site, b.username, GROUP_CONCAT(DISTINCT tag.tag_name)as tag_name, GROUP_CONCAT(c.image_url) AS image_url FROM product_info as a JOIN members as b ON a.owner_id = b.id JOIN product_images as c ON c.product_id = a.id JOIN product_tag_relation ON a.id = product_tag_relation.product_info_id JOIN product_tag as tag ON product_tag_relation.tag_id = tag.id GROUP BY a.id",
             )
             response = cursor.fetchall()
             con.commit()
@@ -172,18 +172,20 @@ def get_product(param):
                 query_values.append(data[tag])
 
             query = """
-            SELECT * FROM product_info
+            SELECT product_tag_relation.*, GROUP_CONCAT(DISTINCT product_tag.tag_name) as tag_name,product_tag.id, product_images.*,product_info.*,members.username,members.id  FROM product_info
             JOIN product_tag_relation ON product_info.id = product_tag_relation.product_info_id
             JOIN product_tag ON product_tag_relation.tag_id = product_tag.id
+            JOIN product_images ON product_images.product_id = product_info.id
+            JOIN members ON members.id = product_info.owner_id
             WHERE 
             (product_tag.tag_name = %s OR %s IS NULL)
             AND (product_info.product_amount >= %s OR %s IS NULL)
             AND (product_info.product_name LIKE %s OR %s IS NULL)
             AND (product_info.county_site = %s OR %s IS NULL)
+            GROUP BY product_info.id
             """
             cursor.execute(query, query_values)
             response = cursor.fetchall()
-            print(response)
             con.commit()
             if response:
                 return response

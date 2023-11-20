@@ -1,4 +1,6 @@
 function searchProductBar(){
+    let catLoad = document.querySelector('.cat-load')
+    catLoad.style.display="block";
     let searchTagInput = document.querySelector(".tag").value == "" ? null : document.querySelector(".tag").value;
     let searchMuchInput = document.querySelector('.much').value == "" ? null : document.querySelector('.much').value
     let searchTextInput = document.querySelector('.searchTxt').value == "" ? null : document.querySelector('.searchTxt').value;
@@ -23,6 +25,8 @@ function searchProductBar(){
         body:JSON.stringify({param})
     }).then(response => response.json()).then(data => {
         console.log(data)
+        result = data['data']
+        createProductDom(result)
     }).catch(error => {
         console.log(error)
     })

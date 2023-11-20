@@ -1,5 +1,4 @@
 from flask import *
-import mysql.connector
 from dotenv import *
 from api.product import product_system
 from api.index import index_system

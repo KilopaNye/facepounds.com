@@ -9,8 +9,6 @@ index_system = Blueprint("index_system", __name__)
 def get_info():
 	try:
 		param = request.get_json()
-		print(param)
-
 		result = get_product(param)
 		if result:
 			response = make_response(jsonify({"data":result}), 200)

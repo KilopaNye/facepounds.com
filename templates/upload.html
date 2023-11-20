@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block head %}
 <link rel="stylesheet" href="/CSS/upload.css">
-<script src="/js/upload.js"></script>
+
 {% endblock head %}
 {% block content %}
+
 <div class="upload-area-flex">
+    <div class="opacity-load" style="display: block;"></div>
+    <img src="/images/image/CAT.gif" style="display: block;" class="cat-load">
     <div class="upload-title">
         <img src="/images/icons/cart.png" class="upload-icon">
         <span class="upload-title-text">新增販售項目</span>
@@ -47,6 +50,8 @@
 
 </div>
 <script src="/JS/auth.js"></script>
+<script src="/js/upload.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 {% endblock content %}
 
 

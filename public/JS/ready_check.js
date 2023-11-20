@@ -4,14 +4,18 @@ function GoTrade(orderUuid) {
 }
 
 
+buyer = "buyer";
+seller = "seller";
 
-
-function preOrderDom(data) {
+function preOrderDom(data,identity) {
     let Fa = document.querySelector(".trade-area-flex");
     Fa.textContent="";
     for (let i = 0; i < data.length; i++) {
         let orderInfoBox = document.createElement("div");
         orderInfoBox.classList.add('order-info-area');
+        if(identity=="buyer"){
+            orderInfoBox.style.border="2px solid rgb(255, 147, 75)";
+        }
         Fa.appendChild(orderInfoBox);
 
         let orderImg = document.createElement('img');
@@ -57,6 +61,7 @@ function preOrderDom(data) {
         let GoTrade = document.createElement('img');
         GoTrade.src = '/images/icons/chat-box.png';
         GoTrade.setAttribute('value', data[i]['order_uuid'])
+        GoTrade.setAttribute('identity', `${ identity }`)
         GoTrade.setAttribute('onclick', `GoTrade(this);`)
         orderInfo.appendChild(GoTrade);
     }
@@ -78,12 +83,8 @@ function getPreOrder() {
         fetch(`/api/get_pre_order`, {
             headers: headers,
         }).then(response => response.json()).then(data => {
-            // console.log(data);
-            // if(data["data"]){
             order_data = data["data"]
-            preOrderDom(order_data)
-            // }else{
-            // }
+            preOrderDom(order_data,buyer)
         }).catch(error => {
             console.log(error);
         })
@@ -91,7 +92,7 @@ function getPreOrder() {
         alert("尚未登入，沒有操作權限")
     }
 }
-getPreOrder()
+
 
 function getPreTrade() {
     let token = localStorage.getItem('token');
@@ -107,7 +108,6 @@ function getPreTrade() {
         }).then(response => response.json()).then(data => {
             // console.log(data);
             seller_data = data['data'];
-            preOrderDom(seller_data)
         }).catch(error => {
             console.log(error);
         })
@@ -115,5 +115,18 @@ function getPreTrade() {
         alert("尚未登入，沒有操作權限")
     }
 }
+    getPreOrder()
+    getPreTrade()
 
-getPreTrade()
+// function Coming(){
+//     getPreOrder()
+//     getPreTrade()
+//     preOrderDomChange( order_data, seller_data)
+// }
+// function preOrderDomChange( order_data, seller_data){
+//     if(order_data){
+//         preOrderDom(order_data,buyer)
+//     }else{
+//         preOrderDom(seller_data,seller)
+//     }
+// } 

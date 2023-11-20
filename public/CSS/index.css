@@ -12,7 +12,14 @@
         max-width: 1200px;
         height: auto;
         background-color: rgb(255, 255, 255);
-
+        position: relative;
+        >img {
+            position: absolute;
+            right: 45%;
+            top:20%;
+            z-index: 5;
+            /* background-color: #ffffff; */
+        }
         >.title-tag {
             font-weight: bold;
             font-size: 28px;
@@ -39,7 +46,7 @@
                 margin: 15px;
                 position: relative;
                 box-shadow: 5px 5px 10px rgba(151, 151, 151, 0.3);
-
+                
                 >img {
                     width: 100%;
                     height: 230px;
@@ -129,3 +136,11 @@
     background-color: #c8c8c8; 
     border-radius: 10px;
 }
+/* 
+.img-load{
+    background-color: rgb(33, 85, 131);
+    width: 267px;
+    height: 230px;
+    position:initial;
+    border-radius: 8px 8px 0 0;
+} */

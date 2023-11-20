@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="/CSS/ready_check.css">
 {% endblock head %}
 {% block content %}
-<div class="change_serve"><span onclick="preOrderDom(order_data);">我是買家</span><span onclick="preOrderDom(seller_data);">我是賣家</span></div>
+<div class="change_serve"><span onclick="preOrderDom(order_data, buyer);" class="buyer">我是買家</span><span onclick="preOrderDom(seller_data, seller);" class="seller">我是賣家</span></div>
 <div class="trade-area-flex">
     
     <!-- <div class="order-info-area">

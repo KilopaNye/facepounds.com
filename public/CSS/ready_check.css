@@ -68,4 +68,7 @@
         border-radius: 10px;
         cursor: pointer;
     }
+    >.buyer{
+        background-color: rgb(255, 147, 75);
+    }
 }
