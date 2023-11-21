@@ -15,6 +15,8 @@ def new_order():
             order_info=request.get_json("order-info")
             print(order_info)
             data=order_info["order_info"]
+            if decoded_token['id'] == data["seller_id"]:
+                return jsonify({'error':"不能購買自己的產品"})
             buyer_id=decoded_token['id']
             pre_order_info_upload(data,buyer_id)
             return jsonify({'data':"商議訂單建立成功"})

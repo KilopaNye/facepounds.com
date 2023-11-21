@@ -20,10 +20,10 @@
     <div class="order-check-area">
         <div class="check-area">
             <!-- <div>產品名稱：<input type="text" class="name-check" roomId="1"><span class="check-btn" id="check-btn" index="name" onclick="accept(this);"></span></div> -->
-            <div>&emsp;&emsp;數量：<input type="text" class="amount-check" roomId="2"><span class="check-btn" id="check-btn" index="amount" onclick="accept(this);"></span></div>
-            <div>&emsp;&emsp;價格：<input type="text" class="price-check" roomId="3"><span class="check-btn" id="check-btn" index="price" onclick="accept(this);"></span></div>
-            <div>面交地點：<input type="text" class="site-check" roomId="4"><span class="check-btn" id="check-btn" index="site" onclick="accept(this);"></span></div>
-            <div>面交時間：<input type="text" class="time-check" roomId="5"><span class="check-btn" id="check-btn" index="time" onclick="accept(this);"></span></div>
+            <div>&emsp;&emsp;數量：<input type="text" class="amount-check" ><span class="check-btn" id="check-btn" index="amount" onclick="accept(this);"></span></div>
+            <div>&emsp;&emsp;價格：<input type="text" class="price-check" ><span class="check-btn" id="check-btn" index="price" onclick="accept(this);"></span></div>
+            <div>面交地點：<input type="text" class="site-check" ><span class="check-btn" id="check-btn" index="site" onclick="accept(this);"></span></div>
+            <div>面交時間：<input type="text" class="time-check" ><span class="check-btn" id="check-btn" index="time" onclick="accept(this);"></span></div>
         </div>
     </div>
 
@@ -37,8 +37,8 @@
     </div>
     <div class="btn-area">
         <div class="delete-btn">取消交易</div>
-        <div class="wait-btn">暫緩交易</div>
-        <div class="order-btn">確認本次交易</div>
+        <div class="wait-btn" onclick="GoBack();">暫緩交易</div>
+        <div class="order-btn" style="display: none;" onclick="orderOK();" ><span>確認本次交易</span></div>
     </div>
 
 </div>

@@ -6,8 +6,8 @@ console.log(product_id);
 const showAlert = () => {
     Swal.fire({
         icon: 'success',
-        title: '訂單建立成功! ',
-        text: '請於<待處理的交易>介面查看相關內容',
+        title: '訂單建立成功!',
+        text: '請於<待處理的訂單>介面查看相關內容',
     }).then((result) => {
         console.log(result)
         if(result.isConfirmed){
@@ -19,8 +19,8 @@ const showAlert = () => {
 const showError = () => {
     Swal.fire({
         icon: 'error',
-        title: 'WoW',
-        text: '訂單建立失敗，請檢查填寫內容或連繫客服。',
+        title: '不能購買自己的產品',
+        text: '如果是其他錯誤引起的，請聯繫客服人員',
     })
 }
 
@@ -40,7 +40,7 @@ function productInfoInput(data) {
     let productName = document.querySelector('.order-id');
     let productCost = document.querySelector('.order-cost');
     let orderTarget = document.querySelector('.order-target');
-
+    productPrice = data['product_price']
     productName.textContent = data['product_name'];
     productCost.textContent = "NT$ " + data['product_price'] + "/份";
     orderTarget.textContent = data['owner_pre_site'];
@@ -119,7 +119,9 @@ function orderProduct(order_info) {
 
         let productAmount = document.querySelector('.amount-select').value;
         let productRemark = document.querySelector('.order-message').value;
-        total_price = productAmount * productPrice;
+        let total_price = productAmount * productPrice;
+        let product_name = document.querySelector('.product-title').textContent;
+        let trade_site = document.querySelector('.order-target').textContent;
         console.log(total_price)
         let order_info_body = {
             product_id: product_id,
@@ -127,7 +129,9 @@ function orderProduct(order_info) {
             productRemark: productRemark,
             seller_id: order_info["user_id"],
             order_time: formattedDateTime,
-            total_price: total_price
+            total_price: total_price,
+            product_name:product_name,
+            trade_site:trade_site
         }
         // console.log(order_info_body);
         headers = {

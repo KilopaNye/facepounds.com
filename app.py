@@ -139,6 +139,8 @@ def stage_change(state):
 	elif index =="price":
 		res["price"]=state['message']
 	elif index =="site":
+		res["site"]=state['message']
+	elif index =="time":
 		res["time"]=state['message']
 	print(res)
 	change_pre_order_info(room,res)

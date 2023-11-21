@@ -7,7 +7,7 @@ let currentUrl = window.location.href;
 let identity = currentUrl.split('=').pop()
 
 function preOrderDomCreate(data) {
-    console.log(data)
+    // console.log(data)
     let title = document.querySelector('.product-name');
     let amount = document.querySelector('.product-amount');
     let price = document.querySelector('.product-price');
@@ -15,9 +15,9 @@ function preOrderDomCreate(data) {
     let orderImg = document.querySelector('.order-img');
     orderImg.src = "https://d3utiuvdbysk3c.cloudfront.net/" + data['image_url'].split(',')[0];
     title.textContent = data['product_name'];
-    amount.textContent = data['product_amount'];
+    amount.textContent = data['order_amount'];
     price.textContent = data['total_price'];
-    site.textContent = data['owner_pre_site'];
+    site.textContent = data['trade_site'];
 
     // let nameCheck = document.querySelector('.name-check');
     let amountCheck = document.querySelector('.amount-check');
@@ -32,21 +32,23 @@ function preOrderDomCreate(data) {
     timeCheck.setAttribute('state', '0');
 
     // nameCheck.value = data['product_name'];
-    amountCheck.value = data['product_amount']
+    amountCheck.value = data['order_amount']
     priceCheck.value = data['total_price']
-    siteCheck.value = data['owner_pre_site']
+    siteCheck.value = data['trade_site']
+    timeCheck.value = data['trade_time']
     if (identity == "buyer") {
         let checkBtn = document.querySelectorAll('#check-btn')
         checkBtn.forEach(function (checkBtn) {
             checkBtn.textContent = '確認';
             checkBtn.setAttribute('value', 'buyer')
         });
-        nameCheck.setAttribute('readonly', 'true')
+        // nameCheck.setAttribute('readonly', 'true')
         amountCheck.setAttribute('readonly', 'true')
         priceCheck.setAttribute('readonly', 'true')
         siteCheck.setAttribute('readonly', 'true')
         timeCheck.setAttribute('readonly', 'true')
     } else {
+
         let checkBtn = document.querySelectorAll('#check-btn')
         checkBtn.forEach(function (checkBtn) {
             checkBtn.textContent = '更改';
@@ -56,7 +58,7 @@ function preOrderDomCreate(data) {
 }
 
 
-let order_info_data="";
+let order_info_data = "";
 
 function getPreOrderByUUID() {
     let token = localStorage.getItem('token');
@@ -72,7 +74,7 @@ function getPreOrderByUUID() {
         }).then(response => response.json()).then(data => {
             preOrderDomCreate(data["data"]);
             order_info_data = data["data"];
-            console.log("sssss",order_info_data)
+            console.log("sssss", order_info_data)
         }).catch(error => {
             console.log(error);
         })
@@ -84,9 +86,9 @@ getPreOrderByUUID()
 
 var socket = io();
 
-function joinRoom(order_uuid ) {
+function joinRoom(order_uuid) {
     let token = localStorage.getItem('token');
-    let room = order_uuid ;
+    let room = order_uuid;
     socket.emit('join', { token: token, room: room });
 }
 
@@ -96,13 +98,11 @@ function leaveRoom() {
 }
 
 socket.on('connect_response', function (data) {
-    joinRoom(order_uuid );
+    joinRoom(order_uuid);
 });
 
 let user = "";
 socket.on('join_room_announcement', function (data) {
-
-
 });
 
 socket.on('leave_room_announcement', function (data) {
@@ -116,7 +116,7 @@ function sendMessage() {
     let message = document.querySelector('.input-message-box').value;
     message.value = "";
     if (message) {
-        socket.emit('send_message_to_room', { 'token': token, "time": time, 'room': order_info_data['order_uuid'], 'message': message })
+        socket.emit('send_message_to_room', { 'token': token, "time": time, 'room': order_info_data['order_uuid'], 'message': message });
     }
 }
 socket.on('sendMessageResponse', function (data) {
@@ -160,9 +160,9 @@ function getMessageLoad() {
     }).then(response => response.json()).then(data => {
         console.log(data);
         console.log(data.user + ' has joined the room: ' + data.room);
-        user = data.user
-        console.log(data)
-        let messageLoad = data["data"]
+        user = data.user;
+        // console.log(data);
+        let messageLoad = data["data"];
         for (let i = 0; i < messageLoad.length; i++) {
             let messageBox = document.querySelector('.message-box');
             let messageDiv = document.createElement('div');
@@ -178,49 +178,88 @@ function getMessageLoad() {
     })
 }
 
-getMessageLoad()
+getMessageLoad();
 
 
 function accept(identity) {
-    let user = identity.getAttribute('value')
-    let index = identity.getAttribute('index')
-    let info = document.querySelector(`.${index}-check`)
+    let user = identity.getAttribute('value');
+    let index = identity.getAttribute('index');
+    let info = document.querySelector(`.${index}-check`);
     if (user == "buyer") {
-        saveOrder(info,index);
+        saveOrder(info, index);
     } else if (user == "seller") {
-        changeOrder(info,index);
+        changeOrder(info, index);
     }
 }
 
-function saveOrder(info,index) {
+function saveOrder(info, index) {
     if (info.value) {
         // info.style.backgroundColor = "#53FF53";
         info.setAttribute('state', '1');
-        socket.emit('stage_check', {"index":index, 'room': order_uuid })
+        socket.emit('stage_check', { "index": index, 'room': order_uuid })
     } else {
-        alert("不能是空白")
+        alert("不能是空白");
+        return false
     }
-}
 
-function changeOrder(info,index) {
+    let amountCheck = document.querySelector('.amount-check');
+    let priceCheck = document.querySelector('.price-check');
+    let siteCheck = document.querySelector('.site-check');
+    let timeCheck = document.querySelector('.time-check');
+    if(amountCheck.getAttribute("state")==1 && priceCheck.getAttribute("state")==1 && siteCheck.getAttribute("state")==1 && timeCheck.getAttribute("state")==1){
+        // console.log("通過");
+        let orderBtn = document.querySelector('.order-btn');
+        orderBtn.style.display="flex";
+        orderBtn.style.alignItems="center";
+        orderBtn.style.justifyContent="center";
+        
+    }else{
+        // console.log("還沒");
+    }
+};
+
+function changeOrder(info, index) {
     if (info.value) {
         info.setAttribute('state', '1');
-        socket.emit('stage_change', {"index":index, 'room': order_uuid,"message":info.value })
+        socket.emit('stage_change', { "index": index, 'room': order_uuid, "message": info.value });
     } else {
-        alert("不能是空白")
+        alert("不能是空白");
     }
 }
 
 
 socket.on('stage_response', function (data) {
-    console.log(data)
-    let info = document.querySelector(`.${data.index}-check`)
+    console.log(data);
+    let info = document.querySelector(`.${data.index}-check`);
     info.style.backgroundColor = "#53FF53";
 });
 
 socket.on('stageChange_response', function (data) {
-    console.log(data)
-    let info = document.querySelector(`.${data.index}-check`)
-    info.value=data.message
+    console.log(data);
+    let info = document.querySelector(`.${data.index}-check`);
+    info.value = data.message;
     info.style.backgroundColor = "#FFFFFF";
+    if (data.index == "amount") {
+        let amount = document.querySelector('.product-amount');
+        amount.textContent = data.message;
+        let amountCheck = document.querySelector(`.${data.index}-check`);
+        amountCheck.setAttribute('state', '0');
+    } else if (data.index == "price") {
+        let price = document.querySelector('.product-price');
+        price.textContent = data.message;
+        let priceCheck = document.querySelector(`.${data.index}-check`);
+        priceCheck.setAttribute('state', '0');
+    } else if (data.index == "site") {
+        let site = document.querySelector('.product-site');
+        site.textContent = data.message;
+        let siteCheck = document.querySelector(`.${data.index}-check`);
+        siteCheck.setAttribute('state', '0');
+    }else if (data.index == "time") {
+        let timeCheck = document.querySelector(`.${data.index}-check`);
+        timeCheck.setAttribute('state', '0');
+    }
 });
+
+function GoBack(){
+    window.location.href="/ready_check"
+}

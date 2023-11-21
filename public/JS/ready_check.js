@@ -31,7 +31,7 @@ function preOrderDom(data,identity) {
         orderText.appendChild(nameDiv);
 
         let amountDiv = document.createElement('div');
-        amountDiv.textContent = '購買數量：' + data[i]['product_amount'];
+        amountDiv.textContent = '購買數量：' + data[i]['order_amount'];
         orderText.appendChild(amountDiv);
 
         let priceDiv = document.createElement('div');
@@ -79,6 +79,7 @@ function getPreOrder() {
         fetch(`/api/get_pre_order`, {
             headers: headers,
         }).then(response => response.json()).then(data => {
+            console.log(data)
             order_data = data["data"]
             preOrderDom(order_data,buyer)
         }).catch(error => {
