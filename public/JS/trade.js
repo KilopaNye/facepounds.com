@@ -3,8 +3,28 @@ let length_URL = url.split("/");
 let order_uuid = length_URL.pop();
 console.log(order_uuid)
 let currentUrl = window.location.href;
-
 let identity = currentUrl.split('=').pop()
+
+const showAlert = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '商議結果建立成功!',
+        text: '請於<待交易>介面查看相關內容',
+    }).then((result) => {
+        console.log(result)
+        if(result.isConfirmed){
+            window.location.href="/ready_check";
+        }
+    })
+}
+
+const showError = () => {
+    Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: '未登入帳戶或填寫有誤，或請聯繫客服人員',
+    })
+}
 
 function preOrderDomCreate(data) {
     // console.log(data)
@@ -59,7 +79,9 @@ function preOrderDomCreate(data) {
 
 
 let order_info_data = "";
-
+let seller_id="";
+let buyer_id="";
+let product_id="";
 function getPreOrderByUUID() {
     let token = localStorage.getItem('token');
     if (token) {
@@ -74,6 +96,9 @@ function getPreOrderByUUID() {
         }).then(response => response.json()).then(data => {
             preOrderDomCreate(data["data"]);
             order_info_data = data["data"];
+            seller_id=order_info_data['seller_id']
+            buyer_id=order_info_data['buyer_id']
+            product_id=order_info_data['product_id']
             console.log("sssss", order_info_data)
         }).catch(error => {
             console.log(error);
@@ -155,7 +180,7 @@ function getTimeNow() {
 }
 
 function getMessageLoad() {
-    fetch(`/api/get_message_load/${order_uuid}`, {
+    fetch(`/api/trade/get_message_load/${order_uuid}`, {
         headers: headers,
     }).then(response => response.json()).then(data => {
         console.log(data);
@@ -206,14 +231,14 @@ function saveOrder(info, index) {
     let priceCheck = document.querySelector('.price-check');
     let siteCheck = document.querySelector('.site-check');
     let timeCheck = document.querySelector('.time-check');
-    if(amountCheck.getAttribute("state")==1 && priceCheck.getAttribute("state")==1 && siteCheck.getAttribute("state")==1 && timeCheck.getAttribute("state")==1){
+    if (amountCheck.getAttribute("state") == 1 && priceCheck.getAttribute("state") == 1 && siteCheck.getAttribute("state") == 1 && timeCheck.getAttribute("state") == 1) {
         // console.log("通過");
         let orderBtn = document.querySelector('.order-btn');
-        orderBtn.style.display="flex";
-        orderBtn.style.alignItems="center";
-        orderBtn.style.justifyContent="center";
-        
-    }else{
+        orderBtn.style.display = "flex";
+        orderBtn.style.alignItems = "center";
+        orderBtn.style.justifyContent = "center";
+
+    } else {
         // console.log("還沒");
     }
 };
@@ -254,12 +279,74 @@ socket.on('stageChange_response', function (data) {
         site.textContent = data.message;
         let siteCheck = document.querySelector(`.${data.index}-check`);
         siteCheck.setAttribute('state', '0');
-    }else if (data.index == "time") {
+    } else if (data.index == "time") {
         let timeCheck = document.querySelector(`.${data.index}-check`);
         timeCheck.setAttribute('state', '0');
     }
 });
 
-function GoBack(){
-    window.location.href="/ready_check"
+function getTimeNow(){
+    let now = new Date(); // 取得當前時間
+        let year = now.getFullYear();
+        let month = now.getMonth() + 1; // 月份是從0開始的，所以要加1
+        let day = now.getDate();
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        let seconds = now.getSeconds();
+        function padZero(number) {
+            return number < 10 ? '0' + number : number;
+        }
+        
+        // 格式化為24小時制日期時間
+        let formattedDateTime = `${year}-${padZero(month)}-${padZero(day)} ${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+        return formattedDateTime;
+}
+function GoBack() {
+    window.location.href = "/ready_check"
+}
+
+function orderOK() {
+
+    
+    let token = localStorage.getItem('token');
+    let title = document.querySelector('.product-name').textContent;
+    let amountCheck = document.querySelector('.amount-check').value;
+    let priceCheck = document.querySelector('.price-check').value;
+    let siteCheck = document.querySelector('.site-check').value;
+    let timeCheck = document.querySelector('.time-check').value;
+    let order_result = {
+        name:title,
+        amount:amountCheck,
+        price:priceCheck,
+        site:siteCheck,
+        orderUUID:order_uuid,
+        trade_time:timeCheck,
+        seller_id:seller_id,
+        buyer_id:buyer_id,
+        product_id:product_id,
+        order_time:getTimeNow()
+    }
+    if (token) {
+        
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+        fetch(`/api/trade/ready_order`, {
+            headers: headers,
+            method:"POST",
+            body:JSON.stringify({order_result})
+        }).then(response => response.json()).then(data => {
+            console.log(data);
+            if(data["data"]){
+                showAlert();
+            }else if(data["error"]){
+                showError(error);
+            }
+            
+        }).catch(error => {
+            console.log(error);
+            showError(error);
+        })
+    }
 }

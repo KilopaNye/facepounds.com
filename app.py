@@ -44,6 +44,11 @@ def upload():
 def ready_check():
 	return render_template("ready_check.html")
 
+@app.route("/member_page")
+def member_page():
+	return render_template("member_page.html")
+
+
 
 # socketio.run(host="0.0.0.0", port=3000, debug=True)
 

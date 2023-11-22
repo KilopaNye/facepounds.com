@@ -1,3 +1,22 @@
+.header-flex {
+    width: 100%;
+    height: 300px;
+    background-color:#395574;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+    >img{
+        width: 128px;
+    }
+    >span{
+        font-size: 68px;
+        font-family:sans-serif;
+        font-weight: bold;
+        color: #ffffff;
+    }
+}
+
 .product-area-flex {
     width: 100%;
     height: 1800px;
@@ -201,6 +220,7 @@
                     object-fit: cover;
                     border-radius: 200px;
                     margin-left: 15px;
+                    border: 2px solid rgb(226, 226, 226);
                 }
 
                 >.owner-name {

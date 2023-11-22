@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="/CSS/member_page.css">
+{% endblock head %}
+{% block content %}
+<div class="header-flex"><span>會員中心</span></div>
+
+<div class="box-flex">
+    <div class="member-info-box">
+        <div class="frame-1">
+            <div class="member-info">
+                <img src="/images/image/test2.png"  class="member-img">
+                <div class="member-info-text">
+                    <div class="member-name">磅取SIR</div>
+                    <div class="member-tags">熱愛製作磅蛋糕的sir</div>
+                </div>
+            </div>
+        </div>
+        <div class="frame-2">
+            <div class="title-text">商家自介</div>
+            <div class="member-self">這些年來，我努力不懈地學習和探索，以精進我的技巧，確保每一個磅蛋糕都是藝術品，充滿美味和創意。
+                我的目標是為您提供最美味和令人滿意的磅蛋糕，無論是在特殊場合還是平日享用。我注重食材的品質，並將創意和熱情注入每一個糕點中。每一個磅蛋糕都是一次對味蕾的美好冒險，並且希望能夠為您的日常生活和特殊時刻帶來甜蜜的回憶。我非常期待有機會與您
+                分享我的烘焙技巧和甜點藝術，並為您提供一個獨特的味覺體驗。如果您對我製作的磅蛋糕有任何問題或特殊需求，請隨時與我聯繫。感謝您的支持，期待為您製作美味的磅蛋糕！</div>
+        </div>
+    </div>
+    <div onclick="GoUpload();"><img src="/images/icons/cart.png"><span>新增販售項目</span></div>
+    <div onclick="GoCheck();"><img src="/images/icons/search (1).png"><span>待處理的交易</span></div>
+    <div><img src="/images/icons/check.png"><span>待交易的訂單</span></div>
+    <div><img src="/images/icons/history.png"><span>歷史交易紀錄</span></div>
+    <!-- <div><img src="/images/icons/edit.png"><span>編輯會員資訊</span></div> -->
+</div>
+
+
+
+<script src="/JS/member_page.js"></script>
+<script src="/JS/auth.js"></script>
+{% endblock content %}

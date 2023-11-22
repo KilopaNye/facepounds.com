@@ -236,16 +236,17 @@ def pre_order_info_upload(data, buyer_id):
             data["order_time"],
             data["total_price"],
             data["product_name"],
-            data['trade_site']
+            data["trade_site"],
         ]
         con.autocommit = False
         cursor.execute(
             "INSERT INTO pre_order_info(order_uuid, seller_id, buyer_id, product_id, order_amount, remark_message, order_time, total_price, order_name, trade_site) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s )",
             param,
         )
-        
+
         cursor.execute(
-            "UPDATE product_info SET product_amount = product_amount - %s WHERE id = %s",(data["productAmount"],data["product_id"])
+            "UPDATE product_info SET product_amount = product_amount - %s WHERE id = %s",
+            (data["productAmount"], data["product_id"]),
         )
         con.commit()
         return True
@@ -337,9 +338,13 @@ def upload_message(user_id, room_uuid, message, timeNow):
         con = cnxpool.get_connection()
         cursor = con.cursor(dictionary=True)
         cursor.execute(
-            "INSERT INTO chat_messages(room_uuid, send_id, message, upload_time) VALUE(%s, %s, %s, %s)",(
-                room_uuid, user_id, message, timeNow,
-            )
+            "INSERT INTO chat_messages(room_uuid, send_id, message, upload_time) VALUE(%s, %s, %s, %s)",
+            (
+                room_uuid,
+                user_id,
+                message,
+                timeNow,
+            ),
         )
         con.commit()
         return True
@@ -350,14 +355,14 @@ def upload_message(user_id, room_uuid, message, timeNow):
         cursor.close()
         con.close()
 
+
 def load_message(room_uuid):
     try:
         con = cnxpool.get_connection()
         cursor = con.cursor(dictionary=True)
         cursor.execute(
-            "SELECT a.id as index_id,members.username, a.message, a.upload_time FROM chat_messages as a JOIN members ON members.id = a.send_id WHERE a.room_uuid =%s",(
-                room_uuid,
-            )
+            "SELECT a.id as index_id,members.username, a.message, a.upload_time FROM chat_messages as a JOIN members ON members.id = a.send_id WHERE a.room_uuid =%s",
+            (room_uuid,),
         )
         response = cursor.fetchall()
         con.commit()
@@ -369,34 +374,51 @@ def load_message(room_uuid):
         cursor.close()
         con.close()
 
-def change_pre_order_info(room_uuid,index):
+
+def change_pre_order_info(room_uuid, index):
     try:
         con = cnxpool.get_connection()
         cursor = con.cursor(dictionary=True)
         # 如果 "price" 存在，執行第一個操作。
         if "price" in index:
-            res = index['price']
+            res = index["price"]
             cursor.execute(
-            'UPDATE pre_order_info SET total_price = %s WHERE order_uuid = %s',(res, room_uuid, )
-        )
+                "UPDATE pre_order_info SET total_price = %s WHERE order_uuid = %s",
+                (
+                    res,
+                    room_uuid,
+                ),
+            )
         # 如果 "time" 存在，執行第二個操作。
         elif "site" in index:
-            res = index['site']
+            res = index["site"]
             cursor.execute(
-            'UPDATE pre_order_info SET trade_site = %s WHERE order_uuid = %s',(res, room_uuid, )
-        )
+                "UPDATE pre_order_info SET trade_site = %s WHERE order_uuid = %s",
+                (
+                    res,
+                    room_uuid,
+                ),
+            )
         # 如果 "amount" 存在，執行第三個操作。
         elif "amount" in index:
-            res = index['amount']
+            res = index["amount"]
             cursor.execute(
-            'UPDATE pre_order_info SET order_amount = %s WHERE order_uuid = %s',(res, room_uuid, )
-        )
+                "UPDATE pre_order_info SET order_amount = %s WHERE order_uuid = %s",
+                (
+                    res,
+                    room_uuid,
+                ),
+            )
         # 如果 "time" 存在，執行第四個操作。
         elif "time" in index:
-            res = index['time']
+            res = index["time"]
             cursor.execute(
-            'UPDATE pre_order_info SET trade_time = %s WHERE order_uuid = %s',(res, room_uuid, )
-        )
+                "UPDATE pre_order_info SET trade_time = %s WHERE order_uuid = %s",
+                (
+                    res,
+                    room_uuid,
+                ),
+            )
 
         con.commit()
         return True
@@ -407,3 +429,39 @@ def change_pre_order_info(room_uuid,index):
         cursor.close()
         con.close()
 
+
+def being_order(data):
+    try:
+        con = cnxpool.get_connection()
+        cursor = con.cursor(dictionary=True)
+        con.autocommit = False
+        cursor.execute(
+            "INSERT INTO ready_trade_info(order_name,order_uuid, seller_id, buyer_id, product_id, order_amount, order_time, trade_time, trade_site, total_price) VALUE(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s  )",
+            (
+                data["name"],
+                data["orderUUID"],
+                data["seller_id"],
+                data["buyer_id"],
+                data["product_id"],
+                data["amount"],
+                data["order_time"],
+                data["trade_time"],
+                data["site"],
+                data["price"],
+            ),
+        )
+
+        cursor.execute(
+            "DELETE FROM pre_order_info WHERE order_uuid = %s",(data["orderUUID"],)
+        )
+
+        con.commit()
+        return True
+    except Exception as err:
+        print("being_order(data)", err)
+        con.rollback()
+        return False
+    finally:
+        con.autocommit = True
+        cursor.close()
+        con.close()

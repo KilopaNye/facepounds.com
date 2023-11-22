@@ -136,10 +136,6 @@ function userLoginCheck() {
             logoutButton.style.display = "none"
             return userLoginBool = false;
         } else {
-            let uploadButton = document.querySelector("#go-upload-button");
-            uploadButton.style.display = "block";
-            let checkButton = document.querySelector("#go-check-button");
-            checkButton.style.display = "block";
             let logInButton = document.querySelector('#login-button');
             logInButton.style.display = "none";
             let logoutButton = document.querySelector('#logout-button');
