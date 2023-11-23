@@ -160,7 +160,10 @@ def stage_change(state):
 	print(res)
 	change_pre_order_info(room,res)
 
-
+@socketio.on('peer_invite_message')
+def peer_invite_message(data):
+	room=data['roomId']
+	socketio.emit("invite-response", {'identity':data['identity']}, room=room)
 
 @socketio.on('join-room')
 def room_connect(data):

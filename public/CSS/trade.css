@@ -115,10 +115,11 @@
                     opacity: 0.6;
                     margin-left: 5px;
                     font-size: 10px;
-                    
+
                 }
             }
         }
+
         >.input-message {
             position: absolute;
             bottom: 0px;
@@ -137,10 +138,12 @@
                 border-radius: 10px;
                 padding-left: 10px;
             }
-            >.send-messagge{
+
+            >.send-messagge {
                 background-color: #ffffff;
                 margin-left: 20px;
-                height: 30px;width: 80px;
+                height: 30px;
+                width: 80px;
                 border-radius: 10px;
                 display: flex;
                 justify-content: center;
@@ -149,31 +152,38 @@
                 font-size: 20px;
                 font-weight: bold;
             }
-            >img{
+
+            >img {
                 width: 38px;
                 margin-right: 20px;
                 cursor: pointer;
             }
         }
-        >.self-video-box{
+
+        >.self-video-box {
             width: 300px;
             height: 300px;
             background-color: #eeeeee;
             margin-right: 15px;
             border-radius: 10px;
-            >video{
+
+            >video {
                 width: 300px;
                 height: 300px;
                 object-fit: cover;
+
+                
             }
         }
-        .other-video-box{
+
+        .other-video-box {
             width: 300px;
             height: 300px;
             background-color: #eeeeee;
             margin-left: 15px;
             border-radius: 10px;
-            >video{
+
+            >video {
                 width: 300px;
                 height: 300px;
                 object-fit: cover;

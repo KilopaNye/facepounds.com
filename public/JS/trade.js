@@ -153,6 +153,25 @@ socket.on('sendMessageResponse', function (data) {
     timeSpan.textContent = getTimeNow();
     messageDiv.appendChild(timeSpan);
 });
+let inviteState=true;
+
+
+socket.on('invite-response',(data)=>{
+    console.log("SKR")
+    let messageBox = document.querySelector('.message-box');
+    let messageDiv = document.createElement('div');
+    if(inviteState){
+        if (data.identity =="buyer"){
+            messageDiv.textContent = "-----買家已進入視訊聊天室-----";
+        }else{
+            messageDiv.textContent = "-----賣家已進入視訊聊天室-----";
+        }
+        messageDiv.style.textAlign="center"
+        messageDiv.style.fontSize="14px"
+        messageDiv.style.opacity="0.5"
+        messageBox.appendChild(messageDiv);
+    }
+})
 
 let messageInput = document.querySelector('.input-message-box');
 messageInput.addEventListener('keydown', function (event) {
@@ -381,6 +400,8 @@ let peers = {}
 let state=true;
 function startStream() {
     if(state){
+        socket.emit('peer_invite_message', {identity:identity,roomId:order_uuid})
+
         const peer = new Peer(undefined, {
             secure: true
         }); 
@@ -428,8 +449,8 @@ function startStream() {
                     peers = {}
                 }
                 const Video = document.querySelector('.first');
-                Video.srcObject = null;
-                Video.remove()
+                // Video.srcObject = null;
+                // Video.remove()
             })
             document.querySelector('.stopStream-icon').addEventListener('click', () => {
                 if (peers['userId']) {
