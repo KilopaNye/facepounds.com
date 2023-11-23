@@ -53,3 +53,5 @@ def get_pre_trade():
             return jsonify({'error':"失敗"})
     else:
         return jsonify({'error':"尚未登入"})
+    
+

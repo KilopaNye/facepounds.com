@@ -3,7 +3,6 @@ from model.query_make import *
 from model.member_Auth import *
 from model.service_connect.rds_pool import *
 from model.service_connect.s3_bucket import *
-from flask_socketio import SocketIO, emit
 
 trade_system = Blueprint("trade_system", __name__)
 
@@ -20,7 +19,6 @@ def get_order(order_uuid):
             return jsonify({'error':"失敗"}),400
     else:
         return jsonify({'error':"尚未登入"}),500
-    
 
 @trade_system.route("/api/trade/get_message_load/<order_uuid>",methods=["GET"])
 def get_message_load(order_uuid):

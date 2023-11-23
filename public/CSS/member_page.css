@@ -21,9 +21,9 @@
 .box-flex{
     width: 100%;
     display: flex;
-    justify-content: center;
     flex-direction: column;
     align-items: center;
+    min-height: 800px;
     >.member-info-box{
         width: 1000px;
         height: 350px;
@@ -32,6 +32,7 @@
         justify-content: start;
         flex-direction: column;
         cursor: unset;
+        border-radius: 20px;
         >.frame-1{
             margin-top: 25px;
             margin-left: 25px;
@@ -70,7 +71,7 @@
         }
     }
     >div{
-        border: 3px solid rgb(225, 225, 225);
+        border: 2px solid rgb(225, 225, 225);
         border-radius: 10px;
         width: 550px;height: 60px;
         display: flex;

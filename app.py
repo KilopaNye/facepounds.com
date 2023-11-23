@@ -6,6 +6,7 @@ from api.upload import upload_system
 from api.member import member_system
 from api.ready_check import ready_check_system
 from api.trade import trade_system
+from api.ready_trade import ready_trade_system
 from model.query_make import *
 from flask_socketio import SocketIO,join_room,leave_room
 
@@ -23,6 +24,7 @@ app.register_blueprint(upload_system)
 app.register_blueprint(member_system)
 app.register_blueprint(ready_check_system)
 app.register_blueprint(trade_system)
+app.register_blueprint(ready_trade_system)
 
 @app.route("/")
 def index():
@@ -44,13 +46,21 @@ def upload():
 def ready_check():
 	return render_template("ready_check.html")
 
+@app.route("/ready_trade")
+def ready_trade():
+	return render_template("ready_trade.html")
+
 @app.route("/member_page")
 def member_page():
 	return render_template("member_page.html")
 
 
 
-# socketio.run(host="0.0.0.0", port=3000, debug=True)
+
+
+
+
+
 
 @socketio.on('connect')
 def test_connect():
@@ -114,7 +124,7 @@ def on_join(info):
 		user = decoded_token["username"]
 		# username = get_username(userId)
 		print("會員- "+decoded_token["username"],"連到房間囉")
-		socketio.emit('join_room_announcement', {'user': user, 'room': room, }, room=room)
+		socketio.emit('join_room_announcement', {'user': user, 'room': room, }, room=room, include_self=False)
 
 @socketio.on('leave')
 def on_leave(data):
@@ -150,5 +160,12 @@ def stage_change(state):
 	print(res)
 	change_pre_order_info(room,res)
 
+
+
+@socketio.on('join-room')
+def room_connect(data):
+	print(data['id'])
+	room=data['ROOM_ID']
+	socketio.emit("join-response", {'message':"user-connect","userId":data['id']}, room=room, include_self=False)
 if __name__ == '__main__':
     socketio.run(app,host="0.0.0.0",port=3000, debug=True)

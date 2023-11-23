@@ -2,6 +2,7 @@
 {% block head %}
 <link rel="stylesheet" href="/CSS/trade.css">
 <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
 {% endblock head %}
 {% block content %}
 <div class="trade-area-flex">
@@ -20,25 +21,35 @@
     <div class="order-check-area">
         <div class="check-area">
             <!-- <div>產品名稱：<input type="text" class="name-check" roomId="1"><span class="check-btn" id="check-btn" index="name" onclick="accept(this);"></span></div> -->
-            <div>&emsp;&emsp;數量：<input type="text" class="amount-check" ><span class="check-btn" id="check-btn" index="amount" onclick="accept(this);"></span></div>
-            <div>&emsp;&emsp;價格：<input type="text" class="price-check" ><span class="check-btn" id="check-btn" index="price" onclick="accept(this);"></span></div>
-            <div>面交地點：<input type="text" class="site-check" ><span class="check-btn" id="check-btn" index="site" onclick="accept(this);"></span></div>
-            <div>面交時間：<input type="text" class="time-check" ><span class="check-btn" id="check-btn" index="time" onclick="accept(this);"></span></div>
+            <div>&emsp;&emsp;數量：<input type="text" class="amount-check"><span class="check-btn" id="check-btn"
+                    index="amount" onclick="accept(this);"></span></div>
+            <div>&emsp;&emsp;價格：<input type="text" class="price-check"><span class="check-btn" id="check-btn"
+                    index="price" onclick="accept(this);"></span></div>
+            <div>面交地點：<input type="text" class="site-check"><span class="check-btn" id="check-btn" index="site"
+                    onclick="accept(this);"></span></div>
+            <div>面交時間：<input type="text" class="time-check"><span class="check-btn" id="check-btn" index="time"
+                    onclick="accept(this);"></span></div>
         </div>
     </div>
 
     <div class="member-talk-area">
+        <div class="self-video-box"></div>
         <div class="message-box">
             <!-- <div>141414141414<span>2023/01/13 9:30</span></div> -->
-            
         </div>
-        <div class="input-message"><input type="text" placeholder="請輸入訊息" class="input-message-box"><div class="send-messagge" onclick="sendMessage(user);">送出</div></div>
-        
+        <div class="other-video-box"></div>
+        <div class="input-message">
+            <img src="/images/icons/live-news.png"  class="stopStream-icon">
+            <img src="/images/icons/live-news.png" onclick="startStream();" class="stream-icon">
+            <input type="text" placeholder="請輸入訊息" class="input-message-box">
+            <div class="send-messagge" onclick="sendMessage(user);">送出</div>
+        </div>
+
     </div>
     <div class="btn-area">
         <div class="delete-btn">取消交易</div>
         <div class="wait-btn" onclick="GoBack();">暫緩交易</div>
-        <div class="order-btn" style="display: none;" onclick="orderOK();" ><span>確認本次交易</span></div>
+        <div class="order-btn" style="display: none;" onclick="orderOK();"><span>確認本次交易</span></div>
     </div>
 
 </div>

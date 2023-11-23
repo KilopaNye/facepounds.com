@@ -6,3 +6,6 @@ function GoUpload(){
     window.location.href="/upload"
 }
 
+function GoTrade(){
+    window.location.href="/ready_trade"
+}
