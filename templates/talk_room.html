@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="/CSS/talk_room.css">
+<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+{% endblock head %}
+{% block content %}
+<div class="header-flex"><span>待交易確認介面</span></div>
+<div class="trade-area-flex">
+    <div class="order-info-area">
+        <img class="order-img">
+        <div class="order-info">
+            <div class="order-text">
+                <div>產品名稱：《<span class="product-name"></span>》</div>
+                <div>&emsp;&emsp;數量：<span class="product-amount"></span>份</div>
+                <div>&emsp;總價格：NT$&ensp;<span class="product-price"></span></div>
+                <div>預期地點：<span class="product-site"></span></div>
+            </div>
+        </div>
+    </div>
+    <div class="member-talk-area">
+        <div class="message-box">
+            <!-- <div>141414141414<span>2023/01/13 9:30</span></div> -->
+        </div>
+        <div class="input-message">
+            <!-- <img src="/images/icons/live-news.png"  class="stopStream-icon"> -->
+            <input type="text" placeholder="請輸入訊息" class="input-message-box">
+            <div class="send-messagge" onclick="sendMessage(user);">送出</div>
+        </div>
+    </div>
+</div>
+<script src="/JS/auth.js"></script>
+<script src="/JS/talk_room.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+
+{% endblock content %}

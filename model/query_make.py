@@ -266,7 +266,7 @@ def get_pre_order_info(buyer_id):
         cursor = con.cursor(dictionary=True)
 
         cursor.execute(
-            "SELECT  members.username, img.image_url, pre.*, a.owner_pre_site, a.id, a.product_name, a.product_price, a.product_amount FROM pre_order_info as pre JOIN product_info as a ON pre.product_id = a.id JOIN product_images as img ON img.product_id = a.id JOIN members ON members.id = a.owner_id  WHERE pre.buyer_id = %s GROUP BY a.id",
+            "SELECT  members.username, img.image_url, pre.*, a.owner_pre_site, a.id, a.product_name, a.product_price, a.product_amount FROM pre_order_info as pre JOIN product_info as a ON pre.product_id = a.id JOIN product_images as img ON img.product_id = a.id JOIN members ON members.id = a.owner_id  WHERE pre.buyer_id = %s GROUP BY pre.id",
             (buyer_id,),
         )
         response = cursor.fetchall()
@@ -311,6 +311,25 @@ def get_pre_order_info_by_uuid(order_uuid):
         return response
     except Exception as err:
         print("get_pre_order_info(buyer_id):", err)
+        return False
+    finally:
+        cursor.close()
+        con.close()
+
+
+def get_trade_info_by_uuid(order_uuid):
+    try:
+        con = cnxpool.get_connection()
+        cursor = con.cursor(dictionary=True)
+
+        cursor.execute(
+            "SELECT members.username, GROUP_CONCAT(DISTINCT img.image_url) as image_url, pre.*, a.owner_pre_site, a.id, a.product_name, a.product_price, a.product_amount FROM ready_trade_info as pre JOIN product_info as a ON pre.product_id = a.id JOIN product_images as img ON img.product_id = a.id JOIN members ON members.id = a.owner_id  WHERE pre.order_uuid = %s GROUP BY a.id",
+            (order_uuid,),
+        )
+        response = cursor.fetchone()
+        return response
+    except Exception as err:
+        print("get_trade_info_by_uuid(order_uuid)", err)
         return False
     finally:
         cursor.close()
@@ -463,6 +482,22 @@ def being_order(data):
         return False
     finally:
         con.autocommit = True
+        cursor.close()
+        con.close()
+
+def delete_pre_check_order(data):
+    try:
+        con = cnxpool.get_connection()
+        cursor = con.cursor(dictionary=True)
+        cursor.execute(
+            "DELETE FROM pre_order_info WHERE order_uuid = %s",(data["orderUUID"],)
+        )
+        con.commit()
+        return True
+    except Exception as err:
+        print("delete_pre_check_order(data)", err)
+        return False
+    finally:
         cursor.close()
         con.close()
 

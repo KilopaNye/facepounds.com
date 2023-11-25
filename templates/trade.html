@@ -44,10 +44,10 @@
             <input type="text" placeholder="請輸入訊息" class="input-message-box">
             <div class="send-messagge" onclick="sendMessage(user);">送出</div>
         </div>
-
     </div>
+
     <div class="btn-area">
-        <div class="delete-btn">取消交易</div>
+        <div class="delete-btn" onclick="delete_pre_order();">取消交易</div>
         <div class="wait-btn" onclick="GoBack();">暫緩交易</div>
         <div class="order-btn" style="display: none;" onclick="orderOK();"><span>確認本次交易</span></div>
     </div>
@@ -55,5 +55,6 @@
 </div>
 <script src="/JS/auth.js"></script>
 <script src="/JS/trade.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
 {% endblock content %}

@@ -47,3 +47,20 @@ def ready_order():
     except Exception as err:
         print("route trade/ready_order():"+err)
         return jsonify({'error':"伺服器錯誤"}),500
+
+
+@trade_system.route("/api/product/delete_pre_check",methods=["PUT"])
+def delete_order():
+    try:
+        data = request.get_json()
+        data=data["order_result"]
+        print(data)
+        response = delete_pre_check_order(data)
+        if response:
+            return  jsonify({'data':"OK DONE"}),200
+        else:
+            return jsonify({'error':"失敗"}),400
+    except Exception as err:
+        print("route trade/ready_order():"+err)
+        return jsonify({'error':"伺服器錯誤"}),500
+    

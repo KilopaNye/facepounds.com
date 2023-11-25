@@ -4,6 +4,7 @@ let order_uuid = length_URL.pop();
 console.log(order_uuid)
 let currentUrl = window.location.href;
 let identity = currentUrl.split('=').pop()
+console.log("身分別"+identity)
 
 const showAlert = () => {
     Swal.fire({
@@ -26,6 +27,18 @@ const showError = () => {
     })
 }
 
+const deleteAlert = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '已成功刪除該筆交易!',
+        text: '請回到首頁查看其他產品',
+    }).then((result) => {
+        console.log(result)
+        if (result.isConfirmed) {
+            window.location.href = "/";
+        }
+    })
+}
 function preOrderDomCreate(data) {
     // console.log(data)
     let title = document.querySelector('.product-name');
@@ -109,7 +122,7 @@ function getPreOrderByUUID() {
 }
 getPreOrderByUUID()
 
-var socket = io();
+var socket = io("http://localhost:3000");
 
 function joinRoom(order_uuid) {
     let token = localStorage.getItem('token');
@@ -128,6 +141,7 @@ socket.on('connect_response', function (data) {
 
 let user = "";
 socket.on('join_room_announcement', function (data) {
+    console.log(data)
 });
 
 socket.on('leave_room_announcement', function (data) {
@@ -139,10 +153,12 @@ function sendMessage() {
     let time = getTimeNow();
     let token = localStorage.getItem('token');
     let message = document.querySelector('.input-message-box').value;
-    message.value = "";
     if (message) {
         socket.emit('send_message_to_room', { 'token': token, "time": time, 'room': order_info_data['order_uuid'], 'message': message });
+        let messages = document.querySelector('.input-message-box');
+        messages.value = "";
     }
+
 }
 socket.on('sendMessageResponse', function (data) {
     let messageBox = document.querySelector('.message-box');
@@ -153,22 +169,22 @@ socket.on('sendMessageResponse', function (data) {
     timeSpan.textContent = getTimeNow();
     messageDiv.appendChild(timeSpan);
 });
-let inviteState=true;
+let inviteState = true;
 
 
-socket.on('invite-response',(data)=>{
+socket.on('invite-response', (data) => {
     console.log("SKR")
     let messageBox = document.querySelector('.message-box');
     let messageDiv = document.createElement('div');
-    if(inviteState){
-        if (data.identity =="buyer"){
+    if (inviteState) {
+        if (data.identity == "buyer") {
             messageDiv.textContent = "-----買家已進入視訊聊天室-----";
-        }else{
+        } else {
             messageDiv.textContent = "-----賣家已進入視訊聊天室-----";
         }
-        messageDiv.style.textAlign="center"
-        messageDiv.style.fontSize="14px"
-        messageDiv.style.opacity="0.5"
+        messageDiv.style.textAlign = "center"
+        messageDiv.style.fontSize = "14px"
+        messageDiv.style.opacity = "0.5"
         messageBox.appendChild(messageDiv);
     }
 })
@@ -203,7 +219,6 @@ function getMessageLoad() {
         headers: headers,
     }).then(response => response.json()).then(data => {
         console.log(data);
-        console.log(data.user + ' has joined the room: ' + data.room);
         user = data.user;
         // console.log(data);
         let messageLoad = data["data"];
@@ -223,6 +238,8 @@ function getMessageLoad() {
 }
 
 getMessageLoad();
+
+
 
 
 function accept(identity) {
@@ -371,25 +388,45 @@ function orderOK() {
 }
 
 
+function delete_pre_order() {
+    let token = localStorage.getItem('token');
+    let order_result = {
+        orderUUID: order_uuid
+    }
+    if (token) {
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+        fetch(`/api/product/delete_pre_check`, {
+            headers: headers,
+            method: "PUT",
+            body: JSON.stringify({ order_result })
+        }).then(response => response.json()).then(data => {
+            console.log(data);
+            if (data["data"]) {
+                deleteAlert();
+            } else if (data["error"]) {
+                showError(error);
+            }
+
+        }).catch(error => {
+            console.log(error);
+            showError(error);
+        })
+    }
+}
 
 
 
 
 let myVideo = document.createElement('video');
 myVideo.muted = true
-function addVideoStream(video, stream) {
-    video.srcObject = stream
-    video.addEventListener("loadedmetadata", () => {
-        video.play();
-    })
-    videoGrid.append(video)
-}
-
 
 function addVideoStream(video, stream) {
     video.srcObject = stream
     let otherVideoGrid = document.querySelector('.other-video-box')
-    otherVideoGrid.classList.add('second');
     video.addEventListener('loadedmetadata', () => {
         video.play()
     })
@@ -397,96 +434,401 @@ function addVideoStream(video, stream) {
 }
 
 let peers = {}
-let state=true;
-function startStream() {
-    if(state){
-        socket.emit('peer_invite_message', {identity:identity,roomId:order_uuid})
+let state = true;
 
-        const peer = new Peer(undefined, {
-            secure: true
-        }); 
-        
-        peer.on("open", (id) => {
-            // 當 Peer 成功打開時
-            console.log(`Your peer ID is: ${id}`);
-            socket.emit('join-room', { ROOM_ID: order_uuid, id: id })
-            state=false
+function startStream() {
+    if (!state) {
+        alert("已存在連線");
+        return;
+    }
+
+    // socket.emit('peer_invite_message', { identity: identity, roomId: order_uuid });
+
+    const peer = new Peer(identity, {
+        secure: true,
+        port: '443',
+        host: "/"
+    });
+
+    // 新增錯誤處理
+    peer.on('error', error => {
+        console.error('Peer連線錯誤:', error);
+    });
+
+    socket.on('error', error => {
+        console.error('Socket錯誤:', error);
+    });
+
+    peer.on("open", (id) => {
+        console.log(`Your peer ID is: ${id}`);
+        socket.emit('join-room', { ROOM_ID: order_uuid, id: id });
+        state = false;
+    });
+
+    navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true
+    }).then(stream => {
+        handleNewStream(stream,peer);
+    }).catch(error => {
+        console.error('錯誤:', error);
+    });
+}
+
+function handleNewStream(stream,peer) {
+    console.log("handleNewStream ERR")
+    const videoElement = document.createElement('video');
+    const videoGrid = document.querySelector('.self-video-box');
+    videoElement.muted = true;
+    videoElement.srcObject = stream;
+    videoElement.addEventListener('loadedmetadata', () => {
+        videoElement.play();
+    });
+
+    videoGrid.append(videoElement);
+
+    peer.on('call', call => {
+        call.answer(stream);
+        const video = document.createElement('video');
+        video.classList.add("second");
+
+        call.on('stream', userVideoStream => {
+            addVideoStream(video, userVideoStream);
         });
-        navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true
-        }).then(function (stream) {
-            const videoElement = document.createElement('video');
-            // videoElement.srcObject = stream;
-            const videoGrid = document.querySelector('.self-video-box')
-            videoElement.muted = true
-            videoElement.srcObject = stream
-            videoElement.addEventListener('loadedmetadata', () => {
-                videoElement.play()
-            })
+    });
+
+    socket.on('join-response', userId => {
+        console.log(userId['userId']);
+        connectNewUser(userId['userId'], stream,peer);
+    });
+
+    socket.on("response", data => {
+        console.log(data.message);
+        handlePeerResponse();
+    });
+}
+
+function handlePeerResponse() {
+    if (peers['userId']) {
+        peers['userId'].close();
+        peers = {};
+    }
+    console.log("handlePeer ERR")
+
+    const videos = document.querySelectorAll('.second');
+    videos.forEach(video => video.remove());
+}
+
+function connectNewUser(userId, stream,peer) {
+    const call = peer.call(userId, stream);
+    const newVideo = document.createElement('video');
+    newVideo.classList.add('second');
+
+    call.on('stream', userVideosStream => {
+        addVideoStream(newVideo, userVideosStream);
+    });
+
+    call.on('close', () => {
+        console.log("Peer連線已關閉");
+    });
+
+    call.on('error', error => {
+        console.error('呼叫過程中出現錯誤:', error);
+    });
+
+    peers['userId'] = call;
+}
+
+// function startStream() {
+//     if (state) {
+//         socket.emit('peer_invite_message', { identity: identity, roomId: order_uuid })
+
+//         const peer = new Peer(undefined, {
+//             secure: true,
+//             port: '443',
+//             host: "/"
+//         });
+
+//         peer.on("open", (id) => {
+//             // 當 Peer 成功打開時
+//             console.log(`Your peer ID is: ${id}`);
+//             socket.emit('join-room', { ROOM_ID: order_uuid, id: id })
+//             state = false
+//         });
+//         navigator.mediaDevices.getUserMedia({
+//             video: true,
+//             audio: true
+//         }).then(function (stream) {
+//             const videoElement = document.createElement('video');
+//             // videoElement.srcObject = stream;
+//             const videoGrid = document.querySelector('.self-video-box')
+//             videoElement.muted = true
+//             videoElement.srcObject = stream
+//             videoElement.addEventListener('loadedmetadata', () => {
+//                 videoElement.play()
+//             })
+
+//             videoGrid.append(videoElement)
+//             peer.on('call', call => {
+//                 call.answer(stream)
+//                 const video = document.createElement('video')
+//                 video.classList.add("second")
+
+//                 call.on('stream', userVideoStream => {
+//                     addVideoStream(video, userVideoStream)
+//                 })
+//             })
+
+//             socket.on('join-response', userId => {
+//                 console.log(userId['userId'])
+//                 userid = userId['userId']
+//                 connectNewUser(userid, stream)
+//             })
+
+//             socket.on("response", (data) => {
+//                 console.log(data.message)
+//                 if (peers['userId']) {
+//                     peers['userId'].close()
+//                     peers = {}
+//                 }
+//                 console.log("對方離開了")
+//                 const Video = document.querySelector('.first');
+//                 Video.srcObject = null;
+//                 Video.remove()
+//             })
+//             document.querySelector('.stopStream-icon').addEventListener('click', () => {
+//                 if (peers['userId']) {
+//                     peers['userId'].close()
+//                     peers = {}
+//                     console.log("XD")
+//                 }
+//             })
+
+//             function connectNewUser(userId, stream) {
+//                 const call = peer.call(userId, stream)
+//                 const newVideo = document.createElement('video');
+//                 newVideo.classList.add('second');
+
+//                 call.on('stream', userVideosStream => {
+//                     addVideoStream(newVideo, userVideosStream)
+//                 })
+//                 call.on('close', function () {
+//                     console.log("close")
+//                     newVideo.srcObject = null;
+//                     newVideo.remove()
+//                     console.log("GG")
+//                 })
+//                 call.on('error', (error) => {
+//                     console.error('Error during call:', error);
+//                 });
+
+//                 peers['userId'] = call
+
+//             }
+//         })
+//             .catch(function (error) {
+//                 console.error('未偵測到開啟的攝影機:', error);
+//             });
+//     } else {
+//         alert("已存在連線")
+//     }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function startStream() {
+//     if (state) {
+//         socket.emit('peer_invite_message', { identity: identity, roomId: order_uuid })
+
+//         const peer = new Peer(undefined, {
+//             secure: true,
+//             port: '443',
+//             host: "/"
+
+//         });
+
+//         peer.on("open", (id) => {
+//             // 當 Peer 成功打開時
+//             console.log(`Your peer ID is: ${id}`);
+//             socket.emit('join-room', { ROOM_ID: order_uuid, id: id })
+//             state = false
+//         });
+//         navigator.mediaDevices.getUserMedia({
+//             video: true,
+//             audio: true
+//         }).then(function (stream) {
+//             const videoElement = document.createElement('video');
+//             // videoElement.srcObject = stream;
+//             const videoGrid = document.querySelector('.self-video-box')
+//             videoElement.muted = true
+//             videoElement.srcObject = stream
+//             videoElement.addEventListener('loadedmetadata', () => {
+//                 videoElement.play()
+//             })
+
+//             videoGrid.append(videoElement)
+//             peer.on('call', call => {
+//                 call.answer(stream)
+//                 const video = document.createElement('video')
+//                 video.classList.add("first")
+
+//                 call.on('stream', userVideoStream => {
+//                     addVideoStream(video, userVideoStream)
+//                 })
+//             })
+
+//             socket.on('join-response', userId => {
+//                 console.log(userId['userId'])
+//                 userid = userId['userId']
+//                 connectNewUser(userid, stream)
+//             })
+
+//             socket.on("response", (data) => {
+//                 console.log(data.message)
+//                 if (peers['userId']) {
+//                     peers['userId'].close()
+//                     peers = {}
+//                 }
+//                 const Video = document.querySelector('.first');
+//                 // Video.srcObject = null;
+//                 // Video.remove()
+//             })
+//             document.querySelector('.stopStream-icon').addEventListener('click', () => {
+//                 if (peers['userId']) {
+//                     peers['userId'].close()
+//                     peers = {}
+//                     console.log("XD")
+//                 }
+//             })
+
+//             function connectNewUser(userId, stream) {
+//                 const call = peer.call(userId, stream)
+//                 const newVideo = document.createElement('video');
+//                 newVideo.classList.add('second');
+
+//                 call.on('stream', userVideosStream => {
+//                     addVideoStream(newVideo, userVideosStream)
+//                 })
+//                 call.on('close', function () {
+//                     console.log("close")
+//                     newVideo.srcObject = null;
+//                     newVideo.remove()
+//                     console.log("GG")
+//                 })
+//                 call.on('error', (error) => {
+//                     console.error('Error during call:', error);
+//                 });
+
+//                 peers['userId'] = call
+
+//             }
+//         })
+//             .catch(function (error) {
+//                 console.error('未偵測到開啟的攝影機:', error);
+//             });
+//     } else {
+//         alert("已存在連線")
+//     }
+// }
+
+
+// function startStream() {
+//     if(state){
+//         socket.emit('peer_invite_message', {identity:identity,roomId:order_uuid})
+
+//         const peer = new Peer(identity, {
+//             secure: true,
+//             port:'443',
+//             host: "/"
+
+//         }); 
+        
+//         peer.on("open", (id) => {
+//             // 當 Peer 成功打開時
+//             console.log(`Your peer ID is: ${id}`);
+//             socket.emit('join-room', { ROOM_ID: order_uuid, id: id })
+//             state=false
+//         });
+//         navigator.mediaDevices.getUserMedia({
+//             video: true,
+//             audio: true
+//         }).then(function (stream) {
+//             const videoElement = document.createElement('video');
+//             // videoElement.srcObject = stream;
+//             const videoGrid = document.querySelector('.self-video-box')
+//             videoElement.muted = true
+//             videoElement.srcObject = stream
+//             videoElement.addEventListener('loadedmetadata', () => {
+//                 videoElement.play()
+//             })
     
-            videoGrid.append(videoElement)
-            peer.on('call', call => {
-                call.answer(stream)
-                const video = document.createElement('video')
-                video.classList.add("first")
+//             videoGrid.append(videoElement)
+//             peer.on('call', call => {
+//                 call.answer(stream)
+//                 const video = document.createElement('video')
+//                 video.classList.add("second")
     
-                call.on('stream', userVideoStream => {
-                    addVideoStream(video, userVideoStream)
-                })
-            })
+//                 call.on('stream', userVideoStream => {
+//                     addVideoStream(video, userVideoStream)
+//                 })
+//             })
     
-            socket.on('join-response', userId => {
-                console.log(userId['userId'])
-                userid = userId['userId']
-                connectNewUser(userid, stream)
-            })
+//             socket.on('join-response', userId => {
+//                 console.log(userId['userId'])
+//                 userid = userId['userId']
+//                 connectNewUser(userid, stream)
+//             })
     
-            socket.on("response", (data) => {
-                console.log(data.message)
-                if (peers['userId']) {
-                    peers['userId'].close()
-                    peers = {}
-                }
-                const Video = document.querySelector('.first');
-                // Video.srcObject = null;
-                // Video.remove()
-            })
-            document.querySelector('.stopStream-icon').addEventListener('click', () => {
-                if (peers['userId']) {
-                    peers['userId'].close()
-                    peers = {}
-                    console.log("XD")
-                }
-            })
-    
-            function connectNewUser(userId, stream) {
-                const call = peer.call(userId, stream)
-                const newVideo = document.createElement('video');
-                newVideo.classList.add('second');
-    
-                call.on('stream', userVideosStream => {
-                    addVideoStream(newVideo, userVideosStream)
-                })
-                call.on('close', function () {
-                    console.log("close")
-                    newVideo.srcObject = null;
-                    newVideo.remove()
-                    console.log("GG")
-                })
-                call.on('error', (error) => {
-                    console.error('Error during call:', error);
-                });
-    
-                peers['userId'] = call
+//             socket.on("response", (data) => {
+//                 console.log(data.message)
+//                 if (peers['userId']) {
+//                     peers['userId'].close()
+//                     peers = {}
+//                 }
+//                 const Videos = document.querySelector('.second');
                 
-            }
-        })
-            .catch(function (error) {
-                console.error('未偵測到開啟的攝影機:', error);
-            });
-    }else{
-        alert("已存在連線")
-    }
-    }
+//                 if (Videos) {
+//                     Videos.remove();                    
+//                 }
+
+                
+//             })
     
+//             function connectNewUser(userId, stream) {
+//                 const call = peer.call(userId, stream)
+//                 const newVideo = document.createElement('video');
+//                 newVideo.classList.add('second');
+    
+//                 call.on('stream', userVideosStream => {
+//                     addVideoStream(newVideo, userVideosStream)
+//                 })
+//                 call.on('close', function () {
+//                     console.log("close")
+//                     console.log("GG")
+//                 })
+//                 call.on('error', (error) => {
+//                     console.error('Error during call:', error);
+//                 });
+    
+//                 peers['userId'] = call
+                
+//             }
+//         })
+//             .catch(function (error) {
+//                 console.error('未偵測到開啟的攝影機:', error);
+//             });
+//     }else{
+//         alert("已存在連線")
+//     }
+// }

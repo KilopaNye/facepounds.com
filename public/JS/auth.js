@@ -130,6 +130,7 @@ function userLoginCheck() {
         // console.log(data['data'])
         if (!data['data']) {
             console.log("尚未登入");
+            window.location.href="/";
             let logInButton = document.querySelector('#login-button');
             logInButton.style.display = "block"
             let logoutButton = document.querySelector('#logout-button');
@@ -143,7 +144,7 @@ function userLoginCheck() {
             return userLoginBool = true;
         }
     }).catch(error => {
-        console.log(error);
+        alert(error)
         return userLoginBool = false;
     })
 }

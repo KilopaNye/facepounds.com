@@ -7,6 +7,7 @@ from api.member import member_system
 from api.ready_check import ready_check_system
 from api.trade import trade_system
 from api.ready_trade import ready_trade_system
+from api.talk_room import talk_system
 from model.query_make import *
 from flask_socketio import SocketIO,join_room,leave_room
 
@@ -25,6 +26,7 @@ app.register_blueprint(member_system)
 app.register_blueprint(ready_check_system)
 app.register_blueprint(trade_system)
 app.register_blueprint(ready_trade_system)
+app.register_blueprint(talk_system)
 
 @app.route("/")
 def index():
@@ -53,6 +55,10 @@ def ready_trade():
 @app.route("/member_page")
 def member_page():
 	return render_template("member_page.html")
+
+@app.route("/talk_room/<order_uuid>")
+def talk(order_uuid):
+	return render_template("talk_room.html")
 
 
 
@@ -92,7 +98,7 @@ def test_disconnect():
 @socketio.on('message')
 def handle_message(message):
 	print("使用者說",message)
-	socketio.emit('response', {'data': 'Connected'})
+	socketio.emit('message-response', {'data': 'Connected'})
 
 @socketio.on('send_message_to_room')
 def handle_send_message_to_room(data):

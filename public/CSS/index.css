@@ -1,3 +1,99 @@
+/* member system */
+.header-flex {
+    width: 100%;
+    height: 300px;
+    background-color:#395574;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+    margin-bottom: 40px;
+    >img{
+        width: 128px;
+    }
+    >span{
+        font-size: 68px;
+        font-family:sans-serif;
+        font-weight: bold;
+        color: #ffffff;
+    }
+}
+
+.box-flex{
+    width: 100%;
+    max-width: 1150px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /* flex-direction: column; */
+    align-items: center;
+    >.member-info-box{
+        width: 1000px;
+        height: 350px;
+        border: 3px solid rgb(232, 232, 232);
+        display: flex;
+        justify-content: start;
+        flex-direction: column;
+        cursor: unset;
+        border-radius: 20px;
+        >.frame-1{
+            margin-top: 25px;
+            margin-left: 25px;
+            width: 100%;
+            >.member-info{
+                display: flex;
+                >img{
+                    width: 80px;height: 80px;
+                    object-fit: cover;
+                    margin-right: 20px;
+                    border: 1px solid rgb(255, 246, 227);
+                    border-radius: 100px;
+                }
+                >.member-info-text{
+                    >.member-name{
+                        font-size: 24px;
+                        font-weight: bold;
+                        margin-bottom: 10px;
+                        margin-top: 10px;
+                    }
+                    >.member-tags{
+                        color: #9d9d9d;
+                    }
+                }
+            }
+        }
+        >.frame-2{
+            margin-top: 25px;
+            margin-left: 25px;
+            margin-right: 25px;
+            >.title-text{
+                font-size: 22px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+        }
+    }
+    >div{
+        border: 2px solid rgb(225, 225, 225);
+        border-radius: 10px;
+        width: 550px;height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 23px;
+        cursor: pointer;
+        user-select: none;
+        >span{
+            font-size: 38px;
+        }
+        >img{
+            width: 40px;
+            margin-right: 15px;
+        }
+    }
+}
+
+/* product Element*/
 .main-area {
     background-color: rgb(255, 255, 255);
     width: 100%;
@@ -37,13 +133,14 @@
             margin-bottom: 40px;
             flex-basis: auto;
             position: relative;
+            padding-bottom: 100px;
 
             >.product-box {
                 width: 267px;
                 height: 350px;
                 border-radius: 8px;
                 flex-shrink: 1;
-                margin: 15px;
+                margin: 16px;
                 position: relative;
                 box-shadow: 5px 5px 10px rgba(151, 151, 151, 0.3);
                 
