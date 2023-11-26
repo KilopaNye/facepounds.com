@@ -11,12 +11,15 @@ from api.talk_room import talk_system
 from api.self_page import self_page_system
 from model.query_make import *
 from flask_socketio import SocketIO,join_room,leave_room
+from flask_cors import CORS
+
 
 load_dotenv()
 app = Flask(__name__, static_folder="public", static_url_path="/")
 app.secret_key = "WGXaTKE7JR9MzzykHVp1O8ix7cnkx5eOb400I5gPxXJI3I8saAUWZjDLxs6056M"
 wsgi_app = app.wsgi_app
-socketio = SocketIO(app,path='/mysocket',cors_allowed_origins="https://facepounds.com")
+CORS(app)
+socketio = SocketIO(app,path='/mysocket',cors_allowed_origins="*")
 
 # ,cors_allowed_origins='*',ping_interval=20, ping_timeout=60
 app.config["JSON_AS_ASCII"]=False
