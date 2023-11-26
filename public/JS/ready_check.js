@@ -2,7 +2,7 @@
 
 buyer = "buyer";
 seller = "seller";
-
+userLoginCheck();
 function preOrderDom(data,identity) {
     let Fa = document.querySelector(".trade-area-flex");
     Fa.textContent="";
@@ -61,7 +61,6 @@ function preOrderDom(data,identity) {
         GoTrade.setAttribute('onclick', `GoTrade(this);`)
         orderInfo.appendChild(GoTrade);
     }
-
 }
 
 

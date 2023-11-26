@@ -5,6 +5,7 @@
 <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
 {% endblock head %}
 {% block content %}
+<div class="header-flex"><span><img src="/images/icons/biscuit.png">訂單內容商議</span></div>
 <div class="trade-area-flex">
     <div class="order-info-area">
         <img class="order-img">
@@ -21,13 +22,13 @@
     <div class="order-check-area">
         <div class="check-area">
             <!-- <div>產品名稱：<input type="text" class="name-check" roomId="1"><span class="check-btn" id="check-btn" index="name" onclick="accept(this);"></span></div> -->
-            <div>&emsp;&emsp;數量：<input type="text" class="amount-check"><span class="check-btn" id="check-btn"
+            <div>&emsp;&emsp;數量：<input type="text" class="amount-check"><span class="amount-btn" id="check-btn"
                     index="amount" onclick="accept(this);"></span></div>
-            <div>&emsp;&emsp;價格：<input type="text" class="price-check"><span class="check-btn" id="check-btn"
+            <div>&emsp;&emsp;價格：<input type="text" class="price-check"><span class="price-btn" id="check-btn"
                     index="price" onclick="accept(this);"></span></div>
-            <div>面交地點：<input type="text" class="site-check"><span class="check-btn" id="check-btn" index="site"
+            <div>面交地點：<input type="text" class="site-check"><span class="site-btn" id="check-btn" index="site"
                     onclick="accept(this);"></span></div>
-            <div>面交時間：<input type="text" class="time-check"><span class="check-btn" id="check-btn" index="time"
+            <div>面交時間：<input type="text" class="time-check"><span class="time-btn" id="check-btn" index="time"
                     onclick="accept(this);"></span></div>
         </div>
     </div>

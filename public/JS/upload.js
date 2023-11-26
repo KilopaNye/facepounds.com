@@ -1,3 +1,5 @@
+userLoginCheck();
+
 const showAlert = () => {
     Swal.fire({
         icon: 'success',

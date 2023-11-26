@@ -8,6 +8,7 @@ from api.ready_check import ready_check_system
 from api.trade import trade_system
 from api.ready_trade import ready_trade_system
 from api.talk_room import talk_system
+from api.self_page import self_page_system
 from model.query_make import *
 from flask_socketio import SocketIO,join_room,leave_room
 
@@ -15,7 +16,7 @@ load_dotenv()
 app = Flask(__name__, static_folder="public", static_url_path="/")
 app.secret_key = "WGXaTKE7JR9MzzykHVp1O8ix7cnkx5eOb400I5gPxXJI3I8saAUWZjDLxs6056M"
 wsgi_app = app.wsgi_app
-socketio = SocketIO(app)
+socketio = SocketIO(app,path='/mysocket',cors_allowed_origins="https://facepounds.com")
 # ,cors_allowed_origins='*',ping_interval=20, ping_timeout=60
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
@@ -27,6 +28,7 @@ app.register_blueprint(ready_check_system)
 app.register_blueprint(trade_system)
 app.register_blueprint(ready_trade_system)
 app.register_blueprint(talk_system)
+app.register_blueprint(self_page_system)
 
 @app.route("/")
 def index():
@@ -59,6 +61,10 @@ def member_page():
 @app.route("/talk_room/<order_uuid>")
 def talk(order_uuid):
 	return render_template("talk_room.html")
+
+@app.route("/self_page")
+def self_page():
+	return render_template("self_page.html")
 
 
 
@@ -150,10 +156,15 @@ def stage_check(state):
 def stage_change(state):
 	room=state['room']
 	index=state['index']
-	message=state['message']
-	socketio.emit('stageChange_response', {'message':message,'index': index},room=room)
-	res = {
+	socketio.emit('stage_change_response', {'index': index},room=room)
 
+@socketio.on('info_change')
+def stage_change(state):
+	room=state['room']
+	index=state['index']
+	message=state['message']
+	socketio.emit('info_change_response', {'message':message,'index': index},room=room,include_self=False)
+	res = {
 	}
 	if index == "amount":
 		res["amount"]=state['message']

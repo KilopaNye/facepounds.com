@@ -7,6 +7,40 @@ let identity = currentUrl.split('=').pop()
 console.log("身分別"+identity)
 
 
+function userLoginCheck() {
+    let token = localStorage.getItem('token');
+    let headers = {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+    }
+    fetch("/api/user/auth", {
+        method: "GET",
+        headers: headers
+    }).then(response => response.json()).then(data => {
+        // console.log(data['data'])
+        if (!data['data']) {
+            console.log("尚未登入");
+            window.location.href="/";
+            let logInButton = document.querySelector('#login-button');
+            logInButton.style.display = "block"
+            let logoutButton = document.querySelector('#logout-button');
+            logoutButton.style.display = "none"
+            return userLoginBool = false;
+        } else {
+            let logInButton = document.querySelector('#login-button');
+            logInButton.style.display = "none";
+            let logoutButton = document.querySelector('#logout-button');
+            logoutButton.style.display = "block";
+            return userLoginBool = true;
+        }
+    }).catch(error => {
+        alert(error)
+        return userLoginBool = false;
+    })
+}
+
+userLoginCheck();
+
 function preOrderDomCreate(data) {
     // console.log(data)
     let title = document.querySelector('.product-name');
@@ -161,6 +195,7 @@ function getMessageLoad() {
         let messageLoad = data["data"];
         for (let i = 0; i < messageLoad.length; i++) {
             let messageBox = document.querySelector('.message-box');
+            messageBox.scrollTop = messageBox.scrollHeight;
             let messageDiv = document.createElement('div');
             messageDiv.textContent = messageLoad[i]["username"] + ': ' + messageLoad[i]['message'];
             messageBox.appendChild(messageDiv);

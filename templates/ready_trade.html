@@ -4,9 +4,12 @@
 {% endblock head %}
 {% block content %}
 <div class="header-flex"><span>待履行交易</span></div>
-<div class="trade-area-flex">
-</div>
+<div class="change_serve"><span onclick="preOrderDom(order_data, buyer);" class="buyer">我是買家</span><span
+                onclick="preOrderDom(seller_data, seller);" class="seller">我是賣家</span></div>
+        <div class="trade-area-flex">
+        <div class="trade-area-flex">
+        </div>
 
-<script src="/JS/auth.js"></script>
-<script src="/JS/ready_trade.js"></script>
-{% endblock content %}
+        <script src="/JS/auth.js"></script>
+        <script src="/JS/ready_trade.js"></script>
+        {% endblock content %}

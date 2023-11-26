@@ -244,5 +244,15 @@
             justify-content: center;
             cursor: pointer;
         }
+
+        >.order-btn{
+            background-color: rgb(131, 240, 22);
+            width: 35%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            cursor: pointer;
+        }
     }
 }

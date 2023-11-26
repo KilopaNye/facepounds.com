@@ -5,6 +5,7 @@ console.log(order_uuid)
 let currentUrl = window.location.href;
 let identity = currentUrl.split('=').pop()
 console.log("身分別"+identity)
+userLoginCheck();
 
 const showAlert = () => {
     Swal.fire({
@@ -122,7 +123,10 @@ function getPreOrderByUUID() {
 }
 getPreOrderByUUID()
 
-var socket = io("http://localhost:3000");
+var socket = io("facepounds.com",{
+    path:"/mysocket"
+});
+
 
 function joinRoom(order_uuid) {
     let token = localStorage.getItem('token');
@@ -168,6 +172,7 @@ socket.on('sendMessageResponse', function (data) {
     let timeSpan = document.createElement('span');
     timeSpan.textContent = getTimeNow();
     messageDiv.appendChild(timeSpan);
+    messageBox.scrollTop = messageBox.scrollHeight;
 });
 let inviteState = true;
 
@@ -224,6 +229,7 @@ function getMessageLoad() {
         let messageLoad = data["data"];
         for (let i = 0; i < messageLoad.length; i++) {
             let messageBox = document.querySelector('.message-box');
+            messageBox.scrollTop = messageBox.scrollHeight;
             let messageDiv = document.createElement('div');
             messageDiv.textContent = messageLoad[i]["username"] + ':' + messageLoad[i]['message'];
             messageBox.appendChild(messageDiv);
@@ -246,23 +252,20 @@ function accept(identity) {
     let user = identity.getAttribute('value');
     let index = identity.getAttribute('index');
     let info = document.querySelector(`.${index}-check`);
+    let infoState = info.getAttribute('state')
     if (user == "buyer") {
-        saveOrder(info, index);
+        if(infoState == 0){
+            saveOrder(info, index);
+        }else{
+            deleteOrder(info, index);
+        }
+        
     } else if (user == "seller") {
         changeOrder(info, index);
     }
 }
 
-function saveOrder(info, index) {
-    if (info.value) {
-        // info.style.backgroundColor = "#53FF53";
-        info.setAttribute('state', '1');
-        socket.emit('stage_check', { "index": index, 'room': order_uuid })
-    } else {
-        alert("不能是空白");
-        return false
-    }
-
+function stateCheck(){
     let amountCheck = document.querySelector('.amount-check');
     let priceCheck = document.querySelector('.price-check');
     let siteCheck = document.querySelector('.site-check');
@@ -276,13 +279,47 @@ function saveOrder(info, index) {
 
     } else {
         // console.log("還沒");
+        let orderBtn = document.querySelector('.order-btn');
+        orderBtn.style.display = "none";
     }
+}
+
+function saveOrder(info, index) {
+    if (info.value) {
+        // info.style.backgroundColor = "#53FF53";
+        let btn = document.querySelector(`.${index}-btn`);
+        btn.style.backgroundColor=" #f85757"
+        btn.textContent="取消"
+        info.setAttribute('state', '1');
+        socket.emit('stage_check', { "index": index, 'room': order_uuid })
+    } else {
+        alert("不能是空白");
+        return false
+    }
+
+    
+    stateCheck()
 };
+
+function deleteOrder(info, index){
+    if (info.value) {
+        let btn = document.querySelector(`.${index}-btn`);
+        btn.style.backgroundColor=" #99EA52"
+        btn.textContent="確認"
+        info.setAttribute('state', '0');
+        socket.emit('stage_change', { "index": index, 'room': order_uuid })
+    } else {
+        alert("錯誤");
+        return false
+    }
+
+    stateCheck()
+}
 
 function changeOrder(info, index) {
     if (info.value) {
         info.setAttribute('state', '1');
-        socket.emit('stage_change', { "index": index, 'room': order_uuid, "message": info.value });
+        socket.emit('info_change', { "index": index, 'room': order_uuid, "message": info.value });
     } else {
         alert("不能是空白");
     }
@@ -295,11 +332,29 @@ socket.on('stage_response', function (data) {
     info.style.backgroundColor = "#53FF53";
 });
 
-socket.on('stageChange_response', function (data) {
-    console.log(data);
+socket.on('stage_change_response', function (data) {
+    let info = document.querySelector(`.${data.index}-check`);
+    info.style.backgroundColor = "#FFFFFF"
+    let btn = document.querySelector(`.${data.index}-btn`);
+    if(identity=="buyer"){
+        let info = document.querySelector(`.${data.index}-check`);
+        info.setAttribute('state', '0');
+        btn.style.backgroundColor=" #99EA52"
+        btn.textContent="確認"
+        stateCheck()
+    }
+});
+
+socket.on('info_change_response', function (data) {
+    if(identity=="buyer"){
+        console.log(data);
     let info = document.querySelector(`.${data.index}-check`);
     info.value = data.message;
     info.style.backgroundColor = "#FFFFFF";
+    let btn = document.querySelector(`.${data.index}-btn`);
+    btn.textContent="確認"
+    btn.style.backgroundColor=" #99EA52"
+    
     if (data.index == "amount") {
         let amount = document.querySelector('.product-amount');
         amount.textContent = data.message;
@@ -318,6 +373,8 @@ socket.on('stageChange_response', function (data) {
     } else if (data.index == "time") {
         let timeCheck = document.querySelector(`.${data.index}-check`);
         timeCheck.setAttribute('state', '0');
+    }
+    stateCheck()
     }
 });
 
@@ -342,8 +399,6 @@ function GoBack() {
 }
 
 function orderOK() {
-
-
     let token = localStorage.getItem('token');
     let title = document.querySelector('.product-name').textContent;
     let amountCheck = document.querySelector('.amount-check').value;

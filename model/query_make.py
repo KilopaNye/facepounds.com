@@ -327,6 +327,7 @@ def get_trade_info_by_uuid(order_uuid):
             (order_uuid,),
         )
         response = cursor.fetchone()
+        print(response)
         return response
     except Exception as err:
         print("get_trade_info_by_uuid(order_uuid)", err)
@@ -334,6 +335,8 @@ def get_trade_info_by_uuid(order_uuid):
     finally:
         cursor.close()
         con.close()
+
+
 
 
 def get_username(user_id):

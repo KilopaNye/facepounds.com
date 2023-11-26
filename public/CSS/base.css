@@ -87,6 +87,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    border-bottom: 1px solid rgb(230, 230, 230);
 }
 
 .header {
@@ -96,6 +97,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    >a{
+        font-weight: bold;
+    }
 }
 
 .nav {
@@ -146,6 +150,10 @@ body {
     font-size: 28px;
     color: aliceblue;
     text-align: center;
+    >img{
+        width: 32px;
+        margin-left: 5px;
+    }
 }
 
 .search-floor-1 {
@@ -265,4 +273,19 @@ footer{
     >div{
         margin-bottom: 5px;
     }
+}
+body{
+    position: relative;
+    overflow-x: hidden;
+}
+.sidebar{
+    width: 40px;
+    height: 100vh;
+    background-color: #080808;
+    opacity: 0.8;
+    position: fixed;
+    top:0px;
+    right: 0px;
+    /* border-radius: 10px 0px 0px 10px; */
+    z-index: 2;
 }

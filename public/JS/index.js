@@ -1,7 +1,7 @@
 function GoCheck(){
     window.location.href="/ready_check"
 }
-
+userLoginCheck_index()
 function GoUpload(){
     window.location.href="/upload"
 }
@@ -13,6 +13,10 @@ function GoTrade(){
 function GoThisProduct(product) {
     let id = product.getAttribute('value')
     window.location.href = `/product/${id}`
+}
+
+function GoSelf(){
+    window.location.href="/self_page"
 }
 
 function createProductDom(data) {
