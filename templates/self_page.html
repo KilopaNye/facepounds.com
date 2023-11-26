@@ -5,28 +5,37 @@
 <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
 {% endblock head %}
 {% block content %}
+<div class="header-flex"><span>個人資訊</span></div>
 <div class="box-flex">
     <div class="member-info-box">
         <div class="frame-1">
             <div class="member-info">
-                <img src="/images/image/test2.png" class="member-img">
+                <img class="member-img">
                 <div class="member-info-text">
-                    <div class="member-name">磅取SIR</div>
-                    <div class="member-tags">熱愛製作磅蛋糕的sir</div>
+                    <div class="member-name"></div>
+                    <div class="member-tags"></div>
                 </div>
             </div>
         </div>
         <div class="frame-2">
             <div class="title-text">商家自介</div>
-            <div class="member-self">這些年來，我努力不懈地學習和探索，以精進我的技巧，確保每一個磅蛋糕都是藝術品，充滿美味和創意。
-                我的目標是為您提供最美味和令人滿意的磅蛋糕，無論是在特殊場合還是平日享用。我注重食材的品質，並將創意和熱情注入每一個糕點中。每一個磅蛋糕都是一次對味蕾的美好冒險，並且希望能夠為您的日常生活和特殊時刻帶來甜蜜的回憶。我非常期待有機會與您
-                分享我的烘焙技巧和甜點藝術，並為您提供一個獨特的味覺體驗。如果您對我製作的磅蛋糕有任何問題或特殊需求，請隨時與我聯繫。感謝您的支持，期待為您製作美味的磅蛋糕！</div>
+            <div class="member-self"></div>
+        </div>
+    </div>
+
+    <h2 class="text">擁有的商品</h2>
+</div>
+<div class="main-area">
+    <div class="area-box">
+        <img src="/images/image/CAT.gif" class="cat-load">
+        <div class="product-flex">
         </div>
     </div>
 </div>
 
+
 <script src="/JS/auth.js"></script>
-<script src="/JS/trade.js"></script>
+<script src="/JS/self_page.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
 {% endblock content %}

@@ -39,7 +39,6 @@ function userLoginCheck() {
     })
 }
 
-userLoginCheck();
 
 function preOrderDomCreate(data) {
     // console.log(data)
@@ -213,3 +212,70 @@ function getMessageLoad() {
 }
 
 getMessageLoad();
+
+
+
+function orderOK() {
+    let token = localStorage.getItem('token');
+    let title = order_info_data['order_name']
+    let amountCheck = order_info_data ['order_amount']
+    let priceCheck = order_info_data['total_price']
+    let siteCheck = order_info_data['trade_site']
+    let timeCheck = order_info_data['trade_time']
+    let order_result = {
+        name: title,
+        amount: amountCheck,
+        price: priceCheck,
+        site: siteCheck,
+        orderUUID: order_uuid,
+        trade_time: timeCheck,
+        seller_id: seller_id,
+        buyer_id: buyer_id,
+        product_id: product_id,
+        order_time: getTimeNow()
+    }
+    if (token) {
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+        fetch(`/api/trade-finish-room/finish-order`, {
+            headers: headers,
+            method: "POST",
+            body: JSON.stringify({ order_result })
+        }).then(response => response.json()).then(data => {
+            console.log(data);
+            if (data["data"]) {
+                showAlert();
+            } else if (data["error"]) {
+                showError(error);
+            }
+
+        }).catch(error => {
+            console.log(error);
+            showError(error);
+        })
+    }
+}
+
+userLoginCheck();
+let userLoginBool;
+function userLoginCheck() {
+    let token = localStorage.getItem('token');
+    if (!token) {
+        console.log("尚未登入");
+        window.location.href = "/";
+        let logInButton = document.querySelector('#login-button');
+        logInButton.style.display = "block"
+        let logoutButton = document.querySelector('#logout-button');
+        logoutButton.style.display = "none"
+        return userLoginBool = false;
+    } else {
+        let logInButton = document.querySelector('#login-button');
+        logInButton.style.display = "none";
+        let logoutButton = document.querySelector('#logout-button');
+        logoutButton.style.display = "block";
+        return userLoginBool = true;
+    }
+}

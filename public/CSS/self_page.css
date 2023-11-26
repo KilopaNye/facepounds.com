@@ -1,0 +1,230 @@
+.header-flex {
+    width: 100%;
+    height: 300px;
+    background-color:#395574;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+    margin-bottom: 40px;
+    >img{
+        width: 128px;
+    }
+    >span{
+        font-size: 68px;
+        font-family:sans-serif;
+        font-weight: bold;
+        color: #ffffff;
+    }
+}
+
+.box-flex{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    >.member-info-box{
+        width: 1100px;
+        min-height: 150px;
+        height: auto;
+        border: 3px solid rgb(232, 232, 232);
+        display: flex;
+        justify-content: start;
+        flex-direction: column;
+        cursor: unset;
+        border-radius: 20px;
+        padding-bottom: 10px;
+        
+        >.frame-1{
+            margin-top: 25px;
+            margin-left: 25px;
+            width: 100%;
+            >.member-info{
+                display: flex;
+                margin-left: 15px;
+                width: 300px;
+                height: 100px;
+                align-items: center;
+                justify-content: center;
+                border-radius: 10px;
+                background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d9d9d9' fill-opacity='0.4'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");;
+                border: solid 2px rgb(229, 229, 229);
+                >img{
+                    width: 80px;height: 80px;
+                    object-fit: cover;
+                    margin-right: 20px;
+                    border: 1px solid rgb(255, 246, 227);
+                    border-radius: 100px;
+                }
+                >.member-info-text{
+                    >.member-name{
+                        font-size: 24px;
+                        font-weight: bold;
+                        margin-bottom: 10px;
+                        margin-top: 10px;
+                    }
+                    >.member-tags{
+                        color: #9d9d9d;
+                    }
+                }
+            }
+        }
+        >.frame-2{
+            margin-top: 25px;
+            margin-left: 25px;
+            margin-right: 25px;
+            >.title-text{
+                font-size: 22px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            >.member-self{
+                line-height: 40px;
+            }
+        }
+    }
+    >h2{
+        
+    }
+}
+
+
+.main-area {
+    background-color: rgb(255, 255, 255);
+    width: 100%;min-height: 500px;
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+
+    >.area-box {
+        width: 100%;
+        max-width: 1200px;
+        height: auto;
+        background-color: rgb(255, 255, 255);
+        position: relative;
+        >img {
+            position: absolute;
+            right: 45%;
+            top:20%;
+            z-index: 5;
+            /* background-color: #ffffff; */
+        }
+        >.title-tag {
+            font-weight: bold;
+            font-size: 28px;
+            margin-bottom: 5px;
+            margin-left: 15px;
+        }
+
+        >.product-flex {
+            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            display: flex;
+            /* justify-content: center; */
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+            flex-basis: auto;
+            position: relative;
+            padding-bottom: 100px;
+
+            >.product-box {
+                width: 267px;
+                height: 350px;
+                border-radius: 8px;
+                flex-shrink: 1;
+                margin: 16px;
+                position: relative;
+                box-shadow: 5px 5px 10px rgba(151, 151, 151, 0.3);
+                
+                >img {
+                    width: 100%;
+                    height: 230px;
+                    object-fit: cover;
+                    border-radius: 8px 8px 0 0;
+                }
+                .product-id-opacity{
+                    width: 100%;
+                    height: 230px;
+                    background-color: #c8c8c8;
+                    opacity: 0;
+                    position:absolute;
+                    top:0;
+                    cursor: pointer;
+                }
+                >.product-title {
+                    font-size: 20px;
+                    font-weight: bold;
+                    margin-left: 10px;
+                    margin-top: 5px;
+                }
+
+                >.product-text {
+                    margin-left: 15px;
+                    margin-top: 5px;
+
+                    >div {
+                        display: flex;
+                        justify-content: space-between;
+
+                        >div {
+                            margin-bottom: 3px;
+                            width: 100%;
+                            color: rgb(143, 143, 143);
+
+                            >span {
+                                color: black;
+                                padding-left: 5px;
+                                font-size: 18px;
+                                cursor: pointer;
+                            }
+
+                            >.store {
+                                color: rgb(255, 102, 0);
+                                font-weight: bold;
+                            }
+                        }
+                    }
+                }
+
+                >.tag-area {
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    font-size: 14px;
+                    margin-top: 5px;padding: 3px;margin-left: 5px;margin-right: 5px;
+                    overflow-x: scroll;
+                    white-space-collapse: collapse;
+                    text-wrap: nowrap;
+                    border-radius: 200px;
+                    >.tag {
+                        background-color: #FF6161;
+                        padding-left: 3px;
+                        color: rgb(255, 255, 255);
+                        border-radius: 200px;
+                        padding-left: 5px;
+                        padding-right: 5px;
+                        cursor: pointer;
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+*::-webkit-scrollbar {
+    height: 8px;
+}
+
+/* *::-webkit-scrollbar-track {
+
+    background-color: #ffffff; 
+    border: none;
+    
+} */
+*::-webkit-scrollbar-thumb {
+    background-color: #c8c8c8; 
+    border-radius: 10px;
+}

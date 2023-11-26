@@ -118,5 +118,5 @@ function GoTrade(orderUuid) {
     let order_uuid = orderUuid.getAttribute('value');
     let identity = orderUuid.getAttribute('identity');
     
-    window.location.href = `/talk_room/${order_uuid}?identity=${identity}`
+    window.location.href = `/trade_finish_room/${order_uuid}?identity=${identity}`
 }

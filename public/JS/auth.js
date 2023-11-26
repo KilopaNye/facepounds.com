@@ -144,7 +144,6 @@ function userLoginCheck() {
             return userLoginBool = true;
         }
     }).catch(error => {
-        alert(error)
         return userLoginBool = false;
     })
 }

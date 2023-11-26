@@ -198,6 +198,29 @@ def get_product(param):
         cursor.close()
         con.close()
 
+def get_self_product(param):
+    try:
+        con = cnxpool.get_connection()
+        cursor = con.cursor(dictionary=True)
+
+        cursor.execute("SET SESSION group_concat_max_len = 10000;")
+        con.commit()
+        cursor.execute(
+                "SELECT b.self_intro, b.self_text,b.username,b.userImg, b.auth, a.id, a.product_name, a.product_price, a.product_amount, a.county_site, b.username, GROUP_CONCAT(DISTINCT tag.tag_name)as tag_name, GROUP_CONCAT(c.image_url) AS image_url FROM product_info as a JOIN members as b ON a.owner_id = b.id JOIN product_images as c ON c.product_id = a.id JOIN product_tag_relation ON a.id = product_tag_relation.product_info_id JOIN product_tag as tag ON product_tag_relation.tag_id = tag.id WHERE a.owner_id = %s GROUP BY a.id",(param,)
+            )
+        # JOIN members_self_info as self_info ON self_info.member_id = b.id 
+        # self_info.self_intro,self_info.self_text, 
+        response = cursor.fetchall()
+        con.commit()
+        return response
+
+    except Exception as err:
+        print("get_self_product(param)", err)
+        return False
+    finally:
+        cursor.close()
+        con.close()
+
 
 def from_id_get_product(productId):
     try:

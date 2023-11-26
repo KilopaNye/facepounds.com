@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block head %}
-<link rel="stylesheet" href="/CSS/talk_room.css">
+<link rel="stylesheet" href="/CSS/trade_finish_room.css">
 <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
 {% endblock head %}
@@ -30,12 +30,12 @@
     </div>
     <div class="btn-area">
         <div class="delete-btn" onclick="delete_pre_order();">取消交易</div>
-        <div class="wait-btn" onclick="GoBack();">暫緩交易</div>
+        <div class="wait-btn" onclick="GoBack();">暫緩確認</div>
         <div class="order-btn"  onclick="orderOK();"><span>完成本次交易</span></div>
     </div>
 </div>
 <script src="/JS/auth.js"></script>
-<script src="/JS/talk_room.js"></script>
+<script src="/JS/trade_finish_room.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
 {% endblock content %}

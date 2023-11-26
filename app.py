@@ -7,7 +7,7 @@ from api.member import member_system
 from api.ready_check import ready_check_system
 from api.trade import trade_system
 from api.ready_trade import ready_trade_system
-from api.talk_room import talk_system
+from api.trade_finish_room import trade_finish_system
 from api.self_page import self_page_system
 from model.query_make import *
 from flask_socketio import SocketIO,join_room,leave_room
@@ -31,7 +31,7 @@ app.register_blueprint(member_system)
 app.register_blueprint(ready_check_system)
 app.register_blueprint(trade_system)
 app.register_blueprint(ready_trade_system)
-app.register_blueprint(talk_system)
+app.register_blueprint(trade_finish_system)
 app.register_blueprint(self_page_system)
 
 @app.route("/")
@@ -62,9 +62,9 @@ def ready_trade():
 def member_page():
 	return render_template("member_page.html")
 
-@app.route("/talk_room/<order_uuid>")
+@app.route("/trade_finish_room/<order_uuid>")
 def talk(order_uuid):
-	return render_template("talk_room.html")
+	return render_template("trade_finish_room.html")
 
 @app.route("/self_page")
 def self_page():

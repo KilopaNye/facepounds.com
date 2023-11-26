@@ -4,10 +4,10 @@ from model.member_Auth import *
 from model.service_connect.rds_pool import *
 from model.service_connect.s3_bucket import *
 
-talk_system = Blueprint("talk_system", __name__)
+trade_finish_system = Blueprint("trade_finish_system", __name__)
 
 
-@talk_system.route("/api/get_ready_trade/<order_uuid>",methods=["GET"])
+@trade_finish_system.route("/api/get_ready_trade/<order_uuid>",methods=["GET"])
 def get_order(order_uuid):
     decoded_token=decode_jwt()
     if decoded_token['id']:
