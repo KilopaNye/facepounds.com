@@ -23,3 +23,17 @@ def get_pre_order():
             return jsonify({'error':"失敗"})
     else:
         return jsonify({'error':"尚未登入"})
+    
+@ready_trade_system.route("/api/ready_trade/get_trade",methods=["GET"])
+def get_pre_trade():
+    decoded_token=decode_jwt()
+    if decoded_token['id']:
+        try:
+            seller_id=decoded_token['id']
+            data = get_order_info(seller_id)
+            return jsonify({'data':data})
+        except Exception as err:
+            print(err)
+            return jsonify({'error':"失敗"})
+    else:
+        return jsonify({'error':"尚未登入"})

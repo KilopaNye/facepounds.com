@@ -17,6 +17,7 @@ app = Flask(__name__, static_folder="public", static_url_path="/")
 app.secret_key = "WGXaTKE7JR9MzzykHVp1O8ix7cnkx5eOb400I5gPxXJI3I8saAUWZjDLxs6056M"
 wsgi_app = app.wsgi_app
 socketio = SocketIO(app,path='/mysocket',cors_allowed_origins="https://facepounds.com")
+
 # ,cors_allowed_origins='*',ping_interval=20, ping_timeout=60
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
@@ -163,7 +164,7 @@ def stage_change(state):
 	room=state['room']
 	index=state['index']
 	message=state['message']
-	socketio.emit('info_change_response', {'message':message,'index': index},room=room,include_self=False)
+	socketio.emit('info_change_response', {'message':message,'index': index},room=room)
 	res = {
 	}
 	if index == "amount":

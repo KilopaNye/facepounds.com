@@ -126,7 +126,7 @@ getPreOrderByUUID()
 var socket = io("facepounds.com",{
     path:"/mysocket"
 });
-
+// var socket = io("http://localhost:3000");
 
 function joinRoom(order_uuid) {
     let token = localStorage.getItem('token');
@@ -346,11 +346,12 @@ socket.on('stage_change_response', function (data) {
 });
 
 socket.on('info_change_response', function (data) {
-    if(identity=="buyer"){
-        console.log(data);
     let info = document.querySelector(`.${data.index}-check`);
+    console.log(info)
     info.value = data.message;
     info.style.backgroundColor = "#FFFFFF";
+    if(identity=="buyer"){
+    
     let btn = document.querySelector(`.${data.index}-btn`);
     btn.textContent="確認"
     btn.style.backgroundColor=" #99EA52"
