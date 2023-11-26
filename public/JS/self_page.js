@@ -5,9 +5,18 @@ function GoThisProduct(product) {
 
 
 function createProductDom(data) {
+    let authIcon = document.querySelector('.icon')
+    let authText = document.querySelector('.auth-text')
+    if(data[0]['auth']=="0"){
+        authIcon.src="/images/icons/safe_none.png"
+        authText.textContent="點我進行驗證"
+    }else{
+        authIcon.src="/images/icons/safe_true.png"
+        authText.textContent="已通過驗證"
+    }
+
     let productFlex = document.querySelector(".product-flex");
     productFlex.textContent = ""
-
     let usernameTxt = document.querySelector('.member-name')
     usernameTxt.textContent = data[0]['username']
     let userImg = document.querySelector('.member-img')

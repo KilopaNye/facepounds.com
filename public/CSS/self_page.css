@@ -38,7 +38,23 @@
         >.frame-1{
             margin-top: 25px;
             margin-left: 25px;
-            width: 100%;
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            >.auth-icon{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                
+                >img{
+                    width: 60px;
+                    cursor: pointer;
+                }
+                >div{
+                    margin-top: 5px;
+                    font-size: 18px;
+                }
+            }
             >.member-info{
                 display: flex;
                 margin-left: 15px;
