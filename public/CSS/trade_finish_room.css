@@ -214,7 +214,7 @@
 
     >.btn-area {
         display: flex;
-        width: 100%;
+        width: 100%;height: 50px;
         max-width: 1000px;
         justify-content: space-between;
         margin-top: 10px;
@@ -224,7 +224,7 @@
 
         >.delete-btn {
             width: 25%;
-            height: 50px;
+            
             text-align: center;
             background-color: #f85757;
             border-radius: 10px;

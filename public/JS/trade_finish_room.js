@@ -4,7 +4,15 @@ let order_uuid = length_URL.pop();
 console.log(order_uuid)
 let currentUrl = window.location.href;
 let identity = currentUrl.split('=').pop()
-console.log("身分別"+identity)
+console.log("身分別" + identity)
+
+if (identity == "buyer") {
+    let orderBtn = document.querySelector('.order-btn')
+    orderBtn.style.display = "block"
+    orderBtn.style.display = "flex";
+    orderBtn.style.alignItems = "center";
+    orderBtn.style.justifyContent = "center";
+}
 
 
 function userLoginCheck() {
@@ -20,7 +28,8 @@ function userLoginCheck() {
         // console.log(data['data'])
         if (!data['data']) {
             console.log("尚未登入");
-            window.location.href="/";
+            window.location.href = "/";
+
             let logInButton = document.querySelector('#login-button');
             logInButton.style.display = "block"
             let logoutButton = document.querySelector('#logout-button');
@@ -38,7 +47,7 @@ function userLoginCheck() {
         return userLoginBool = false;
     })
 }
-
+userLoginCheck();
 
 function preOrderDomCreate(data) {
     // console.log(data)
@@ -67,7 +76,7 @@ function getPreOrderByUUID() {
             "Authorization": `Bearer ${token}`
         }
 
-        fetch(`/api/get_ready_trade/${order_uuid}`, {
+        fetch(`/api/trade-finish/get-ready-trade/${order_uuid}`, {
             headers: headers,
         }).then(response => response.json()).then(data => {
             preOrderDomCreate(data["data"]);
@@ -87,10 +96,10 @@ function getPreOrderByUUID() {
 getPreOrderByUUID()
 
 
-// var socket = io("http://localhost:3000");
-var socket = io("facepounds.com",{
-    path:"/mysocket"
-});
+var socket = io("http://localhost:3000");
+// var socket = io("facepounds.com",{
+//     path:"/mysocket"
+// });
 
 function joinRoom(order_uuid) {
     let token = localStorage.getItem('token');
@@ -182,6 +191,10 @@ function getTimeNow() {
     return formattedDateTime
 }
 
+socket.on('order-ok-response',()=>{
+    showOk();
+})
+
 function getMessageLoad() {
     let token = localStorage.getItem('token');
     headers = {
@@ -214,11 +227,10 @@ function getMessageLoad() {
 getMessageLoad();
 
 
-
 function orderOK() {
     let token = localStorage.getItem('token');
     let title = order_info_data['order_name']
-    let amountCheck = order_info_data ['order_amount']
+    let amountCheck = order_info_data['order_amount']
     let priceCheck = order_info_data['total_price']
     let siteCheck = order_info_data['trade_site']
     let timeCheck = order_info_data['trade_time']
@@ -240,7 +252,7 @@ function orderOK() {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         }
-        fetch(`/api/trade-finish-room/finish-order`, {
+        fetch(`/api/trade-finish/finish-trade`, {
             headers: headers,
             method: "POST",
             body: JSON.stringify({ order_result })
@@ -248,6 +260,7 @@ function orderOK() {
             console.log(data);
             if (data["data"]) {
                 showAlert();
+                socket.emit("order-ok",{room:order_uuid})
             } else if (data["error"]) {
                 showError(error);
             }
@@ -259,23 +272,58 @@ function orderOK() {
     }
 }
 
-userLoginCheck();
-let userLoginBool;
-function userLoginCheck() {
-    let token = localStorage.getItem('token');
-    if (!token) {
-        console.log("尚未登入");
-        window.location.href = "/";
-        let logInButton = document.querySelector('#login-button');
-        logInButton.style.display = "block"
-        let logoutButton = document.querySelector('#logout-button');
-        logoutButton.style.display = "none"
-        return userLoginBool = false;
-    } else {
-        let logInButton = document.querySelector('#login-button');
-        logInButton.style.display = "none";
-        let logoutButton = document.querySelector('#logout-button');
-        logoutButton.style.display = "block";
-        return userLoginBool = true;
-    }
+const showOk = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '對方已確認完成訂單!',
+        text: '請於<歷史交易紀錄>介面查看相關內容',
+    }).then((result) => {
+        console.log(result)
+        if (result.isConfirmed) {
+            window.location.href = "/ready_trade";
+        }
+    })
+}
+
+const showAlert = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '訂單交易已完成!',
+        text: '請於<歷史交易紀錄>介面查看相關內容',
+    }).then((result) => {
+        console.log(result)
+        if (result.isConfirmed) {
+            window.location.href = "/ready_check";//待改網址
+        }
+    })
+}
+
+const showCheck = () => {
+    Swal.fire({
+        title: "操作確認",
+        text: "是否確認完成該筆交易",
+        showCancelButton: true
+    }).then((result) => {
+        if (result.value) {
+            orderOK();
+        }
+    });
+}
+
+const showError = () => {
+    Swal.fire({
+        icon: 'error',
+        title: '發生錯誤',
+        text: '請聯繫客服人員',
+    })
+}
+function orderOkCheck() {
+
+}
+
+
+
+
+function GoBack() {
+    window.location.href = "/ready_trade"
 }

@@ -9,6 +9,7 @@ from api.trade import trade_system
 from api.ready_trade import ready_trade_system
 from api.trade_finish_room import trade_finish_system
 from api.self_page import self_page_system
+from api.user_auth_page import user_auth_page_system
 from model.query_make import *
 from flask_socketio import SocketIO,join_room,leave_room
 from flask_cors import CORS
@@ -19,7 +20,8 @@ app = Flask(__name__, static_folder="public", static_url_path="/")
 app.secret_key = "WGXaTKE7JR9MzzykHVp1O8ix7cnkx5eOb400I5gPxXJI3I8saAUWZjDLxs6056M"
 wsgi_app = app.wsgi_app
 CORS(app)
-socketio = SocketIO(app,path='/mysocket',cors_allowed_origins="*")
+socketio = SocketIO(app)
+# ,path='/mysocket',cors_allowed_origins="*"
 
 # ,cors_allowed_origins='*',ping_interval=20, ping_timeout=60
 app.config["JSON_AS_ASCII"]=False
@@ -33,6 +35,7 @@ app.register_blueprint(trade_system)
 app.register_blueprint(ready_trade_system)
 app.register_blueprint(trade_finish_system)
 app.register_blueprint(self_page_system)
+app.register_blueprint(user_auth_page_system)
 
 @app.route("/")
 def index():
@@ -185,6 +188,11 @@ def stage_change(state):
 def peer_invite_message(data):
 	room=data['roomId']
 	socketio.emit("invite-response", {'identity':data['identity']}, room=room)
+
+@socketio.on('order-ok')
+def peer_invite_message(data):
+	room=data['room']
+	socketio.emit("order-ok-response", room=room, include_self=False)
 
 @socketio.on('join-room')
 def room_connect(data):

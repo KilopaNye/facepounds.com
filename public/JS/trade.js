@@ -15,7 +15,20 @@ const showAlert = () => {
     }).then((result) => {
         console.log(result)
         if (result.isConfirmed) {
-            window.location.href = "/ready_check";
+            window.location.href = "/ready_trade";
+        }
+    })
+}
+
+const showOk = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '對方已完成訂單商議',
+        text: '請於<待履行交易>介面查看相關內容',
+    }).then((result) => {
+        console.log(result)
+        if (result.isConfirmed) {
+            window.location.href = "/ready_trade";
         }
     })
 }
@@ -123,10 +136,10 @@ function getPreOrderByUUID() {
 }
 getPreOrderByUUID()
 
-var socket = io("facepounds.com",{
-    path:"/mysocket"
-});
-// var socket = io("http://localhost:3000");
+// var socket = io("facepounds.com",{
+//     path:"/mysocket"
+// });
+var socket = io("http://localhost:3000");
 
 function joinRoom(order_uuid) {
     let token = localStorage.getItem('token');
@@ -432,6 +445,7 @@ function orderOK() {
             console.log(data);
             if (data["data"]) {
                 showAlert();
+                socket.emit("order-ok",{room:order_uuid})
             } else if (data["error"]) {
                 showError(error);
             }
@@ -443,7 +457,9 @@ function orderOK() {
     }
 }
 
-
+socket.on('order-ok-response',()=>{
+    showOk();
+})
 function delete_pre_order() {
     let token = localStorage.getItem('token');
     let order_result = {

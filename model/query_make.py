@@ -511,6 +511,42 @@ def being_order(data):
         cursor.close()
         con.close()
 
+def being_finish(data):
+    try:
+        con = cnxpool.get_connection()
+        cursor = con.cursor(dictionary=True)
+        con.autocommit = False
+        cursor.execute(
+            "INSERT INTO finish_trade_info(order_name,order_uuid, seller_id, buyer_id, product_id, order_amount, order_time, trade_time, trade_site, total_price) VALUE(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s  )",
+            (
+                data["name"],
+                data["orderUUID"],
+                data["seller_id"],
+                data["buyer_id"],
+                data["product_id"],
+                data["amount"],
+                data["order_time"],
+                data["trade_time"],
+                data["site"],
+                data["price"],
+            ),
+        )
+
+        cursor.execute(
+            "DELETE FROM ready_trade_info WHERE order_uuid = %s",(data["orderUUID"],)
+        )
+
+        con.commit()
+        return True
+    except Exception as err:
+        print("being_finish(data)", err)
+        con.rollback()
+        return False
+    finally:
+        con.autocommit = True
+        cursor.close()
+        con.close()
+
 def delete_pre_check_order(data):
     try:
         con = cnxpool.get_connection()
