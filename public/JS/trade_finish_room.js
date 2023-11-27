@@ -293,7 +293,7 @@ const showAlert = () => {
     }).then((result) => {
         console.log(result)
         if (result.isConfirmed) {
-            window.location.href = "/ready_check";//待改網址
+            window.location.href = "/trade_history";//待改網址
         }
     })
 }

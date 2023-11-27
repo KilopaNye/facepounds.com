@@ -10,6 +10,7 @@ from api.ready_trade import ready_trade_system
 from api.trade_finish_room import trade_finish_system
 from api.self_page import self_page_system
 from api.user_auth_page import user_auth_page_system
+from api.trade_history import trade_history_system
 from model.query_make import *
 from flask_socketio import SocketIO,join_room,leave_room
 from flask_cors import CORS
@@ -36,6 +37,7 @@ app.register_blueprint(ready_trade_system)
 app.register_blueprint(trade_finish_system)
 app.register_blueprint(self_page_system)
 app.register_blueprint(user_auth_page_system)
+app.register_blueprint(trade_history_system)
 
 @app.route("/")
 def index():
@@ -73,6 +75,9 @@ def talk(order_uuid):
 def self_page():
 	return render_template("self_page.html")
 
+@app.route("/trade-history")
+def trade_history():
+	return render_template("trade_history.html")
 
 
 
@@ -199,5 +204,6 @@ def room_connect(data):
 	print(data['id'])
 	room=data['ROOM_ID']
 	socketio.emit("join-response", {'message':"user-connect","userId":data['id']}, room=room, include_self=False)
+	
 if __name__ == '__main__':
     socketio.run(app,host="0.0.0.0",port=3000, debug=True)

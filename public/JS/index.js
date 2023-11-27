@@ -15,6 +15,10 @@ function GoThisProduct(product) {
     window.location.href = `/product/${id}`
 }
 
+function GoHistory(){
+    window.location.href = "/trade-history"
+}
+
 function GoSelf(){
     window.location.href="/self_page"
 }

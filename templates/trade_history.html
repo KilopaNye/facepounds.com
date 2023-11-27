@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="/CSS/ready_check.css">
+{% endblock head %}
+{% block content %}
+<div class="header-flex"><span>歷史交易紀錄</span></div>
+<div class="change_serve"><span onclick="preOrderDom(order_data, buyer);" class="buyer">我是買家</span><span
+                onclick="preOrderDom(seller_data, seller);" class="seller">我是賣家</span></div>
+        <div class="trade-area-flex">
+        <div class="trade-area-flex">
+        </div>
+
+        <script src="/JS/auth.js"></script>
+        <script src="/JS/trade_history.js"></script>
+        {% endblock content %}
