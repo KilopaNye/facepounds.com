@@ -3,7 +3,27 @@
 <link rel="stylesheet" href="/CSS/user_auth_page.css">
 {% endblock head %}
 {% block content %}
-
+<div class="header-flex"><span><img src="/images/icons/authentication.png">會員身分驗證</span></div>
+<div class="main-area-flex">
+    
+    <div class="main-area">
+        <div class="cat-loading"><img src="/images/image/CAT.gif"></div>
+        <div class="text-title">請上傳身分證件進行驗證</div>
+        <div class="file-box">
+            <input type="file" class="file-input">
+        </div>
+        <div class="start-btn" onclick="startAuth();">開始驗證</div>
+        <div class="result">
+            <div>掃描結果:</div>
+            <div class="result-num"></div>
+            <div class="text">
+                <div class="result-txt"></div>
+                <img class="result-icon">
+            </div>
+        </div>
+    </div>
+    <div class="back-btn" onclick="GoBack();" style="display: none;">回到個人頁面</div>
+</div>
 
 
 <script src="/JS/auth.js"></script>

@@ -636,3 +636,21 @@ def get_buyer_finish_info(buyer_id):
     finally:
         cursor.close()
         con.close()
+
+def user_auth_approved(user_id):
+    try:
+        con = cnxpool.get_connection()
+        cursor = con.cursor(dictionary=True)
+
+        cursor.execute(
+            "UPDATE members SET auth = 1 WHERE id = %s",
+            (user_id,),
+        )
+        con.commit()
+        return True
+    except Exception as err:
+        print("user_auth_approved(user_id): ", err)
+        return False
+    finally:
+        cursor.close()
+        con.close()

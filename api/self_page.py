@@ -23,3 +23,5 @@ def userInfo():
                 return {"error": True, "message": "不正確"}, 400
         except:
             return {"error": True, "message": "伺服器內部錯誤"}, 500
+    else:
+        return {"error": True, "message": "尚未登入"}, 400

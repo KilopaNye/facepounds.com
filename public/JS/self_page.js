@@ -3,13 +3,16 @@ function GoThisProduct(product) {
     window.location.href = `/product/${id}`
 }
 
-
+function GoAuth(){
+    window.location.href="/user-auth-page"
+}
 function createProductDom(data) {
     let authIcon = document.querySelector('.icon')
     let authText = document.querySelector('.auth-text')
     if(data[0]['auth']=="0"){
         authIcon.src="/images/icons/safe_none.png"
         authText.textContent="點我進行驗證"
+        authIcon.setAttribute("onclick","GoAuth();")
     }else{
         authIcon.src="/images/icons/safe_true.png"
         authText.textContent="已通過驗證"

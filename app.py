@@ -79,6 +79,10 @@ def self_page():
 def trade_history():
 	return render_template("trade_history.html")
 
+@app.route("/user-auth-page")
+def user_auth_page():
+	return render_template("user_auth_page.html")
+
 
 
 
@@ -204,6 +208,6 @@ def room_connect(data):
 	print(data['id'])
 	room=data['ROOM_ID']
 	socketio.emit("join-response", {'message':"user-connect","userId":data['id']}, room=room, include_self=False)
-	
+
 if __name__ == '__main__':
     socketio.run(app,host="0.0.0.0",port=3000, debug=True)
