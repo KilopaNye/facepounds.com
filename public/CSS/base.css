@@ -8,17 +8,18 @@ body {
 }
 
 .login-class {
+    /* top:55px; */
     position: fixed;
     width: 100%;
     height: 100%;
     z-index: 5;
-    opacity: 0.5;
-    background-color: #666;
+    opacity: 0.9;
+    background-color: #ffffff;
 }
-
-.login-box  {
+.login-box-inside,.register-box-inside{
+    padding-right: 0;
     border-radius: 6px;
-    width: 340px;
+    width: 800px;height: 500px;
     position: fixed;
     left: 50%;
     transform: translate(-50%);
@@ -26,22 +27,34 @@ body {
     background-color:#fff;
     display: flex;
     justify-content: center;
-    margin-top: 80px;
+    margin-top: 200px;
     flex-wrap: wrap;
     text-align: center;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 5px 5px 100px 0px rgba(78, 78, 78, 0.8);
+    >img{
+        width: 350px;
+    }
+}
+.form-area,.register-info-area{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.register-box{
+.close-png{
     border-radius: 6px;
-    width: 340px;
+    width: 20px;
     position: fixed;
-    left: 50%;
+    right: 5px;
+    top: 5px;
     transform: translate(-50%);
     z-index: 6;
     background-color:#fff;
     display: flex;
     justify-content: center;
-    margin-top: 80px;
     flex-wrap: wrap;
     text-align: center;
 }
@@ -49,7 +62,7 @@ body {
     color: red;
 }
 .text-input{
-    width: 80%;
+    width: 340px;
     font-size: 17px;
     border-radius: 6px;
     border: #E8E8E8 solid 1px;
@@ -62,14 +75,16 @@ body {
 }
 .login-text{
     border-radius: 6px;
-    width: 380px;
+    width: 340px;
     font-size: 27px;
     color: #fff;
-    background-color: #489;
-    width: 80%;
+    background-color: #d95858;height: 45px;
     margin: 0px 15px 10px 15px;padding: 10px 15px;
     text-align: center;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .close-png{
@@ -118,11 +133,17 @@ body {
     margin-left: 10px;
     padding: 2px;
     font-weight: bold;
+    background-color: #f84b56;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #fff;
+    border: solid 2px rgb(215, 215, 215);
 }
 
 .login:hover{
-    background-color: #ffeded;
-    border-radius: 20px;
+    background-color: #d95858;
+    border-radius: 8px;
 }
 
 .web-title {

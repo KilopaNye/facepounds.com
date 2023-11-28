@@ -62,6 +62,7 @@ function userLoginCheck() {
         logInButton.style.display = "block"
         let logoutButton = document.querySelector('#logout-button');
         logoutButton.style.display = "none"
+        alert("尚未登入，沒有操作權限")
         return userLoginBool = false;
     } else {
         console.log("登入");

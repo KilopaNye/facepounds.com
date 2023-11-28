@@ -1,3 +1,18 @@
+const showRegisterOk = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '用戶建立成功!',
+        text: '請點擊右上角登入按鈕登入帳戶',
+    }).then((result) => {
+        console.log(result)
+        if (result.isConfirmed) {
+            window.location.href = "/";
+        }
+    })
+}
+
+
+
 function goRegister() {
     let loginBox = document.querySelector(".login-box");
     let registerBox = document.querySelector(".register-box");
@@ -73,6 +88,7 @@ function register() {
                 let errorMessage = document.querySelector(".error-message")
                 errorMessage.innerHTML = "註冊成功，請登入會員帳號!"
                 errorMessage.style.color = "#99FF33"
+                showRegisterOk()
             }
         }).catch(error => {
             console.error("發生錯誤", error);
@@ -175,7 +191,6 @@ function userLoginCheck_index() {
             return userLoginBool = true;
         }
     }).catch(error => {
-        alert(error)
         return userLoginBool = false;
     })
 }

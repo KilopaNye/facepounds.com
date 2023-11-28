@@ -108,7 +108,8 @@ function getPreTrade() {
             console.log(error);
         })
     } else {
-        alert("尚未登入，沒有操作權限")
+        // alert("尚未登入，沒有操作權限")
+        console.log("尚未登入");
     }
 }
     getPreOrder()

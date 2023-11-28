@@ -18,30 +18,48 @@
     <!-- <div class="sidebar"></div> -->
     <div style="display:none;" class="login-class"></div>
     <div class="login-box" style="display:none;">
-        <img src="/images/icons/close.png" class="close-png" onclick="closeInput();">
-        <div style="background-color: #395574; height: 10px; width: 100%; border-radius: 6px 6px 0 0;"></div>
-        <div style="display: flex; justify-content: center;font-size: 24px; font-weight: bold; margin: 15px;">登入會員帳號
+        <div class="login-box-inside">
+            <img src="/images/image/smile.png">
+            <div class="form-area">
+                <img src="/images/icons/close.png" class="close-png" onclick="closeInput();">
+                <div
+                    style="display: flex; justify-content: center;font-size: 34px; font-weight: bold; margin: 15px; margin-top: 20px;height: 45px;">
+                    登入會員帳號
+                </div>
+                <input type="text" placeholder="test@gmail.com" class="text-input login-email">
+                <input type="password" placeholder="test" class="text-input login-password" placeholder="test">
+                <div class="login-text" onclick="login();">登入帳戶</div>
+                <div class="message"></div>
+                <div style="font-size: 16px; margin-bottom: 15px;margin-top:10px;font-weight: bold; cursor: pointer;"
+                    onclick="goRegister();">
+                    還沒有帳戶? 點此註冊</div>
+            </div>
+
         </div>
-        <input type="text" placeholder="輸入電子信箱" class="text-input login-email">
-        <input type="password" placeholder="輸入密碼" class="text-input login-password">
-        <div class="login-text" onclick="login();">登入帳戶</div>
-        <div class="message"></div>
-        <div style="font-size: 16px; margin-bottom: 15px;font-weight: bold; cursor: pointer;" onclick="goRegister();">
-            還沒有帳戶? 點此註冊</div>
+
     </div>
 
     <div class="register-box" style="display:none;">
-        <img src="/images/icons/close.png" class="close-png" onclick="closeRegister();">
-        <div style="background-color: #489; height: 10px; width: 100%; border-radius: 6px 6px 0 0;"></div>
-        <div style="display: flex; justify-content: center;font-size: 24px; font-weight: bold;   margin: 15px;">註冊會員帳號
+        <div class="register-box-inside">
+            <img src="/images/icons/smile (1).png">
+            <div class="register-info-area">
+                <img src="/images/icons/close.png" class="close-png" onclick="closeRegister();">
+                <!-- <div style="background-color: #489; height: 10px; width: 100%; border-radius: 6px 6px 0 0;"></div> -->
+                <div style="display: flex; justify-content: center;font-size: 24px; font-weight: bold;   margin: 15px;">
+                    註冊會員帳號
+                </div>
+                <input type="text" placeholder="輸入使用者名稱(中文、英文)" class="text-input name-text">
+                <input type="text" placeholder="輸入電子信箱" class="text-input email-text">
+                <input type="password" placeholder="輸入密碼(限英及底線)" class="text-input password-text">
+                <div class="login-text" onclick="register();">註冊新帳戶</div>
+                <div class="error-message"></div>
+                <div style="font-size: 16px; margin-bottom: 15px; margin-top:15px;font-weight: bold; cursor: pointer;"
+                    onclick="goLogin();">
+                    已經有帳戶了? 點此登入</div>
+            </div>
+
         </div>
-        <input type="text" placeholder="輸入使用者名稱(限英及底線)" class="text-input name-text">
-        <input type="text" placeholder="輸入電子信箱" class="text-input email-text">
-        <input type="password" placeholder="輸入密碼(限英及底線)" class="text-input password-text">
-        <div class="login-text" onclick="register();">註冊新帳戶</div>
-        <div class="error-message"></div>
-        <div style="font-size: 16px; margin-bottom: 15px;font-weight: bold; cursor: pointer;" onclick="goLogin();">
-            已經有帳戶了? 點此登入</div>
+
     </div>
 
     <div class="header-block">
@@ -56,7 +74,7 @@
         </div>
     </div>
 
-    
+
     <script src="/JS/base.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
     {% block content %}

@@ -158,3 +158,34 @@ function orderProduct(order_info) {
     }
 }
 
+function userLoginCheck_index() {
+    let token = localStorage.getItem('token');
+    let headers = {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+    }
+    fetch("/api/user/auth", {
+        method: "GET",
+        headers: headers
+    }).then(response => response.json()).then(data => {
+        // console.log(data['data'])
+        if (!data['data']) {
+            console.log("尚未登入");
+            let logInButton = document.querySelector('#login-button');
+            logInButton.style.display = "block"
+            let logoutButton = document.querySelector('#logout-button');
+            logoutButton.style.display = "none"
+            return userLoginBool = false;
+        } else {
+            let logInButton = document.querySelector('#login-button');
+            logInButton.style.display = "none";
+            let logoutButton = document.querySelector('#logout-button');
+            logoutButton.style.display = "block";
+            return userLoginBool = true;
+        }
+    }).catch(error => {
+        return userLoginBool = false;
+    })
+}
+
+userLoginCheck_index()

@@ -84,7 +84,6 @@ function getPreOrder() {
             console.log(error);
         })
     } else {
-        alert("尚未登入，沒有操作權限")
     }
 }
 

@@ -1,3 +1,37 @@
+const showAlert = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '用戶建立成功!',
+        text: '請點擊右上角登入按鈕登入帳戶',
+    }).then((result) => {
+        console.log(result)
+        if (result.isConfirmed) {
+            window.location.href = "/";
+        }
+    })
+}
+
+const showOk = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '對方已完成訂單商議',
+        text: '請於<待履行交易>介面查看相關內容',
+    }).then((result) => {
+        console.log(result)
+        if (result.isConfirmed) {
+            window.location.href = "/ready_trade";
+        }
+    })
+}
+
+const showError = () => {
+    Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: '未登入帳戶或填寫有誤，或請聯繫客服人員',
+    })
+}
+
 function GoCheck(){
     window.location.href="/ready_check"
 }
@@ -21,6 +55,9 @@ function GoHistory(){
 
 function GoSelf(){
     window.location.href="/self_page"
+}
+function GoAuth(){
+    window.location.href="/user-auth-page"
 }
 
 function createProductDom(data) {
@@ -150,3 +187,5 @@ function search_tag(tagBox) {
     getProductInfo(param)
 
 }
+
+
