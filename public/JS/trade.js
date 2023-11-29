@@ -513,14 +513,18 @@ function startStream() {
         return;
     }
 
-    // socket.emit('peer_invite_message', { identity: identity, roomId: order_uuid });
-
-    const peer = new Peer(identity, {
+    
+    navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true
+    }).then(stream => {
+        
+    const peer = new Peer(identity+order_uuid, {
         secure: true,
         port: '443',
         host: "/"
     });
-
+    
     // 新增錯誤處理
     peer.on('error', error => {
         console.error('Peer連線錯誤:', error);
@@ -532,14 +536,10 @@ function startStream() {
 
     peer.on("open", (id) => {
         console.log(`Your peer ID is: ${id}`);
+        socket.emit('peer_invite_message', { identity: identity, roomId: order_uuid });
         socket.emit('join-room', { ROOM_ID: order_uuid, id: id });
         state = false;
     });
-
-    navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true
-    }).then(stream => {
         handleNewStream(stream,peer);
     }).catch(error => {
         console.error('錯誤:', error);
