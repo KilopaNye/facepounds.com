@@ -75,7 +75,7 @@ function getPreOrder() {
             "Authorization": `Bearer ${token}`
         }
 
-        fetch(`/api/get_pre_order`, {
+        fetch(`/api/get-pre-order`, {
             headers: headers,
         }).then(response => response.json()).then(data => {
             console.log(data)
@@ -99,7 +99,7 @@ function getPreTrade() {
             "Authorization": `Bearer ${token}`
         }
 
-        fetch(`/api/get_pre_trade`, {
+        fetch(`/api/get-pre-trade`, {
             headers: headers,
         }).then(response => response.json()).then(data => {
             // console.log(data);

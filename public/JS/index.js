@@ -32,16 +32,16 @@ const showError = () => {
     })
 }
 
-function GoCheck(){
-    window.location.href="/ready_check"
+function GoCheck() {
+    window.location.href = "/ready_check"
 }
 userLoginCheck_index()
-function GoUpload(){
-    window.location.href="/upload"
+function GoUpload() {
+    window.location.href = "/upload"
 }
 
-function GoTrade(){
-    window.location.href="/ready_trade"
+function GoTrade() {
+    window.location.href = "/ready_trade"
 }
 
 function GoThisProduct(product) {
@@ -49,15 +49,15 @@ function GoThisProduct(product) {
     window.location.href = `/product/${id}`
 }
 
-function GoHistory(){
+function GoHistory() {
     window.location.href = "/trade-history"
 }
 
-function GoSelf(){
-    window.location.href="/self_page"
+function GoSelf() {
+    window.location.href = "/self_page"
 }
-function GoAuth(){
-    window.location.href="/user-auth-page"
+function GoAuth() {
+    window.location.href = "/user-auth-page"
 }
 
 function createProductDom(data) {
@@ -159,16 +159,22 @@ function getProductInfo(param = null) {
     headers = {
         "Content-Type": "application/json",
     }
-    fetch("/product/get_info", {
+    fetch("/product/get-info", {
         method: "POST",
         headers: headers,
         body: JSON.stringify({ param: param })
     }).then(response => response.json()).then(data => {
-        console.log(data)
-        let products = data["data"]
-        createProductDom(products)
+        // console.log(data)
+        if (data['data']) {
+            let products = data["data"]
+            createProductDom(products)
+        } else {
+            catLoad.style.display = "none";
+            console.log("找不到相關的產品")
+        }
+
     }).catch(error => {
-        console.log(error)
+        // console.log(error)
     })
 }
 getProductInfo()

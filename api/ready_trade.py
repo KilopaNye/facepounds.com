@@ -10,7 +10,7 @@ ready_trade_system = Blueprint("ready_trade_system", __name__)
 
 
 
-@ready_trade_system.route("/api/ready_trade/get_order",methods=["GET"])
+@ready_trade_system.route("/api/ready-trade/get-order",methods=["GET"])
 def get_pre_order():
     decoded_token=decode_jwt()
     if decoded_token['id']:

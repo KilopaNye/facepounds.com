@@ -19,14 +19,19 @@ function searchProductBar(){
     headers={
         "Content-Type": "application/json",
     }
-    fetch("/product/get_info", {
+    fetch("/product/get-info", {
         method:"POST",
         headers:headers,
         body:JSON.stringify({param})
     }).then(response => response.json()).then(data => {
-        console.log(data)
-        result = data['data']
+        // console.log(data)
+        if(data){
+            result = data['data']
         createProductDom(result)
+        }else{
+            catLoad.style.display="none";
+        }
+        
     }).catch(error => {
         console.log(error)
     })

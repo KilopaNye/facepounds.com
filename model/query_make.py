@@ -190,7 +190,7 @@ def get_product(param):
             if response:
                 return response
             else:
-                return "查詢不到相關資料"
+                return False
     except Exception as err:
         print("get_product(param):", err)
         return False

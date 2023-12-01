@@ -5,7 +5,7 @@ from model.query_make import *
 
 index_system = Blueprint("index_system", __name__)
 
-@index_system.route("/product/get_info" ,methods=["POST"])
+@index_system.route("/product/get-info" ,methods=["POST"])
 def get_info():
 	try:
 		param = request.get_json()
@@ -14,10 +14,11 @@ def get_info():
 			response = make_response(jsonify({"data":result}), 200)
 			response.headers["Content-type"] = "application/json"
 			# print(result)
+			print(result)
 			return response
 		else:
 			return {
-					"error": True,
+					"data": False,
 					"message": "不正確"
 				}, 400
 	except:

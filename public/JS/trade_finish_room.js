@@ -201,7 +201,7 @@ function getMessageLoad() {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
     }
-    fetch(`/api/trade/get_message_load/${order_uuid}`, {
+    fetch(`/api/trade/get-message-load/${order_uuid}`, {
         headers: headers,
     }).then(response => response.json()).then(data => {
         console.log(data);

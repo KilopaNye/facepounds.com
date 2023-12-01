@@ -7,7 +7,7 @@ from model.service_connect.s3_bucket import *
 
 ready_check_system = Blueprint("ready_check_system", __name__)
 
-@ready_check_system.route("/api/new_order",methods=["POST"])
+@ready_check_system.route("/api/new-order",methods=["POST"])
 def new_order():
     decoded_token=decode_jwt()
     if decoded_token['id']:
@@ -26,7 +26,7 @@ def new_order():
     else:
         return jsonify({'error':"尚未登入"})
     
-@ready_check_system.route("/api/get_pre_order",methods=["GET"])
+@ready_check_system.route("/api/get-pre-order",methods=["GET"])
 def get_pre_order():
     decoded_token=decode_jwt()
     if decoded_token['id']:
@@ -40,7 +40,7 @@ def get_pre_order():
     else:
         return jsonify({'error':"尚未登入"})
     
-@ready_check_system.route("/api/get_pre_trade",methods=["GET"])
+@ready_check_system.route("/api/get-pre-trade",methods=["GET"])
 def get_pre_trade():
     decoded_token=decode_jwt()
     if decoded_token['id']:

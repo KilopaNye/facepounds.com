@@ -7,7 +7,7 @@ from model.service_connect.s3_bucket import *
 trade_system = Blueprint("trade_system", __name__)
 
 
-@trade_system.route("/api/get_order_trade/<order_uuid>",methods=["GET"])
+@trade_system.route("/api/get-order-trade/<order_uuid>",methods=["GET"])
 def get_order(order_uuid):
     decoded_token=decode_jwt()
     if decoded_token['id']:
@@ -20,7 +20,7 @@ def get_order(order_uuid):
     else:
         return jsonify({'error':"尚未登入"}),500
 
-@trade_system.route("/api/trade/get_message_load/<order_uuid>",methods=["GET"])
+@trade_system.route("/api/trade/get-message-load/<order_uuid>",methods=["GET"])
 def get_message_load(order_uuid):
     decoded_token=decode_jwt()
     if decoded_token['id']:
@@ -33,7 +33,7 @@ def get_message_load(order_uuid):
     else:
         return jsonify({'error':"尚未登入"}),500
 
-@trade_system.route("/api/trade/ready_order",methods=["POST"])
+@trade_system.route("/api/trade/ready-order",methods=["POST"])
 def ready_order():
     try:
         data = request.get_json()
@@ -49,7 +49,7 @@ def ready_order():
         return jsonify({'error':"伺服器錯誤"}),500
 
 
-@trade_system.route("/api/product/delete_pre_check",methods=["PUT"])
+@trade_system.route("/api/product/delete-pre-check",methods=["PUT"])
 def delete_order():
     try:
         data = request.get_json()

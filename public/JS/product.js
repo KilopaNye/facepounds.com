@@ -139,7 +139,7 @@ function orderProduct(order_info) {
             "Authorization": `Bearer ${token}`
         }
 
-        fetch(`/api/new_order`, {
+        fetch(`/api/new-order`, {
             method: "POST",
             headers: headers,
             body: JSON.stringify({ order_info: order_info_body })
