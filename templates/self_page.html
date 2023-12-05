@@ -5,6 +5,52 @@
 <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
 {% endblock head %}
 {% block content %}
+
+<div class="changeImg-flex" style="display: none;">
+    <div class="changeImg-box">
+        <div class="changeImg-info">
+            <img src="/images/icons/close.png" onclick="delBox();">
+            <div class="changeImg-info-title">更改大頭貼</div>
+            <input type="file">
+            <div class="GoChange">確認更改</div>
+        </div>
+    </div>
+</div>
+
+<div class="changeName-flex" style="display: none;">
+    <div class="changeImg-box">
+        <div class="changeImg-info">
+            <img src="/images/icons/close.png" onclick="delNameBox();">
+            <div class="changeImg-info-title">更改商家名稱</div>
+            <input type="text" placeholder="新名稱">
+            <div class="GoChange">確認更改</div>
+        </div>
+    </div>
+</div>
+
+<div class="changeTag-flex" style="display: none;">
+    <div class="changeImg-box">
+        <div class="changeImg-info">
+            <img src="/images/icons/close.png" onclick="delTagBox();">
+            <div class="changeImg-info-title">更改商家tag</div>
+            <textarea class="teg-info-change" style="width: 250px;"></textarea>
+            <div class="GoChange">確認更改</div>
+        </div>
+    </div>
+</div>
+
+<div class="changeSelf-flex" style="display: none;">
+    <div class="changeImg-box">
+        <div class="changeImg-info">
+            <img src="/images/icons/close.png" onclick="delSelf();">
+            <div class="changeImg-info-title">更改商家自介</div>
+            <textarea class="teg-info-change" style="width: 250px;"></textarea>
+            <div class="GoChange">確認更改</div>
+        </div>
+    </div>
+</div>
+
+
 <div class="header-flex"><span>個人資訊</span></div>
 <div class="box-flex">
     <div class="member-info-box">
@@ -12,8 +58,8 @@
             <div class="member-info">
                 <img class="member-img">
                 <div class="member-info-text">
-                    <div class="member-name"></div>
-                    <div class="member-tags"></div>
+                    <div class="member-name" onclick="changeName();"></div>
+                    <div class="member-tags" onclick="changeTagBlock();"></div>
                 </div>
             </div>
             <div class="auth-icon"><img class="icon"><div class="auth-text"></div></div>
@@ -21,7 +67,7 @@
         </div>
         <div class="frame-2">
             <div class="title-text">商家自介</div>
-            <div class="member-self"></div>
+            <div class="member-self" onclick="changeSelfBlock();"></div>
         </div>
     </div>
 

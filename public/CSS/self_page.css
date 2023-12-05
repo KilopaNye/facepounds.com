@@ -1,29 +1,33 @@
 .header-flex {
     width: 100%;
     height: 300px;
-    background-color:#395574;
+    background-color: #395574;
     display: flex;
     justify-content: center;
     align-items: center;
     object-fit: cover;
     margin-bottom: 40px;
-    >img{
+
+    >img {
         width: 128px;
+        cursor: pointer;
     }
-    >span{
+
+    >span {
         font-size: 68px;
-        font-family:sans-serif;
+        font-family: sans-serif;
         font-weight: bold;
         color: #ffffff;
     }
 }
 
-.box-flex{
+.box-flex {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    >.member-info-box{
+
+    >.member-info-box {
         width: 1100px;
         min-height: 150px;
         height: auto;
@@ -34,28 +38,31 @@
         cursor: unset;
         border-radius: 20px;
         padding-bottom: 10px;
-        
-        >.frame-1{
+
+        >.frame-1 {
             margin-top: 25px;
             margin-left: 25px;
             width: 90%;
             display: flex;
             justify-content: space-between;
-            >.auth-icon{
+
+            >.auth-icon {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                
-                >img{
+
+                >img {
                     width: 60px;
                     cursor: pointer;
                 }
-                >div{
+
+                >div {
                     margin-top: 5px;
                     font-size: 18px;
                 }
             }
-            >.member-info{
+
+            >.member-info {
                 display: flex;
                 margin-left: 15px;
                 width: 300px;
@@ -63,51 +70,64 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: 10px;
-                background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d9d9d9' fill-opacity='0.4'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");;
+                background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d9d9d9' fill-opacity='0.4'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+                ;
                 border: solid 2px rgb(229, 229, 229);
-                >img{
-                    width: 80px;height: 80px;
+
+                >img {
+                    width: 80px;
+                    height: 80px;
                     object-fit: cover;
                     margin-right: 20px;
                     border: 1px solid rgb(255, 246, 227);
                     border-radius: 100px;
+                    cursor: pointer;
                 }
-                >.member-info-text{
-                    >.member-name{
+
+                >.member-info-text {
+                    >.member-name {
                         font-size: 24px;
                         font-weight: bold;
                         margin-bottom: 10px;
                         margin-top: 10px;
+                        cursor: pointer;
                     }
-                    >.member-tags{
+
+                    >.member-tags {
                         color: #9d9d9d;
+                        cursor: pointer;
+                        min-width: 150px;
                     }
                 }
             }
         }
-        >.frame-2{
+
+        >.frame-2 {
             margin-top: 25px;
             margin-left: 25px;
             margin-right: 25px;
-            >.title-text{
+
+            >.title-text {
                 font-size: 22px;
                 font-weight: bold;
                 margin-bottom: 10px;
             }
-            >.member-self{
+
+            >.member-self {
                 line-height: 40px;
+                cursor: pointer;
             }
         }
     }
-    >h2{
-        
-    }
+
+    >h2 {}
 }
 
 
 .main-area {
     background-color: rgb(255, 255, 255);
-    width: 100%;min-height: 500px;
+    width: 100%;
+    min-height: 500px;
     display: flex;
     justify-content: left;
     flex-direction: column;
@@ -120,13 +140,15 @@
         height: auto;
         background-color: rgb(255, 255, 255);
         position: relative;
+
         >img {
             position: absolute;
             right: 45%;
-            top:20%;
+            top: 20%;
             z-index: 5;
             /* background-color: #ffffff; */
         }
+
         >.title-tag {
             font-weight: bold;
             font-size: 28px;
@@ -154,22 +176,24 @@
                 margin: 16px;
                 position: relative;
                 box-shadow: 5px 5px 10px rgba(151, 151, 151, 0.3);
-                
+
                 >img {
                     width: 100%;
                     height: 230px;
                     object-fit: cover;
                     border-radius: 8px 8px 0 0;
                 }
-                .product-id-opacity{
+
+                .product-id-opacity {
                     width: 100%;
                     height: 230px;
                     background-color: #c8c8c8;
                     opacity: 0;
-                    position:absolute;
-                    top:0;
+                    position: absolute;
+                    top: 0;
                     cursor: pointer;
                 }
+
                 >.product-title {
                     font-size: 20px;
                     font-weight: bold;
@@ -209,11 +233,15 @@
                     padding-left: 10px;
                     padding-right: 10px;
                     font-size: 14px;
-                    margin-top: 5px;padding: 3px;margin-left: 5px;margin-right: 5px;
+                    margin-top: 5px;
+                    padding: 3px;
+                    margin-left: 5px;
+                    margin-right: 5px;
                     overflow-x: scroll;
                     white-space-collapse: collapse;
                     text-wrap: nowrap;
                     border-radius: 200px;
+
                     >.tag {
                         background-color: #FF6161;
                         padding-left: 3px;
@@ -241,6 +269,72 @@
     
 } */
 *::-webkit-scrollbar-thumb {
-    background-color: #c8c8c8; 
+    background-color: #c8c8c8;
     border-radius: 10px;
+}
+
+.changeImg-flex,.changeName-flex ,.changeTag-flex, .changeSelf-flex{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 5;
+
+    .changeImg-box {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        >.changeImg-info {
+            width: 350px;
+            height: 200px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            border: 5px solid rgb(212, 212, 212);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            >img {
+                position: absolute;
+                width: 28px;
+                height: 28px;
+                top: 10px;
+                right: 10px;
+                z-index: 6;
+                cursor: pointer;
+            }
+
+            >.changeImg-info-title {
+                font-size: 29px;
+                font-weight: bold;
+            }
+
+            >input,textarea {
+                margin-top: 40px;
+                margin-bottom: 2px;
+                word-wrap: break-word;
+                
+            }
+
+            >.GoChange {
+                margin-top: 35px;
+                padding: 8px 10px;
+                width: 200px;
+                text-align: center;
+                border:2px solid rgb(196, 196, 196);
+                border-radius: 10px;
+                background-color: chartreuse;
+                font-weight: bold;
+                font-size: 20px;
+                cursor: pointer;
+            }
+            >.GoChange:hover{
+                background-color: rgb(166, 255, 78);
+            }
+        }
+    }
 }

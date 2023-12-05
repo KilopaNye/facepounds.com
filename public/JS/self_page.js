@@ -3,19 +3,19 @@ function GoThisProduct(product) {
     window.location.href = `/product/${id}`
 }
 
-function GoAuth(){
-    window.location.href="/user-auth-page"
+function GoAuth() {
+    window.location.href = "/user-auth-page"
 }
 function createProductDom(data) {
     let authIcon = document.querySelector('.icon')
     let authText = document.querySelector('.auth-text')
-    if(data[0]['auth']=="0"){
-        authIcon.src="/images/icons/safe_none.png"
-        authText.textContent="點我進行驗證"
-        authIcon.setAttribute("onclick","GoAuth();")
-    }else{
-        authIcon.src="/images/icons/safe_true.png"
-        authText.textContent="已通過驗證"
+    if (data[0]['auth'] == "0") {
+        authIcon.src = "/images/icons/safe_none.png"
+        authText.textContent = "點我進行驗證"
+        authIcon.setAttribute("onclick", "GoAuth();")
+    } else {
+        authIcon.src = "/images/icons/safe_true.png"
+        authText.textContent = "已通過驗證"
     }
 
     let productFlex = document.querySelector(".product-flex");
@@ -23,7 +23,7 @@ function createProductDom(data) {
     let usernameTxt = document.querySelector('.member-name')
     usernameTxt.textContent = data[0]['username']
     let userImg = document.querySelector('.member-img')
-    userImg.src=data[0]['userImg']
+    userImg.src = data[0]['userImg']
     let selfText = document.querySelector('.member-tags')
     selfText.textContent = data[0]['self_intro']
     let selfIntro = document.querySelector('.member-self')
@@ -109,6 +109,7 @@ function createProductDom(data) {
     }
     let catLoad = document.querySelector('.cat-load')
     catLoad.style.display = "none";
+
 }
 
 
@@ -152,3 +153,88 @@ function userLoginCheck() {
         return userLoginBool = true;
     }
 }
+const memberImg = document.querySelector('.member-img')
+let memberIcon;
+function imgChange(ImgUrl) {
+    memberImg.src = ImgUrl
+}
+memberImg.addEventListener('mouseover', () => {
+    memberIcon = memberImg.src;
+    imgChange("https://cdn-icons-png.flaticon.com/512/12206/12206178.png");
+});
+
+memberImg.addEventListener('mouseout', () => {
+    imgChange(memberIcon);
+});
+
+memberImg.addEventListener('click', () => {
+    let changeImgInfo = document.querySelector('.changeImg-flex')
+    changeImgInfo.style.display="block";
+});
+
+function delBox(){
+    let changeImgInfo = document.querySelector('.changeImg-flex')
+    changeImgInfo.style.display="none";
+}
+
+function delNameBox(){
+    let changeImgName = document.querySelector('.changeName-flex')
+    changeImgName.style.display="none";
+}
+
+function changeName(){
+    let changeImgName = document.querySelector('.changeName-flex')
+    changeImgName.style.display="block";
+}
+
+function changeTagBlock(){
+    let changeTag = document.querySelector('.changeTag-flex')
+    changeTag.style.display="block"
+}
+function delTagBox(){
+    let changeTag = document.querySelector('.changeTag-flex')
+    changeTag.style.display="none"
+}
+
+function changeSelfBlock(){
+    let changeSelf = document.querySelector('.changeSelf-flex')
+    changeSelf.style.display="block"
+}
+
+function delSelf(){
+    let changeSelf = document.querySelector('.changeSelf-flex')
+    changeSelf.style.display="none"
+}
+
+const memberName = document.querySelector('.member-name')
+let originalName;
+memberName.addEventListener('mouseover', () => {
+    originalName=memberName.textContent;
+    memberName.textContent="更改商家名稱";
+});
+
+memberName.addEventListener('mouseout', () => {
+    memberName.textContent=originalName;
+});
+
+let changeTag = document.querySelector('.member-tags')
+let originalTag;
+changeTag.addEventListener('mouseover', () => {
+    originalTag=changeTag.textContent;
+    changeTag.textContent="更改商家標籤";
+});
+
+changeTag.addEventListener('mouseout', () => {
+    changeTag.textContent=originalTag;
+});
+
+let memberSelf = document.querySelector('.member-self')
+let originalSelf;
+memberSelf.addEventListener('mouseover', () => {
+    originalSelf=memberSelf.textContent;
+    memberSelf.textContent="更改商家標籤";
+});
+
+memberSelf.addEventListener('mouseout', () => {
+    memberSelf.textContent=originalSelf;
+});
