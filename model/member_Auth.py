@@ -7,7 +7,7 @@ cnxpool=connect_to_pool()
 
 def jwt_make(id,member_id,email):
 	payload = {
-		'exp': datetime.now() + timedelta(minutes=10080),
+		'exp': datetime.now() + timedelta(minutes=100800),
 		'username' : member_id,
 		'email': email,
 		'id':id

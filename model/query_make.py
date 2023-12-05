@@ -42,33 +42,33 @@ def get_user_info(data):
     return source
 
 
-def product_upload_sql(message_dict, owner_id):
-    try:
-        con = cnxpool.get_connection()
-        cursor = con.cursor(dictionary=True)
-        cursor.execute(
-            "INSERT INTO product_info(owner_id, product_name, product_price, product_amount,  owner_pre_site, county_site, product_intro) VALUE(%s,%s,%s,%s,%s,%s,%s)",
-            (
-                owner_id,
-                message_dict["productName"],
-                message_dict["price"],
-                message_dict["amount"],
-                message_dict["where"],
-                message_dict["site"],
-                message_dict["introduce"],
-            ),
-        )
-        con.commit()
-        cursor.execute("SELECT LAST_INSERT_ID()")
-        product_info_id = cursor.fetchone()
-        print(product_info_id["LAST_INSERT_ID()"])
-        return product_info_id["LAST_INSERT_ID()"]
-    except Exception as err:
-        print("product_upload_sql", err)
-        return False
-    finally:
-        cursor.close()
-        con.close()
+# def product_upload_sql(message_dict, owner_id):
+#     try:
+#         con = cnxpool.get_connection()
+#         cursor = con.cursor(dictionary=True)
+#         cursor.execute(
+#             "INSERT INTO product_info(owner_id, product_name, product_price, product_amount,  owner_pre_site, county_site, product_intro) VALUE(%s,%s,%s,%s,%s,%s,%s)",
+#             (
+#                 owner_id,
+#                 message_dict["productName"],
+#                 message_dict["price"],
+#                 message_dict["amount"],
+#                 message_dict["where"],
+#                 message_dict["site"],
+#                 message_dict["introduce"],
+#             ),
+#         )
+#         con.commit()
+#         cursor.execute("SELECT LAST_INSERT_ID()")
+#         product_info_id = cursor.fetchone()
+#         print(product_info_id["LAST_INSERT_ID()"])
+#         return product_info_id["LAST_INSERT_ID()"]
+#     except Exception as err:
+#         print("product_upload_sql", err)
+#         return False
+#     finally:
+#         cursor.close()
+#         con.close()
 
 
 def product_upload_sql(message_dict, owner_id, images_name):
@@ -146,6 +146,40 @@ def product_upload_sql(message_dict, owner_id, images_name):
         cursor.close()
         con.close()
 
+
+def user_img_update_sql(user_id, img_name):
+    con = cnxpool.get_connection()
+    cursor = con.cursor(dictionary=True)
+    try:
+        cursor.execute(
+            "UPDATE members SET userImg = %s WHERE id = %s",
+            (img_name, user_id),
+        )
+        con.commit()
+        return "成功"
+    except Exception as err:
+        print("product_upload_sql:", err)
+        return False
+    finally:
+        cursor.close()
+        con.close()
+
+def user_name_update_sql(user_id, new_name):
+    con = cnxpool.get_connection()
+    cursor = con.cursor(dictionary=True)
+    try:
+        cursor.execute(
+            "UPDATE members SET username = %s WHERE id = %s",
+            (new_name, user_id),
+        )
+        con.commit()
+        return "成功"
+    except Exception as err:
+        print("product_upload_sql:", err)
+        return False
+    finally:
+        cursor.close()
+        con.close()
 
 def get_product(param):
     try:

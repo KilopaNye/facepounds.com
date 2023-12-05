@@ -36,3 +36,19 @@ def upload_to_s3(files,username):
             return False
 
     return image_name
+
+
+def self_img_upload_to_s3(files):
+    s3 = boto3.client("s3")
+    image_name=""
+    try:
+        filename = str(uuid.uuid4()) + ".jpeg"
+        image_name=filename
+        print(files)
+        s3.upload_fileobj(
+            files, AWS_S3_BUCKET, filename, ExtraArgs={'ContentType': "image/jpeg"}
+        )
+        return image_name
+    except Exception as err:
+        print(err)
+        return False

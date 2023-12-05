@@ -65,7 +65,7 @@
             >.member-info {
                 display: flex;
                 margin-left: 15px;
-                width: 300px;
+                width: 380px;
                 height: 100px;
                 align-items: center;
                 justify-content: center;
@@ -91,12 +91,19 @@
                         margin-bottom: 10px;
                         margin-top: 10px;
                         cursor: pointer;
+                        width:250px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
                     }
 
                     >.member-tags {
                         color: #9d9d9d;
                         cursor: pointer;
-                        min-width: 150px;
+                        min-width: 250px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
                     }
                 }
             }
@@ -211,8 +218,11 @@
 
                         >div {
                             margin-bottom: 3px;
-                            width: 100%;
+                            width: 126px;
                             color: rgb(143, 143, 143);
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
 
                             >span {
                                 color: black;
@@ -224,6 +234,9 @@
                             >.store {
                                 color: rgb(255, 102, 0);
                                 font-weight: bold;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
                             }
                         }
                     }
@@ -273,7 +286,10 @@
     border-radius: 10px;
 }
 
-.changeImg-flex,.changeName-flex ,.changeTag-flex, .changeSelf-flex{
+.changeImg-flex,
+.changeName-flex,
+.changeTag-flex,
+.changeSelf-flex {
     width: 100%;
     height: 100%;
     position: fixed;
@@ -285,6 +301,14 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        >img {
+            position: fixed;
+            z-index: 7;
+            background-color: #ffffff;
+            width: 254px;
+            height: 240px;
+        }
 
         >.changeImg-info {
             width: 350px;
@@ -313,11 +337,12 @@
                 font-weight: bold;
             }
 
-            >input,textarea {
+            >input,
+            textarea {
                 margin-top: 40px;
                 margin-bottom: 2px;
                 word-wrap: break-word;
-                
+
             }
 
             >.GoChange {
@@ -325,14 +350,15 @@
                 padding: 8px 10px;
                 width: 200px;
                 text-align: center;
-                border:2px solid rgb(196, 196, 196);
+                border: 2px solid rgb(196, 196, 196);
                 border-radius: 10px;
                 background-color: chartreuse;
                 font-weight: bold;
                 font-size: 20px;
                 cursor: pointer;
             }
-            >.GoChange:hover{
+
+            >.GoChange:hover {
                 background-color: rgb(166, 255, 78);
             }
         }

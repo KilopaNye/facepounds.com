@@ -8,32 +8,37 @@
 
 <div class="changeImg-flex" style="display: none;">
     <div class="changeImg-box">
+        <img src="/images/image/CAT.gif" class="loading" style="display: none;">
         <div class="changeImg-info">
             <img src="/images/icons/close.png" onclick="delBox();">
             <div class="changeImg-info-title">更改大頭貼</div>
-            <input type="file">
-            <div class="GoChange">確認更改</div>
+            <input type="file" class="imgFile">
+            <div class="GoChange" onclick="changeImg();">確認更改</div>
         </div>
     </div>
 </div>
 
 <div class="changeName-flex" style="display: none;">
     <div class="changeImg-box">
+        <img src="/images/image/CAT.gif" class="loading2" style="display: none;">
         <div class="changeImg-info">
             <img src="/images/icons/close.png" onclick="delNameBox();">
             <div class="changeImg-info-title">更改商家名稱</div>
-            <input type="text" placeholder="新名稱">
-            <div class="GoChange">確認更改</div>
+            <input type="text" placeholder="新名稱" class="newName">
+            <div class="GoChange" onclick="GoChangeName();">確認更改</div>
         </div>
     </div>
 </div>
 
 <div class="changeTag-flex" style="display: none;">
     <div class="changeImg-box">
+        <img src="/images/image/CAT.gif" class="loading" style="display: none;">
         <div class="changeImg-info">
             <img src="/images/icons/close.png" onclick="delTagBox();">
             <div class="changeImg-info-title">更改商家tag</div>
+            
             <textarea class="teg-info-change" style="width: 250px;"></textarea>
+            <div>0~12個字</div>
             <div class="GoChange">確認更改</div>
         </div>
     </div>
@@ -41,9 +46,11 @@
 
 <div class="changeSelf-flex" style="display: none;">
     <div class="changeImg-box">
+        <img src="/images/image/CAT.gif" class="loading" style="display: none;">
         <div class="changeImg-info">
             <img src="/images/icons/close.png" onclick="delSelf();">
             <div class="changeImg-info-title">更改商家自介</div>
+            
             <textarea class="teg-info-change" style="width: 250px;"></textarea>
             <div class="GoChange">確認更改</div>
         </div>

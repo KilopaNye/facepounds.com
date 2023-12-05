@@ -23,7 +23,12 @@ function createProductDom(data) {
     let usernameTxt = document.querySelector('.member-name')
     usernameTxt.textContent = data[0]['username']
     let userImg = document.querySelector('.member-img')
-    userImg.src = data[0]['userImg']
+    if (data[0]['userImg'].startsWith('https://')) {
+        userImg.src = data[0]['userImg']
+    } else {
+        userImg.src = "https://d3utiuvdbysk3c.cloudfront.net/" + data[0]['userImg'];
+    }
+
     let selfText = document.querySelector('.member-tags')
     selfText.textContent = data[0]['self_intro']
     let selfIntro = document.querySelector('.member-self')
@@ -169,72 +174,174 @@ memberImg.addEventListener('mouseout', () => {
 
 memberImg.addEventListener('click', () => {
     let changeImgInfo = document.querySelector('.changeImg-flex')
-    changeImgInfo.style.display="block";
+    changeImgInfo.style.display = "block";
 });
 
-function delBox(){
+function delBox() {
     let changeImgInfo = document.querySelector('.changeImg-flex')
-    changeImgInfo.style.display="none";
+    changeImgInfo.style.display = "none";
 }
 
-function delNameBox(){
+function delNameBox() {
     let changeImgName = document.querySelector('.changeName-flex')
-    changeImgName.style.display="none";
+    changeImgName.style.display = "none";
 }
 
-function changeName(){
+function changeName() {
     let changeImgName = document.querySelector('.changeName-flex')
-    changeImgName.style.display="block";
+    changeImgName.style.display = "block";
 }
 
-function changeTagBlock(){
+function changeTagBlock() {
     let changeTag = document.querySelector('.changeTag-flex')
-    changeTag.style.display="block"
+    changeTag.style.display = "block"
 }
-function delTagBox(){
+function delTagBox() {
     let changeTag = document.querySelector('.changeTag-flex')
-    changeTag.style.display="none"
+    changeTag.style.display = "none"
 }
 
-function changeSelfBlock(){
+function changeSelfBlock() {
     let changeSelf = document.querySelector('.changeSelf-flex')
-    changeSelf.style.display="block"
+    changeSelf.style.display = "block"
 }
 
-function delSelf(){
+function delSelf() {
     let changeSelf = document.querySelector('.changeSelf-flex')
-    changeSelf.style.display="none"
+    changeSelf.style.display = "none"
 }
 
 const memberName = document.querySelector('.member-name')
 let originalName;
 memberName.addEventListener('mouseover', () => {
-    originalName=memberName.textContent;
-    memberName.textContent="更改商家名稱";
+    originalName = memberName.textContent;
+    memberName.textContent = "更改商家名稱";
 });
 
 memberName.addEventListener('mouseout', () => {
-    memberName.textContent=originalName;
+    memberName.textContent = originalName;
 });
 
 let changeTag = document.querySelector('.member-tags')
 let originalTag;
 changeTag.addEventListener('mouseover', () => {
-    originalTag=changeTag.textContent;
-    changeTag.textContent="更改商家標籤";
+    originalTag = changeTag.textContent;
+    changeTag.textContent = "更改商家標籤";
 });
 
 changeTag.addEventListener('mouseout', () => {
-    changeTag.textContent=originalTag;
+    changeTag.textContent = originalTag;
 });
 
 let memberSelf = document.querySelector('.member-self')
 let originalSelf;
 memberSelf.addEventListener('mouseover', () => {
-    originalSelf=memberSelf.textContent;
-    memberSelf.textContent="更改商家標籤";
+    originalSelf = memberSelf.textContent;
+    memberSelf.textContent = "更改商家標籤";
 });
 
 memberSelf.addEventListener('mouseout', () => {
-    memberSelf.textContent=originalSelf;
+    memberSelf.textContent = originalSelf;
 });
+
+
+const showOk = () => {
+    Swal.fire({
+        icon: 'success',
+        title: '更改成功',
+    }).then((result) => {
+        console.log(result)
+        if (result.isConfirmed) {
+            window.location.href = "/self_page";
+        }
+    })
+}
+
+
+function changeImg() {
+    let loading=document.querySelector('.loading')
+    loading.style.display="block"
+    let token = localStorage.getItem('token');
+    if (token) {
+        let imgFile = document.querySelector('.imgFile')
+        let result = imgFile.files;
+        console.log(result)
+        if(result.length<1){
+            alert("不得為空")
+            loading.style.display="none"
+            return false
+        }
+        let formData = new FormData();
+        formData.append('file', result[0]);
+
+        fetch('/api/self-page/change-img', {
+            method: 'POST',
+            headers: {
+                'enctype': "multipart/form-data",
+                "Authorization": `Bearer ${token}`
+            },
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data["data"]) {
+                    showOk();
+                    loading.style.display="none"
+                }else{
+                    alert("更新發生錯誤")
+                    loading.style.display="none"
+                    return false
+                }
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loading.style.display="none"
+                return false
+            });
+    }
+}
+
+
+function GoChangeName(){
+    let loading=document.querySelector('.loading2')
+    loading.style.display="block"
+    let token = localStorage.getItem('token');
+    if (token) {
+        let newName = document.querySelector('.newName').value
+        if(newName==""){
+            alert("名稱不得為空")
+            loading.style.display="none"
+            return false
+        }
+        let result={
+            newName:newName
+        }
+        fetch('/api/self-page/change-name', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(result)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if(data["data"]){
+                    showOk();
+                    loading.style.display="none"
+                }else{
+                    alert("更新發生錯誤")
+                    loading.style.display="none"
+                    return false
+                }
+                
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                return false
+            });
+    }
+}

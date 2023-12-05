@@ -25,3 +25,46 @@ def userInfo():
             return {"error": True, "message": "伺服器內部錯誤"}, 500
     else:
         return {"error": True, "message": "尚未登入"}, 400
+
+
+@self_page_system.route("/api/self-page/change-img", methods=["POST"])
+def change_img():
+    decoded_token = decode_jwt()
+    if decoded_token["id"]:
+        try:
+            file = request.files['file']
+            result = self_img_upload_to_s3(file)
+            if result:
+                sql_result = user_img_update_sql(decoded_token["id"], result)
+                response = make_response(jsonify({"data": sql_result}), 200)
+                response.headers["Content-type"] = "application/json"
+                print(result)
+                return response
+            else:
+                return {"error": True, "message": "不正確"}, 400
+        except:
+            return {"error": True, "message": "伺服器內部錯誤"}, 500
+    else:
+        return {"error": True, "message": "尚未登入"}, 400
+    
+@self_page_system.route("/api/self-page/change-name", methods=["POST"])
+def change_name():
+    decoded_token = decode_jwt()
+    if decoded_token["id"]:
+        try:
+            new_name = request.get_json()
+            print(new_name)
+            result = user_name_update_sql(decoded_token["id"],new_name["newName"])
+            if result:
+                response = make_response(jsonify({"data": True}), 200)
+                response.headers["Content-type"] = "application/json"
+                print(result)
+                return response
+            else:
+                return {"error": True, "message": "不正確"}, 400
+        except Exception as err:
+            print(err)
+            return {"error": True, "message": "伺服器內部錯誤"}, 500
+    else:
+        return {"error": True, "message": "尚未登入"}, 400
+    
