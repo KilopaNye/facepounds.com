@@ -4,7 +4,7 @@ let order_uuid = length_URL.pop();
 console.log(order_uuid)
 let currentUrl = window.location.href;
 let identity = currentUrl.split('=').pop()
-console.log("身分別"+identity)
+console.log("身分別" + identity)
 userLoginCheck();
 
 const showAlert = () => {
@@ -89,11 +89,27 @@ function preOrderDomCreate(data) {
             checkBtn.textContent = '確認';
             checkBtn.setAttribute('value', 'buyer')
         });
-        // nameCheck.setAttribute('readonly', 'true')
         amountCheck.setAttribute('readonly', 'true')
         priceCheck.setAttribute('readonly', 'true')
         siteCheck.setAttribute('readonly', 'true')
         timeCheck.setAttribute('readonly', 'true')
+        if (data["check_state"] == 1) {
+            let checkBtn = document.querySelectorAll('#check-btn')
+            checkBtn.forEach(function (checkBtn) {
+                checkBtn.style.display = 'none';
+            });
+
+            let orderBtn = document.querySelector('.order-btn');
+            let orderText = document.querySelector('.order-btn-text')
+            console.log(orderText.textContent)
+            orderText.textContent = "等待賣家確認後成立";
+            orderBtn.style.backgroundColor = "gray";
+            orderBtn.style.justifyContent = "center";
+            orderBtn.style.alignItems = "center";
+            orderBtn.style.cursor = "default";
+            orderBtn.setAttribute("onclick", "")
+            orderBtn.style.display = "flex";
+        }
     } else {
 
         let checkBtn = document.querySelectorAll('#check-btn')
@@ -101,6 +117,26 @@ function preOrderDomCreate(data) {
             checkBtn.textContent = '更改';
             checkBtn.setAttribute('value', 'seller')
         });
+
+        if (data["check_state"] == 1) {
+            let checkBtn = document.querySelectorAll('#check-btn')
+            checkBtn.forEach(function (checkBtn) {
+                checkBtn.style.display = 'none';
+            });
+
+            let orderBtn = document.querySelector('.order-btn');
+            let orderText = document.querySelector('.order-btn-text')
+            console.log(orderText.textContent)
+            orderText.textContent = "買家已確認，訂單可成立";
+            orderBtn.style.justifyContent = "center";
+            orderBtn.style.alignItems = "center";
+            orderBtn.setAttribute("onclick", "orderOK();")
+            orderBtn.style.display = "flex";
+            amountCheck.setAttribute('readonly', 'true')
+            priceCheck.setAttribute('readonly', 'true')
+            siteCheck.setAttribute('readonly', 'true')
+            timeCheck.setAttribute('readonly', 'true')
+        }
     }
 }
 
@@ -266,18 +302,18 @@ function accept(identity) {
     let info = document.querySelector(`.${index}-check`);
     let infoState = info.getAttribute('state')
     if (user == "buyer") {
-        if(infoState == 0){
+        if (infoState == 0) {
             saveOrder(info, index);
-        }else{
+        } else {
             deleteOrder(info, index);
         }
-        
+
     } else if (user == "seller") {
         changeOrder(info, index);
     }
 }
 
-function stateCheck(){
+function stateCheck() {
     let amountCheck = document.querySelector('.amount-check');
     let priceCheck = document.querySelector('.price-check');
     let siteCheck = document.querySelector('.site-check');
@@ -285,10 +321,10 @@ function stateCheck(){
     if (amountCheck.getAttribute("state") == 1 && priceCheck.getAttribute("state") == 1 && siteCheck.getAttribute("state") == 1 && timeCheck.getAttribute("state") == 1) {
         // console.log("通過");
         let orderBtn = document.querySelector('.order-btn');
-        orderBtn.style.display = "flex";
         orderBtn.style.alignItems = "center";
         orderBtn.style.justifyContent = "center";
-
+        orderBtn.setAttribute("onclick", "buyer_state_ok();")
+        orderBtn.style.display = "flex";
     } else {
         // console.log("還沒");
         let orderBtn = document.querySelector('.order-btn');
@@ -300,8 +336,8 @@ function saveOrder(info, index) {
     if (info.value) {
         // info.style.backgroundColor = "#53FF53";
         let btn = document.querySelector(`.${index}-btn`);
-        btn.style.backgroundColor=" #f85757"
-        btn.textContent="取消"
+        btn.style.backgroundColor = " #f85757"
+        btn.textContent = "取消"
         info.setAttribute('state', '1');
         socket.emit('stage_check', { "index": index, 'room': order_uuid })
     } else {
@@ -309,15 +345,15 @@ function saveOrder(info, index) {
         return false
     }
 
-    
+
     stateCheck()
 };
 
-function deleteOrder(info, index){
+function deleteOrder(info, index) {
     if (info.value) {
         let btn = document.querySelector(`.${index}-btn`);
-        btn.style.backgroundColor=" #99EA52"
-        btn.textContent="確認"
+        btn.style.backgroundColor = " #99EA52"
+        btn.textContent = "確認"
         info.setAttribute('state', '0');
         socket.emit('stage_change', { "index": index, 'room': order_uuid })
     } else {
@@ -348,11 +384,11 @@ socket.on('stage_change_response', function (data) {
     let info = document.querySelector(`.${data.index}-check`);
     info.style.backgroundColor = "#FFFFFF"
     let btn = document.querySelector(`.${data.index}-btn`);
-    if(identity=="buyer"){
+    if (identity == "buyer") {
         let info = document.querySelector(`.${data.index}-check`);
         info.setAttribute('state', '0');
-        btn.style.backgroundColor=" #99EA52"
-        btn.textContent="確認"
+        btn.style.backgroundColor = " #99EA52"
+        btn.textContent = "確認"
         stateCheck()
     }
 });
@@ -362,32 +398,32 @@ socket.on('info_change_response', function (data) {
     console.log(info)
     info.value = data.message;
     info.style.backgroundColor = "#FFFFFF";
-    if(identity=="buyer"){
-    
-    let btn = document.querySelector(`.${data.index}-btn`);
-    btn.textContent="確認"
-    btn.style.backgroundColor=" #99EA52"
-    
-    if (data.index == "amount") {
-        let amount = document.querySelector('.product-amount');
-        amount.textContent = data.message;
-        let amountCheck = document.querySelector(`.${data.index}-check`);
-        amountCheck.setAttribute('state', '0');
-    } else if (data.index == "price") {
-        let price = document.querySelector('.product-price');
-        price.textContent = data.message;
-        let priceCheck = document.querySelector(`.${data.index}-check`);
-        priceCheck.setAttribute('state', '0');
-    } else if (data.index == "site") {
-        let site = document.querySelector('.product-site');
-        site.textContent = data.message;
-        let siteCheck = document.querySelector(`.${data.index}-check`);
-        siteCheck.setAttribute('state', '0');
-    } else if (data.index == "time") {
-        let timeCheck = document.querySelector(`.${data.index}-check`);
-        timeCheck.setAttribute('state', '0');
-    }
-    stateCheck()
+    if (identity == "buyer") {
+
+        let btn = document.querySelector(`.${data.index}-btn`);
+        btn.textContent = "確認"
+        btn.style.backgroundColor = " #99EA52"
+
+        if (data.index == "amount") {
+            let amount = document.querySelector('.product-amount');
+            amount.textContent = data.message;
+            let amountCheck = document.querySelector(`.${data.index}-check`);
+            amountCheck.setAttribute('state', '0');
+        } else if (data.index == "price") {
+            let price = document.querySelector('.product-price');
+            price.textContent = data.message;
+            let priceCheck = document.querySelector(`.${data.index}-check`);
+            priceCheck.setAttribute('state', '0');
+        } else if (data.index == "site") {
+            let site = document.querySelector('.product-site');
+            site.textContent = data.message;
+            let siteCheck = document.querySelector(`.${data.index}-check`);
+            siteCheck.setAttribute('state', '0');
+        } else if (data.index == "time") {
+            let timeCheck = document.querySelector(`.${data.index}-check`);
+            timeCheck.setAttribute('state', '0');
+        }
+        stateCheck()
     }
 });
 
@@ -444,19 +480,20 @@ function orderOK() {
             console.log(data);
             if (data["data"]) {
                 showAlert();
-                socket.emit("order-ok",{room:order_uuid})
+                socket.emit("order-ok", { room: order_uuid })
             } else if (data["error"]) {
                 showError(error);
             }
 
         }).catch(error => {
             console.log(error);
-            showError(error);
+            alert(error)
+            // showError(error);
         })
     }
 }
 
-function buyer_state_ok(){
+function buyer_state_ok() {
     let token = localStorage.getItem('token');
     if (token) {
         headers = {
@@ -469,12 +506,23 @@ function buyer_state_ok(){
             body: JSON.stringify({ order_uuid })
         }).then(response => response.json()).then(data => {
             console.log(data);
-            // if (data["data"]) {
-            //     showAlert();
-            //     socket.emit("order-ok",{room:order_uuid})
-            // } else if (data["error"]) {
-            //     showError(error);
-            // }
+            if (data["data"]) {
+                
+                let orderBtn = document.querySelector('.order-btn');
+                let orderText = document.querySelector('.order-btn-text')
+                console.log(orderText.textContent)
+                orderText.textContent = "等待賣家確認後成立";
+                orderBtn.style.backgroundColor = "gray";
+                orderBtn.style.cursor = "default";
+                orderBtn.setAttribute("onclick", "")
+                let checkBtn = document.querySelectorAll('#check-btn')
+                checkBtn.forEach(function (checkBtn) {
+                    checkBtn.style.display = 'none';
+                });
+                socket.emit("order-state-ok", { room: order_uuid })
+            } else if (data["error"]) {
+                showError(error);
+            }
 
         }).catch(error => {
             console.log(error);
@@ -482,8 +530,39 @@ function buyer_state_ok(){
         })
     }
 }
+socket.on("order-state-ok-response", () => {
+    if (identity == "seller") {
+        let checkBtn = document.querySelectorAll('#check-btn')
+        checkBtn.forEach(function (checkBtn) {
+            checkBtn.style.display = 'none';
+        });
+        
+        let orderText = document.querySelector('.order-btn-text')
+        orderText.textContent = "買家已確認，訂單可成立";
 
-socket.on('order-ok-response',()=>{
+        let orderBtn = document.querySelector('.order-btn');
+        orderBtn.style.justifyContent = "center";
+        orderBtn.style.alignItems = "center";
+        orderBtn.setAttribute("onclick", "orderOK();")
+        orderBtn.style.display = "flex";
+
+        let amountCheck = document.querySelector('.amount-check');
+        let priceCheck = document.querySelector('.price-check');
+        let siteCheck = document.querySelector('.site-check');
+        let timeCheck = document.querySelector('.time-check');
+        amountCheck.setAttribute('readonly', 'true')
+        priceCheck.setAttribute('readonly', 'true')
+        siteCheck.setAttribute('readonly', 'true')
+        timeCheck.setAttribute('readonly', 'true')
+    }
+})
+// if (data["data"]) {
+//     showAlert();
+//     socket.emit("order-state-ok",{room:order_uuid})
+// } else if (data["error"]) {
+//     showError(error);
+// }
+socket.on('order-ok-response', () => {
     showOk();
 })
 function delete_pre_order() {
@@ -540,40 +619,40 @@ function startStream() {
         return;
     }
 
-    
+
     navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true
     }).then(stream => {
-        
-    const peer = new Peer(identity+order_uuid, {
-        secure: true,
-        port: '443',
-        host: "/"
-    });
-    
-    // 新增錯誤處理
-    peer.on('error', error => {
-        console.error('Peer連線錯誤:', error);
-    });
 
-    socket.on('error', error => {
-        console.error('Socket錯誤:', error);
-    });
+        const peer = new Peer(identity + order_uuid, {
+            secure: true,
+            port: '443',
+            host: "/"
+        });
 
-    peer.on("open", (id) => {
-        console.log(`Your peer ID is: ${id}`);
-        socket.emit('peer_invite_message', { identity: identity, roomId: order_uuid });
-        socket.emit('join-room', { ROOM_ID: order_uuid, id: id });
-        state = false;
-    });
-        handleNewStream(stream,peer);
+        // 新增錯誤處理
+        peer.on('error', error => {
+            console.error('Peer連線錯誤:', error);
+        });
+
+        socket.on('error', error => {
+            console.error('Socket錯誤:', error);
+        });
+
+        peer.on("open", (id) => {
+            console.log(`Your peer ID is: ${id}`);
+            socket.emit('peer_invite_message', { identity: identity, roomId: order_uuid });
+            socket.emit('join-room', { ROOM_ID: order_uuid, id: id });
+            state = false;
+        });
+        handleNewStream(stream, peer);
     }).catch(error => {
         console.error('錯誤:', error);
     });
 }
 
-function handleNewStream(stream,peer) {
+function handleNewStream(stream, peer) {
     console.log("handleNewStream ERR")
     const videoElement = document.createElement('video');
     const videoGrid = document.querySelector('.self-video-box');
@@ -597,7 +676,7 @@ function handleNewStream(stream,peer) {
 
     socket.on('join-response', userId => {
         console.log(userId['userId']);
-        connectNewUser(userId['userId'], stream,peer);
+        connectNewUser(userId['userId'], stream, peer);
     });
 
     socket.on("response", data => {
@@ -617,7 +696,7 @@ function handlePeerResponse() {
     videos.forEach(video => video.remove());
 }
 
-function connectNewUser(userId, stream,peer) {
+function connectNewUser(userId, stream, peer) {
     const call = peer.call(userId, stream);
     const newVideo = document.createElement('video');
     newVideo.classList.add('second');

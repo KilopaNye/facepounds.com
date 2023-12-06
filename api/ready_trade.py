@@ -24,7 +24,7 @@ def get_pre_order():
     else:
         return jsonify({'error':"尚未登入"})
     
-@ready_trade_system.route("/api/ready_trade/get_trade",methods=["GET"])
+@ready_trade_system.route("/api/ready-trade/get-trade",methods=["GET"])
 def get_pre_trade():
     decoded_token=decode_jwt()
     if decoded_token['id']:

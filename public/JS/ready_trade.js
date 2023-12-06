@@ -102,6 +102,7 @@ function getPreSell() {
         }).then(response => response.json()).then(data => {
             console.log("seller",data);
             seller_data = data['data'];
+            preOrderDom(seller_data,seller)
         }).catch(error => {
             console.log(error);
         })

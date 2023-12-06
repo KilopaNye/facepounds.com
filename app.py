@@ -176,7 +176,7 @@ def stage_change(state):
 	socketio.emit('stage_change_response', {'index': index},room=room)
 
 @socketio.on('info_change')
-def stage_change(state):
+def info_change(state):
 	room=state['room']
 	index=state['index']
 	message=state['message']
@@ -200,9 +200,14 @@ def peer_invite_message(data):
 	socketio.emit("invite-response", {'identity':data['identity']}, room=room)
 
 @socketio.on('order-ok')
-def peer_invite_message(data):
+def peer_invite(data):
 	room=data['room']
 	socketio.emit("order-ok-response", room=room, include_self=False)
+
+@socketio.on('order-state-ok')
+def invite_message(data):
+	room=data['room']
+	socketio.emit("order-state-ok-response", room=room, include_self=False)
 
 @socketio.on('join-room')
 def room_connect(data):
