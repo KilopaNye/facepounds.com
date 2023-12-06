@@ -158,7 +158,7 @@ def user_img_update_sql(user_id, img_name):
         con.commit()
         return "成功"
     except Exception as err:
-        print("product_upload_sql:", err)
+        print("user_img_update_sql(user_id, img_name):  ", err)
         return False
     finally:
         cursor.close()
@@ -175,7 +175,41 @@ def user_name_update_sql(user_id, new_name):
         con.commit()
         return "成功"
     except Exception as err:
-        print("product_upload_sql:", err)
+        print("user_name_update_sql(user_id, new_name):  ", err)
+        return False
+    finally:
+        cursor.close()
+        con.close()
+
+def user_tag_update_sql(user_id, new_tag):
+    con = cnxpool.get_connection()
+    cursor = con.cursor(dictionary=True)
+    try:
+        cursor.execute(
+            "UPDATE members SET self_intro = %s WHERE id = %s",
+            (new_tag, user_id),
+        )
+        con.commit()
+        return "成功"
+    except Exception as err:
+        print("user_tag_update_sql(user_id, new_tag):  ", err)
+        return False
+    finally:
+        cursor.close()
+        con.close()
+
+def user_text_update_sql(user_id, new_text):
+    con = cnxpool.get_connection()
+    cursor = con.cursor(dictionary=True)
+    try:
+        cursor.execute(
+            "UPDATE members SET self_text = %s WHERE id = %s",
+            (new_text, user_id),
+        )
+        con.commit()
+        return "成功"
+    except Exception as err:
+        print("user_text_update_sql(user_id, new_tag):  ", err)
         return False
     finally:
         cursor.close()
@@ -255,6 +289,27 @@ def get_self_product(param):
         cursor.close()
         con.close()
 
+def get_self_info(param):
+    try:
+        con = cnxpool.get_connection()
+        cursor = con.cursor(dictionary=True)
+
+        cursor.execute("SET SESSION group_concat_max_len = 10000;")
+        con.commit()
+        cursor.execute(
+                "SELECT self_intro, self_text,username,userImg, auth FROM members WHERE id = %s",(param,)
+            )
+        response = cursor.fetchall()
+        con.commit()
+        print(response)
+        return response
+
+    except Exception as err:
+        print("get_self_info(param):  ", err)
+        return False
+    finally:
+        cursor.close()
+        con.close()
 
 def from_id_get_product(productId):
     try:

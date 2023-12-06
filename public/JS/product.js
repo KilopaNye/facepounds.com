@@ -76,7 +76,12 @@ function productInfoInput(data) {
     let ownerName = document.querySelector('.owner-name');
     let ownerImage = document.querySelector('.owner-image');
     ownerName.textContent = data['username'];
-    ownerImage.src = data['userImg'];
+    
+    if (data['userImg'].startsWith('https://')) {
+        ownerImage.src = data['userImg'];
+    } else {
+        ownerImage.src = "https://d3utiuvdbysk3c.cloudfront.net/" + data['userImg'];
+    }
 }
 let order_info = null;
 function getProductInfo(product_id) {

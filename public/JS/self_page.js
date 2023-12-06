@@ -117,6 +117,35 @@ function createProductDom(data) {
 
 }
 
+function inputUserInfo(data){
+    let authIcon = document.querySelector('.icon')
+    let authText = document.querySelector('.auth-text')
+    if (data[0]['auth'] == "0") {
+        authIcon.src = "/images/icons/safe_none.png"
+        authText.textContent = "點我進行驗證"
+        authIcon.setAttribute("onclick", "GoAuth();")
+    } else {
+        authIcon.src = "/images/icons/safe_true.png"
+        authText.textContent = "已通過驗證"
+    }
+
+    let productFlex = document.querySelector(".product-flex");
+    productFlex.textContent = ""
+    let usernameTxt = document.querySelector('.member-name')
+    usernameTxt.textContent = data[0]['username']
+    let userImg = document.querySelector('.member-img')
+    if (data[0]['userImg'].startsWith('https://')) {
+        userImg.src = data[0]['userImg']
+    } else {
+        userImg.src = "https://d3utiuvdbysk3c.cloudfront.net/" + data[0]['userImg'];
+    }
+
+    let selfText = document.querySelector('.member-tags')
+    selfText.textContent = data[0]['self_intro']
+    let selfIntro = document.querySelector('.member-self')
+    selfIntro.textContent = data[0]['self_text']
+}
+
 
 function getProductInfo(param = null) {
     let token = localStorage.getItem('token');
@@ -131,13 +160,40 @@ function getProductInfo(param = null) {
         headers: headers
     }).then(response => response.json()).then(data => {
         console.log(data)
+        if (!data["data"]) {
+            catLoad.style.display = "none";
+            return false
+        } else {
+            let products = data["data"]
+            createProductDom(products)
+
+        }
+    }).catch(error => {
+        console.log("還沒有商品")
+    })
+}
+getProductInfo()
+
+
+function getUserInfo() {
+    let token = localStorage.getItem('token');
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+    }
+    fetch("/api/self-page/just-self-info", {
+        method: "POST",
+        headers: headers
+    }).then(response => response.json()).then(data => {
+        console.log(data)
         let products = data["data"]
-        createProductDom(products)
+        inputUserInfo(products)
     }).catch(error => {
         console.log(error)
     })
 }
-getProductInfo()
+
+getUserInfo()
 
 userLoginCheck();
 function userLoginCheck() {
@@ -215,7 +271,7 @@ const memberName = document.querySelector('.member-name')
 let originalName;
 memberName.addEventListener('mouseover', () => {
     originalName = memberName.textContent;
-    memberName.textContent = "更改商家名稱";
+    memberName.textContent = "點我更改商家名稱";
 });
 
 memberName.addEventListener('mouseout', () => {
@@ -226,7 +282,7 @@ let changeTag = document.querySelector('.member-tags')
 let originalTag;
 changeTag.addEventListener('mouseover', () => {
     originalTag = changeTag.textContent;
-    changeTag.textContent = "更改商家標籤";
+    changeTag.textContent = "點我更改商家標籤";
 });
 
 changeTag.addEventListener('mouseout', () => {
@@ -237,7 +293,7 @@ let memberSelf = document.querySelector('.member-self')
 let originalSelf;
 memberSelf.addEventListener('mouseover', () => {
     originalSelf = memberSelf.textContent;
-    memberSelf.textContent = "更改商家標籤";
+    memberSelf.textContent = "點我更改商家自介";
 });
 
 memberSelf.addEventListener('mouseout', () => {
@@ -259,23 +315,23 @@ const showOk = () => {
 
 
 function changeImg() {
-    let loading=document.querySelector('.loading')
-    loading.style.display="block"
+    let loading = document.querySelector('.loading')
+    loading.style.display = "block"
     let token = localStorage.getItem('token');
     if (token) {
         let imgFile = document.querySelector('.imgFile')
         let result = imgFile.files;
         console.log(result)
-        if(result.length<1){
+        if (result.length < 1) {
             alert("不得為空")
-            loading.style.display="none"
+            loading.style.display = "none"
             return false
         }
         let formData = new FormData();
         formData.append('file', result[0]);
 
         fetch('/api/self-page/change-img', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'enctype': "multipart/form-data",
                 "Authorization": `Bearer ${token}`
@@ -287,39 +343,39 @@ function changeImg() {
                 console.log(data);
                 if (data["data"]) {
                     showOk();
-                    loading.style.display="none"
-                }else{
+                    loading.style.display = "none"
+                } else {
                     alert("更新發生錯誤")
-                    loading.style.display="none"
+                    loading.style.display = "none"
                     return false
                 }
 
             })
             .catch(error => {
                 console.error('Error:', error);
-                loading.style.display="none"
+                loading.style.display = "none"
                 return false
             });
     }
 }
 
 
-function GoChangeName(){
-    let loading=document.querySelector('.loading2')
-    loading.style.display="block"
+function GoChangeName() {
+    let loading = document.querySelector('.loading2')
+    loading.style.display = "block"
     let token = localStorage.getItem('token');
     if (token) {
         let newName = document.querySelector('.newName').value
-        if(newName==""){
+        if (newName == "") {
             alert("名稱不得為空")
-            loading.style.display="none"
+            loading.style.display = "none"
             return false
         }
-        let result={
-            newName:newName
+        let result = {
+            newName: newName
         }
         fetch('/api/self-page/change-name', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
@@ -329,15 +385,99 @@ function GoChangeName(){
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                if(data["data"]){
+                if (data["data"]) {
                     showOk();
-                    loading.style.display="none"
-                }else{
+                    loading.style.display = "none"
+                } else {
                     alert("更新發生錯誤")
-                    loading.style.display="none"
+                    loading.style.display = "none"
                     return false
                 }
-                
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                return false
+            });
+    }
+}
+
+function GoChangeTag() {
+    let loading = document.querySelector('.loading3')
+    loading.style.display = "block"
+    let token = localStorage.getItem('token');
+    if (token) {
+        let newTag = document.querySelector('.tag-info-change').value
+        if (newTag == "") {
+            alert("不得為空")
+            loading.style.display = "none"
+            return false
+        }
+        let result = {
+            newTag: newTag
+        }
+        fetch('/api/self-page/change-tag', {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(result)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data["data"]) {
+                    showOk();
+                    loading.style.display = "none"
+                } else {
+                    alert("更新發生錯誤")
+                    loading.style.display = "none"
+                    return false
+                }
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                return false
+            });
+    }
+}
+
+function GoChangeText() {
+    let loading = document.querySelector('.loading3')
+    loading.style.display = "block"
+    let token = localStorage.getItem('token');
+    if (token) {
+        let newText = document.querySelector('.text-change').value
+        if (newText == "") {
+            alert("不得為空")
+            loading.style.display = "none"
+            return false
+        }
+        let result = {
+            newText: newText
+        }
+        fetch('/api/self-page/change-text', {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(result)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data["data"]) {
+                    showOk();
+                    loading.style.display = "none"
+                } else {
+                    alert("更新發生錯誤")
+                    loading.style.display = "none"
+                    return false
+                }
+
             })
             .catch(error => {
                 console.error('Error:', error);
