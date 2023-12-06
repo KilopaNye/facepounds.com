@@ -64,3 +64,21 @@ def delete_order():
         print("route trade/ready_order():"+err)
         return jsonify({'error':"伺服器錯誤"}),500
     
+
+@trade_system.route("/api/trade/buyer-state-ok",methods=["PUT"])
+def state_ok():
+    decoded_token=decode_jwt()
+    if decoded_token['id']:
+        try:
+            order_uuid = request.get_json()
+            print(order_uuid)
+            response = order_state_ok(order_uuid["order_uuid"])
+            if response:
+                return  jsonify({'data':"OK DONE"}),200
+            else:
+                return jsonify({'error':"失敗"}),400
+        except Exception as err:
+            print("route trade/ready_order():"+err)
+            return jsonify({'error':"伺服器錯誤"}),500
+    else:
+        return jsonify({'error':"尚未登入"}),500

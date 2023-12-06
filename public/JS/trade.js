@@ -463,18 +463,18 @@ function buyer_state_ok(){
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         }
-        fetch(`/api/trade/ready-order`, {
+        fetch(`/api/trade/buyer-state-ok`, {
             headers: headers,
             method: "PUT",
-            body: JSON.stringify({ order_result })
+            body: JSON.stringify({ order_uuid })
         }).then(response => response.json()).then(data => {
             console.log(data);
-            if (data["data"]) {
-                showAlert();
-                socket.emit("order-ok",{room:order_uuid})
-            } else if (data["error"]) {
-                showError(error);
-            }
+            // if (data["data"]) {
+            //     showAlert();
+            //     socket.emit("order-ok",{room:order_uuid})
+            // } else if (data["error"]) {
+            //     showError(error);
+            // }
 
         }).catch(error => {
             console.log(error);

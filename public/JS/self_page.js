@@ -129,8 +129,6 @@ function inputUserInfo(data){
         authText.textContent = "已通過驗證"
     }
 
-    let productFlex = document.querySelector(".product-flex");
-    productFlex.textContent = ""
     let usernameTxt = document.querySelector('.member-name')
     usernameTxt.textContent = data[0]['username']
     let userImg = document.querySelector('.member-img')

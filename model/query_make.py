@@ -164,6 +164,7 @@ def user_img_update_sql(user_id, img_name):
         cursor.close()
         con.close()
 
+
 def user_name_update_sql(user_id, new_name):
     con = cnxpool.get_connection()
     cursor = con.cursor(dictionary=True)
@@ -180,6 +181,7 @@ def user_name_update_sql(user_id, new_name):
     finally:
         cursor.close()
         con.close()
+
 
 def user_tag_update_sql(user_id, new_tag):
     con = cnxpool.get_connection()
@@ -198,6 +200,7 @@ def user_tag_update_sql(user_id, new_tag):
         cursor.close()
         con.close()
 
+
 def user_text_update_sql(user_id, new_text):
     con = cnxpool.get_connection()
     cursor = con.cursor(dictionary=True)
@@ -214,6 +217,7 @@ def user_text_update_sql(user_id, new_text):
     finally:
         cursor.close()
         con.close()
+
 
 def get_product(param):
     try:
@@ -266,6 +270,7 @@ def get_product(param):
         cursor.close()
         con.close()
 
+
 def get_self_product(param):
     try:
         con = cnxpool.get_connection()
@@ -274,10 +279,11 @@ def get_self_product(param):
         cursor.execute("SET SESSION group_concat_max_len = 10000;")
         con.commit()
         cursor.execute(
-                "SELECT b.self_intro, b.self_text,b.username,b.userImg, b.auth, a.id, a.product_name, a.product_price, a.product_amount, a.county_site, b.username, GROUP_CONCAT(DISTINCT tag.tag_name)as tag_name, GROUP_CONCAT(c.image_url) AS image_url FROM product_info as a JOIN members as b ON a.owner_id = b.id JOIN product_images as c ON c.product_id = a.id JOIN product_tag_relation ON a.id = product_tag_relation.product_info_id JOIN product_tag as tag ON product_tag_relation.tag_id = tag.id WHERE a.owner_id = %s GROUP BY a.id",(param,)
-            )
-        # JOIN members_self_info as self_info ON self_info.member_id = b.id 
-        # self_info.self_intro,self_info.self_text, 
+            "SELECT b.self_intro, b.self_text,b.username,b.userImg, b.auth, a.id, a.product_name, a.product_price, a.product_amount, a.county_site, b.username, GROUP_CONCAT(DISTINCT tag.tag_name)as tag_name, GROUP_CONCAT(c.image_url) AS image_url FROM product_info as a JOIN members as b ON a.owner_id = b.id JOIN product_images as c ON c.product_id = a.id JOIN product_tag_relation ON a.id = product_tag_relation.product_info_id JOIN product_tag as tag ON product_tag_relation.tag_id = tag.id WHERE a.owner_id = %s GROUP BY a.id",
+            (param,),
+        )
+        # JOIN members_self_info as self_info ON self_info.member_id = b.id
+        # self_info.self_intro,self_info.self_text,
         response = cursor.fetchall()
         con.commit()
         return response
@@ -289,6 +295,7 @@ def get_self_product(param):
         cursor.close()
         con.close()
 
+
 def get_self_info(param):
     try:
         con = cnxpool.get_connection()
@@ -297,8 +304,9 @@ def get_self_info(param):
         cursor.execute("SET SESSION group_concat_max_len = 10000;")
         con.commit()
         cursor.execute(
-                "SELECT self_intro, self_text,username,userImg, auth FROM members WHERE id = %s",(param,)
-            )
+            "SELECT self_intro, self_text,username,userImg, auth FROM members WHERE id = %s",
+            (param,),
+        )
         response = cursor.fetchall()
         con.commit()
         print(response)
@@ -310,6 +318,7 @@ def get_self_info(param):
     finally:
         cursor.close()
         con.close()
+
 
 def from_id_get_product(productId):
     try:
@@ -357,7 +366,11 @@ def pre_order_info_upload(data, buyer_id):
         )
         cursor.execute(
             "INSERT INTO chat_messages(room_uuid, send_id, message) VALUES(%s, %s, %s)",
-            (order_uuid,buyer_id,data["productRemark"],)
+            (
+                order_uuid,
+                buyer_id,
+                data["productRemark"],
+            ),
         )
         cursor.execute(
             "UPDATE product_info SET product_amount = product_amount - %s WHERE id = %s",
@@ -413,6 +426,25 @@ def get_pre_trade_info(seller_id):
         con.close()
 
 
+def order_state_ok(order_uuid):
+    try:
+        con = cnxpool.get_connection()
+        cursor = con.cursor(dictionary=True)
+
+        cursor.execute(
+            "UPDATE pre_order_info SET check_state = 1 WHERE order_uuid = %s",
+            (order_uuid,),
+        )
+        con.commit()
+        return True
+    except Exception as err:
+        print("order_state_ok(uuid): ", err)
+        return False
+    finally:
+        cursor.close()
+        con.close()
+
+
 def get_pre_order_info_by_uuid(order_uuid):
     try:
         con = cnxpool.get_connection()
@@ -450,8 +482,6 @@ def get_trade_info_by_uuid(order_uuid):
     finally:
         cursor.close()
         con.close()
-
-
 
 
 def get_username(user_id):
@@ -589,7 +619,7 @@ def being_order(data):
         )
 
         cursor.execute(
-            "DELETE FROM pre_order_info WHERE order_uuid = %s",(data["orderUUID"],)
+            "DELETE FROM pre_order_info WHERE order_uuid = %s", (data["orderUUID"],)
         )
 
         con.commit()
@@ -602,6 +632,7 @@ def being_order(data):
         con.autocommit = True
         cursor.close()
         con.close()
+
 
 def being_finish(data):
     try:
@@ -625,7 +656,7 @@ def being_finish(data):
         )
 
         cursor.execute(
-            "DELETE FROM ready_trade_info WHERE order_uuid = %s",(data["orderUUID"],)
+            "DELETE FROM ready_trade_info WHERE order_uuid = %s", (data["orderUUID"],)
         )
 
         con.commit()
@@ -639,12 +670,13 @@ def being_finish(data):
         cursor.close()
         con.close()
 
+
 def delete_pre_check_order(data):
     try:
         con = cnxpool.get_connection()
         cursor = con.cursor(dictionary=True)
         cursor.execute(
-            "DELETE FROM pre_order_info WHERE order_uuid = %s",(data["orderUUID"],)
+            "DELETE FROM pre_order_info WHERE order_uuid = %s", (data["orderUUID"],)
         )
         con.commit()
         return True
@@ -692,7 +724,8 @@ def get_order_info(seller_id):
     finally:
         cursor.close()
         con.close()
-        
+
+
 def get_seller_finish_info(seller_id):
     try:
         con = cnxpool.get_connection()
@@ -711,6 +744,7 @@ def get_seller_finish_info(seller_id):
         cursor.close()
         con.close()
 
+
 def get_buyer_finish_info(buyer_id):
     try:
         con = cnxpool.get_connection()
@@ -728,6 +762,7 @@ def get_buyer_finish_info(buyer_id):
     finally:
         cursor.close()
         con.close()
+
 
 def user_auth_approved(user_id):
     try:
