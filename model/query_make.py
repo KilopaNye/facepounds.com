@@ -355,7 +355,10 @@ def pre_order_info_upload(data, buyer_id):
             "INSERT INTO pre_order_info(order_uuid, seller_id, buyer_id, product_id, order_amount, remark_message, order_time, total_price, order_name, trade_site) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s )",
             param,
         )
-
+        cursor.execute(
+            "INSERT INTO chat_messages(room_uuid, send_id, message) VALUES(%s, %s, %s)",
+            (order_uuid,buyer_id,data["productRemark"],)
+        )
         cursor.execute(
             "UPDATE product_info SET product_amount = product_amount - %s WHERE id = %s",
             (data["productAmount"], data["product_id"]),

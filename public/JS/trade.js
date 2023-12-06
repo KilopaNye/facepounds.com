@@ -136,10 +136,10 @@ function getPreOrderByUUID() {
 }
 getPreOrderByUUID()
 
-var socket = io("facepounds.com",{
-    path:"/mysocket"
-});
-// var socket = io("http://localhost:3000");
+// var socket = io("facepounds.com",{
+//     path:"/mysocket"
+// });
+var socket = io("http://localhost:3000");
 
 function joinRoom(order_uuid) {
     let token = localStorage.getItem('token');
@@ -439,6 +439,33 @@ function orderOK() {
         fetch(`/api/trade/ready-order`, {
             headers: headers,
             method: "POST",
+            body: JSON.stringify({ order_result })
+        }).then(response => response.json()).then(data => {
+            console.log(data);
+            if (data["data"]) {
+                showAlert();
+                socket.emit("order-ok",{room:order_uuid})
+            } else if (data["error"]) {
+                showError(error);
+            }
+
+        }).catch(error => {
+            console.log(error);
+            showError(error);
+        })
+    }
+}
+
+function buyer_state_ok(){
+    let token = localStorage.getItem('token');
+    if (token) {
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+        fetch(`/api/trade/ready-order`, {
+            headers: headers,
+            method: "PUT",
             body: JSON.stringify({ order_result })
         }).then(response => response.json()).then(data => {
             console.log(data);
