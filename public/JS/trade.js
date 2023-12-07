@@ -172,10 +172,10 @@ function getPreOrderByUUID() {
 }
 getPreOrderByUUID()
 
-// var socket = io("facepounds.com",{
-//     path:"/mysocket"
-// });
-var socket = io("http://localhost:3000");
+var socket = io("facepounds.com",{
+    path:"/mysocket"
+});
+// var socket = io("http://localhost:5252");
 
 function joinRoom(order_uuid) {
     let token = localStorage.getItem('token');

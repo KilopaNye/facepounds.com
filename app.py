@@ -21,8 +21,8 @@ app = Flask(__name__, static_folder="public", static_url_path="/")
 app.secret_key = "WGXaTKE7JR9MzzykHVp1O8ix7cnkx5eOb400I5gPxXJI3I8saAUWZjDLxs6056M"
 wsgi_app = app.wsgi_app
 CORS(app)
-socketio = SocketIO(app)
-# ,path='/mysocket',cors_allowed_origins="*"
+socketio = SocketIO(app,path='/mysocket',cors_allowed_origins="*")
+
 
 
 # ,cors_allowed_origins='*',ping_interval=20, ping_timeout=60
@@ -214,6 +214,6 @@ def room_connect(data):
 	print(data['id'])
 	room=data['ROOM_ID']
 	socketio.emit("join-response", {'message':"user-connect","userId":data['id']}, room=room, include_self=False)
-        
+    
 if __name__ == '__main__':
     socketio.run(app,host="0.0.0.0",port=3000, debug=True)

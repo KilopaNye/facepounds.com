@@ -1,0 +1,9 @@
+
+.VSCodeCounter
+.vscode
+*.pyc
+trade_ssl.js
+.dockerignore
+.git
+__pycache__
+.docker

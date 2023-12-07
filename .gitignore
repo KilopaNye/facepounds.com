@@ -1,5 +1,4 @@
 .env
-
 .VSCodeCounter
 .vscode
 *.pyc
