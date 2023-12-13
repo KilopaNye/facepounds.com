@@ -87,10 +87,6 @@ def user_auth_page():
 
 
 
-
-
-
-
 @socketio.on('connect')
 def test_connect():
 	print("連線了˙")
