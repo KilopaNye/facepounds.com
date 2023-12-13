@@ -27,9 +27,9 @@ def get_pre_trade():
         try:
             seller_id=decoded_token['id']
             data = get_seller_finish_info(seller_id)
-            return jsonify({'data':data})
+            return jsonify({'data':data}),200
         except Exception as err:
             print(err)
-            return jsonify({'error':"失敗"})
+            return jsonify({'error':"失敗"}), 400
     else:
-        return jsonify({'error':"尚未登入"})
+        return jsonify({'error':"尚未登入"}), 401

@@ -16,15 +16,15 @@ def new_order():
             print(order_info)
             data=order_info["order_info"]
             if decoded_token['id'] == data["seller_id"]:
-                return jsonify({'error':"不能購買自己的產品"})
+                return jsonify({'error':"不能購買自己的產品"}), 200
             buyer_id=decoded_token['id']
             pre_order_info_upload(data,buyer_id)
             return jsonify({'data':"商議訂單建立成功"})
         except Exception as err:
             print(err)
-            return jsonify({'error':"失敗"})
+            return jsonify({'error':"失敗"}), 500
     else:
-        return jsonify({'error':"尚未登入"})
+        return jsonify({'error':"尚未登入"}), 401
     
 @ready_check_system.route("/api/get-pre-order",methods=["GET"])
 def get_pre_order():
@@ -33,12 +33,12 @@ def get_pre_order():
         try:
             buyer_id=decoded_token['id']
             data = get_pre_order_info(buyer_id)
-            return jsonify({'data':data})
+            return jsonify({'data':data}), 200
         except Exception as err:
             print(err)
-            return jsonify({'error':"失敗"})
+            return jsonify({'error':"失敗"}), 500
     else:
-        return jsonify({'error':"尚未登入"})
+        return jsonify({'error':"尚未登入"}), 401
     
 @ready_check_system.route("/api/get-pre-trade",methods=["GET"])
 def get_pre_trade():
@@ -47,11 +47,11 @@ def get_pre_trade():
         try:
             seller_id=decoded_token['id']
             data = get_pre_trade_info(seller_id)
-            return jsonify({'data':data})
+            return jsonify({'data':data}), 200
         except Exception as err:
             print(err)
-            return jsonify({'error':"失敗"})
+            return jsonify({'error':"失敗"}), 500
     else:
-        return jsonify({'error':"尚未登入"})
+        return jsonify({'error':"尚未登入"}), 401
     
 

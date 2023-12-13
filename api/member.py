@@ -39,11 +39,11 @@ def userLogin():
 					'name':decoded_token['username'],
 					'email':decoded_token['email']
 				}
-			}
+			}, 200
 	except:
 		return {
 				"data":None
-			}
+			}, 401
 
 @member_system.route("/api/user/auth", methods=["PUT"])
 def login():
@@ -53,12 +53,12 @@ def login():
 		if source:
 			return {
 				"token": jwt_make(source['id'],source['username'],source['email'])
-			}
+			}, 200
 		else:
 			return {
 				"error": True,
 				"message": "登入失敗，帳號或密碼錯誤或其他原因"
-			}
+			}, 401
 	except:
 		return {
 			"error": True,

@@ -81,4 +81,4 @@ def state_ok():
             print("route trade/ready_order():"+err)
             return jsonify({'error':"伺服器錯誤"}),500
     else:
-        return jsonify({'error':"尚未登入"}),500
+        return jsonify({'error':"尚未登入"}),401

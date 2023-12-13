@@ -17,9 +17,9 @@ def user_auth():
                 user_auth_approved(user_id)
                 return jsonify({"data":response}),200
             else:
-                return jsonify({"error":response}),200
+                return jsonify({"error":response}),400
         except Exception as err:
             print (err)
             return jsonify({"error":True}),500
     else:
-        return {"error": True, "message": "尚未登入"}, 400
+        return {"error": True, "message": "尚未登入"}, 401

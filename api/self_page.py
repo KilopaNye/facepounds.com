@@ -64,7 +64,7 @@ def change_img():
         except:
             return {"error": True, "message": "伺服器內部錯誤"}, 500
     else:
-        return {"error": True, "message": "尚未登入"}, 400
+        return {"error": True, "message": "尚未登入"}, 401
     
 @self_page_system.route("/api/self-page/change-name", methods=["PUT"])
 def change_name():
@@ -85,7 +85,7 @@ def change_name():
             print(err)
             return {"error": True, "message": "伺服器內部錯誤"}, 500
     else:
-        return {"error": True, "message": "尚未登入"}, 400
+        return {"error": True, "message": "尚未登入"}, 401
     
 
 @self_page_system.route("/api/self-page/change-tag", methods=["PUT"])
@@ -107,7 +107,7 @@ def change_tag():
             print(err)
             return {"error": True, "message": "伺服器內部錯誤"}, 500
     else:
-        return {"error": True, "message": "尚未登入"}, 400
+        return {"error": True, "message": "尚未登入"}, 401
     
 @self_page_system.route("/api/self-page/change-text", methods=["PUT"])
 def change_text():
@@ -128,4 +128,4 @@ def change_text():
             print(err)
             return {"error": True, "message": "伺服器內部錯誤"}, 500
     else:
-        return {"error": True, "message": "尚未登入"}, 400
+        return {"error": True, "message": "尚未登入"}, 401

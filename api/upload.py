@@ -21,9 +21,9 @@ def product_upload():
 			
 			
 			# upload_to_s3(files)
-			return jsonify({'data':True})
+			return jsonify({'data':True}), 200
 		else:
-			return jsonify({'error':"尚未登入"})
+			return jsonify({'error':"尚未登入"}), 401
 	except Exception as err:
 		print(err)
-		return jsonify({'data':False})
+		return jsonify({'data':False}), 500

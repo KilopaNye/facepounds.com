@@ -17,12 +17,12 @@ def get_pre_order():
         try:
             buyer_id=decoded_token['id']
             data = get_trade_info(buyer_id)
-            return jsonify({'data':data})
+            return jsonify({'data':data}), 200
         except Exception as err:
             print(err)
-            return jsonify({'error':"失敗"})
+            return jsonify({'error':"失敗"}), 500
     else:
-        return jsonify({'error':"尚未登入"})
+        return jsonify({'error':"尚未登入"}), 401
     
 @ready_trade_system.route("/api/ready-trade/get-trade",methods=["GET"])
 def get_pre_trade():
@@ -31,9 +31,9 @@ def get_pre_trade():
         try:
             seller_id=decoded_token['id']
             data = get_order_info(seller_id)
-            return jsonify({'data':data})
+            return jsonify({'data':data}), 200
         except Exception as err:
             print(err)
-            return jsonify({'error':"失敗"})
+            return jsonify({'error':"失敗"}), 500
     else:
-        return jsonify({'error':"尚未登入"})
+        return jsonify({'error':"尚未登入"}),401

@@ -18,7 +18,7 @@ def get_order(order_uuid):
             print("get_order(order_uuid):",err)
             return jsonify({'error':"失敗"}),400
     else:
-        return jsonify({'error':"尚未登入"}),500
+        return jsonify({'error':"尚未登入"}),401
     
 
 @trade_finish_system.route('/api/trade-finish/finish-trade', methods=["POST"])
@@ -36,4 +36,4 @@ def finish_trade():
             print("finish_trade()():",err)
             return jsonify({'error':"伺服器錯誤"}),500
     else:
-        return jsonify({'error':"尚未登入"}),500
+        return jsonify({'error':"尚未登入"}), 401
