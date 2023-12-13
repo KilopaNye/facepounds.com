@@ -24,7 +24,7 @@ function searchProductBar(){
         headers:headers,
         body:JSON.stringify({param})
     }).then(response => response.json()).then(data => {
-        // console.log(data)
+        console.log(data)
         if(data){
             result = data['data']
         createProductDom(result)

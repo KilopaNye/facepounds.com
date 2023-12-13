@@ -244,7 +244,7 @@ def get_product(param):
                 query_values.append(data[tag])
 
             query = """
-            SELECT product_tag_relation.*, GROUP_CONCAT(DISTINCT product_tag.tag_name) as tag_name,product_tag.id, product_images.*,product_info.*,members.username,members.id  FROM product_info
+            SELECT product_tag_relation.*, GROUP_CONCAT(DISTINCT product_tag.tag_name) as tag_name,product_tag.id, product_images.*,product_info.*,members.username FROM product_info
             JOIN product_tag_relation ON product_info.id = product_tag_relation.product_info_id
             JOIN product_tag ON product_tag_relation.tag_id = product_tag.id
             JOIN product_images ON product_images.product_id = product_info.id

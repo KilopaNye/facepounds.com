@@ -164,7 +164,7 @@ function getProductInfo(param = null) {
         headers: headers,
         body: JSON.stringify({ param: param })
     }).then(response => response.json()).then(data => {
-        // console.log(data)
+        console.log(data)
         if (data['data']) {
             let products = data["data"]
             createProductDom(products)
