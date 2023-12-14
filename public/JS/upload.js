@@ -1,6 +1,6 @@
 userLoginCheck();
 
-const showAlert = () => {
+const showAlerts = () => {
     Swal.fire({
         icon: 'success',
         title: '產品上架成功! ',
@@ -8,7 +8,7 @@ const showAlert = () => {
     }).then((result) => {
         console.log(result)
         if(result.isConfirmed){
-            window.location.href="/ready_check";
+            window.location.href="/";
         }
     })
 }
@@ -136,8 +136,7 @@ function uploadProduct() {
                     console.log(data);
                     document.querySelector('.opacity-load').style.display="none";
                     document.querySelector('.cat-load').style.display="none";
-                    showAlert();
-                    window.location.href="/upload";
+                    showAlerts();
                 })
                 .catch(error => {
                     console.error('Error:', error);
