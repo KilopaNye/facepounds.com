@@ -4,7 +4,6 @@ const showAlert = () => {
         title: '用戶建立成功!',
         text: '請點擊右上角登入按鈕登入帳戶',
     }).then((result) => {
-        console.log(result)
         if (result.isConfirmed) {
             window.location.href = "/";
         }
@@ -66,7 +65,6 @@ function createProductDom(data) {
     for (let i = 0; i < data.length; i++) {
         let image = data[i]["image_url"].split(',')
         let tag = data[i]["tag_name"].split(',')
-        console.log(tag)
 
         let productBox = document.createElement("div");
         productBox.classList.add("product-box");
@@ -164,7 +162,6 @@ function getProductInfo(param = null) {
         headers: headers,
         body: JSON.stringify({ param: param })
     }).then(response => response.json()).then(data => {
-        console.log(data)
         if (data['data']) {
             let products = data["data"]
             createProductDom(products)

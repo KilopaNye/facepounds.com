@@ -188,6 +188,9 @@ function userLoginCheck_index() {
             logInButton.style.display = "none";
             let logoutButton = document.querySelector('#logout-button');
             logoutButton.style.display = "block";
+            let toolBox = document.querySelector(".box-flex")
+            toolBox.style.display="flex"
+
             return userLoginBool = true;
         }
     }).catch(error => {
