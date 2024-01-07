@@ -7,7 +7,7 @@ from model.service_connect.s3_bucket import *
 self_page_system = Blueprint("self_page_system", __name__)
 
 
-@self_page_system.route("/api/self-page/self-info", methods=["POST"])
+@self_page_system.route("/api/self-page/info", methods=["PUT"])
 def userInfo():
     decoded_token = decode_jwt()
     if decoded_token["id"]:
@@ -26,7 +26,7 @@ def userInfo():
     else:
         return {"error": True, "message": "尚未登入"}, 400
     
-@self_page_system.route("/api/self-page/just-self-info", methods=["POST"])
+@self_page_system.route("/api/self-page/user-info", methods=["POST"])
 def just_userInfo():
     decoded_token = decode_jwt()
     if decoded_token["id"]:
@@ -46,7 +46,7 @@ def just_userInfo():
         return {"error": True, "message": "尚未登入"}, 400
 
 
-@self_page_system.route("/api/self-page/change-img", methods=["PUT"])
+@self_page_system.route("/api/self-page/image", methods=["PUT"])
 def change_img():
     decoded_token = decode_jwt()
     if decoded_token["id"]:
@@ -66,7 +66,7 @@ def change_img():
     else:
         return {"error": True, "message": "尚未登入"}, 401
     
-@self_page_system.route("/api/self-page/change-name", methods=["PUT"])
+@self_page_system.route("/api/self-page/name", methods=["PUT"])
 def change_name():
     decoded_token = decode_jwt()
     if decoded_token["id"]:
@@ -88,7 +88,7 @@ def change_name():
         return {"error": True, "message": "尚未登入"}, 401
     
 
-@self_page_system.route("/api/self-page/change-tag", methods=["PUT"])
+@self_page_system.route("/api/self-page/tag", methods=["PUT"])
 def change_tag():
     decoded_token = decode_jwt()
     if decoded_token["id"]:
@@ -109,7 +109,7 @@ def change_tag():
     else:
         return {"error": True, "message": "尚未登入"}, 401
     
-@self_page_system.route("/api/self-page/change-text", methods=["PUT"])
+@self_page_system.route("/api/self-page/text", methods=["PUT"])
 def change_text():
     decoded_token = decode_jwt()
     if decoded_token["id"]:

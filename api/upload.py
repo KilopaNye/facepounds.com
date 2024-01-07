@@ -5,7 +5,7 @@ from model.service_connect.rds_pool import *
 from model.service_connect.s3_bucket import *
 upload_system = Blueprint("upload_system", __name__)
 
-@upload_system.route("/api/product/upload",methods=["POST"])
+@upload_system.route("/api/upload",methods=["POST"])
 def product_upload():
 	try:
 		decoded_token=decode_jwt()

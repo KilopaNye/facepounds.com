@@ -5,9 +5,9 @@ from api.index import index_system
 from api.upload import upload_system
 from api.member import member_system
 from api.ready_check import ready_check_system
-from api.trade import trade_system
+from api.negotiate import negotiate_system
 from api.ready_trade import ready_trade_system
-from api.trade_finish_room import trade_finish_system
+from api.transaction import transaction_system
 from api.self_page import self_page_system
 from api.user_auth_page import user_auth_page_system
 from api.trade_history import trade_history_system
@@ -33,9 +33,9 @@ app.register_blueprint(product_system)
 app.register_blueprint(upload_system)
 app.register_blueprint(member_system)
 app.register_blueprint(ready_check_system)
-app.register_blueprint(trade_system)
+app.register_blueprint(negotiate_system)
 app.register_blueprint(ready_trade_system)
-app.register_blueprint(trade_finish_system)
+app.register_blueprint(transaction_system)
 app.register_blueprint(self_page_system)
 app.register_blueprint(user_auth_page_system)
 app.register_blueprint(trade_history_system)
@@ -48,9 +48,9 @@ def index():
 def product(productId):
 	return render_template("product.html")
 
-@app.route("/trade/<order_uuid>")
+@app.route("/negotiate/<order_uuid>")
 def trade(order_uuid):
-	return render_template("trade.html")
+	return render_template("negotiate.html")
 
 @app.route("/upload")
 def upload():
@@ -68,9 +68,9 @@ def ready_trade():
 def member_page():
 	return render_template("member_page.html")
 
-@app.route("/trade_finish_room/<order_uuid>")
+@app.route("/transaction/<order_uuid>")
 def talk(order_uuid):
-	return render_template("trade_finish_room.html")
+	return render_template("transaction.html")
 
 @app.route("/self_page")
 def self_page():

@@ -125,7 +125,7 @@ function uploadProduct() {
         console.log("4",img_result_check(filesLen))
         formData.append('message', JSON.stringify(productInfo));
         if (productName && isValidIntro(introduce) && isValidPrice(price) && isValidPrice(amount) && site && where && img_result_check(filesLen)) {
-            fetch('/api/product/upload', {
+            fetch('/api/upload', {
                 method: 'POST',
                 headers: { 'enctype': "multipart/form-data",
                 "Authorization": `Bearer ${token}` },

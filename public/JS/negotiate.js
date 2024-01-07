@@ -154,7 +154,7 @@ function getPreOrderByUUID() {
             "Authorization": `Bearer ${token}`
         }
 
-        fetch(`/api/get-order-trade/${order_uuid}`, {
+        fetch(`/api/negotiate/${order_uuid}`, {
             headers: headers,
         }).then(response => response.json()).then(data => {
             preOrderDomCreate(data["data"]);
@@ -268,7 +268,7 @@ function getTimeNow() {
 }
 
 function getMessageLoad() {
-    fetch(`/api/trade/get-message-load/${order_uuid}`, {
+    fetch(`/api/message-history/${order_uuid}`, {
         headers: headers,
     }).then(response => response.json()).then(data => {
         console.log(data);
@@ -472,7 +472,7 @@ function orderOK() {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         }
-        fetch(`/api/trade/ready-order`, {
+        fetch(`/api/negotiate/order`, {
             headers: headers,
             method: "POST",
             body: JSON.stringify({ order_result })
@@ -500,7 +500,7 @@ function buyer_state_ok() {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         }
-        fetch(`/api/trade/buyer-state-ok`, {
+        fetch(`/api/negotiate/state`, {
             headers: headers,
             method: "PUT",
             body: JSON.stringify({ order_uuid })
@@ -576,9 +576,9 @@ function delete_pre_order() {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         }
-        fetch(`/api/product/delete-pre-check`, {
+        fetch(`/api/negotiate/order`, {
             headers: headers,
-            method: "PUT",
+            method: "DELETE",
             body: JSON.stringify({ order_result })
         }).then(response => response.json()).then(data => {
             console.log(data);

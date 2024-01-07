@@ -157,7 +157,7 @@ function getProductInfo(param = null) {
     headers = {
         "Content-Type": "application/json",
     }
-    fetch("/product/get-info", {
+    fetch("/product/info", {
         method: "POST",
         headers: headers,
         body: JSON.stringify({ param: param })

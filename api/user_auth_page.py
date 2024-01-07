@@ -5,7 +5,7 @@ from model.service_connect.rds_pool import *
 from model.service_connect.s3_bucket import *
 user_auth_page_system = Blueprint("user_auth_page_system", __name__)
 
-@user_auth_page_system.route('/api/user-auth-page-system/auth',methods=['POST'])
+@user_auth_page_system.route('/api/auth',methods=['POST'])
 def user_auth():
     decoded_token = decode_jwt()
     if decoded_token["id"]:

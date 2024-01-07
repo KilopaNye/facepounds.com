@@ -6,7 +6,7 @@ from model.service_connect.s3_bucket import *
 
 trade_history_system = Blueprint("trade_history_system", __name__)
 
-@trade_history_system.route("/api/trade-history/get-order",methods=["GET"])
+@trade_history_system.route("/api/trade-history/buyer",methods=["GET"])
 def get_pre_order():
     decoded_token=decode_jwt()
     if decoded_token['id']:
@@ -20,7 +20,7 @@ def get_pre_order():
     else:
         return jsonify({'error':"尚未登入"})
     
-@trade_history_system.route("/api/trade-history/get-trade",methods=["GET"])
+@trade_history_system.route("/api/trade-history/seller",methods=["GET"])
 def get_pre_trade():
     decoded_token=decode_jwt()
     if decoded_token['id']:

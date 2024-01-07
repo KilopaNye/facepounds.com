@@ -153,8 +153,8 @@ function getProductInfo(param = null) {
     }
     let catLoad = document.querySelector('.cat-load')
     catLoad.style.display = "block";
-    fetch("/api/self-page/self-info", {
-        method: "POST",
+    fetch("/api/self-page/info", {
+        method: "PUT",
         headers: headers
     }).then(response => response.json()).then(data => {
         console.log(data)
@@ -179,7 +179,7 @@ function getUserInfo() {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
     }
-    fetch("/api/self-page/just-self-info", {
+    fetch("/api/self-page/user-info", {
         method: "POST",
         headers: headers
     }).then(response => response.json()).then(data => {
@@ -328,7 +328,7 @@ function changeImg() {
         let formData = new FormData();
         formData.append('file', result[0]);
 
-        fetch('/api/self-page/change-img', {
+        fetch('/api/self-page/image', {
             method: 'PUT',
             headers: {
                 'enctype': "multipart/form-data",
@@ -372,7 +372,7 @@ function GoChangeName() {
         let result = {
             newName: newName
         }
-        fetch('/api/self-page/change-name', {
+        fetch('/api/self-page/name', {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
@@ -414,7 +414,7 @@ function GoChangeTag() {
         let result = {
             newTag: newTag
         }
-        fetch('/api/self-page/change-tag', {
+        fetch('/api/self-page/tag', {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
@@ -456,7 +456,7 @@ function GoChangeText() {
         let result = {
             newText: newText
         }
-        fetch('/api/self-page/change-text', {
+        fetch('/api/self-page/text', {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",

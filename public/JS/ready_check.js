@@ -75,7 +75,7 @@ function getPreOrder() {
             "Authorization": `Bearer ${token}`
         }
 
-        fetch(`/api/get-pre-order`, {
+        fetch(`/api/ready-check/seller`, {
             headers: headers,
         }).then(response => response.json()).then(data => {
             console.log(data)
@@ -99,7 +99,7 @@ function getPreTrade() {
             "Authorization": `Bearer ${token}`
         }
 
-        fetch(`/api/get-pre-trade`, {
+        fetch(`/api/ready-check/buyer`, {
             headers: headers,
         }).then(response => response.json()).then(data => {
             // console.log(data);
@@ -132,5 +132,5 @@ function GoTrade(orderUuid) {
     let order_uuid = orderUuid.getAttribute('value');
     let identity = orderUuid.getAttribute('identity');
     
-    window.location.href = `/trade/${order_uuid}?identity=${identity}`
+    window.location.href = `/negotiate/${order_uuid}?identity=${identity}`
 }

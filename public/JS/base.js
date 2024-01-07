@@ -19,7 +19,7 @@ function searchProductBar(){
     headers={
         "Content-Type": "application/json",
     }
-    fetch("/product/get-info", {
+    fetch("/product/info", {
         method:"POST",
         headers:headers,
         body:JSON.stringify({param})

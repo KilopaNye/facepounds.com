@@ -9,7 +9,7 @@ function startAuth(){
         headers = {
             "Authorization": `Bearer ${token}`
         }
-        fetch('/api/user-auth-page-system/auth', {
+        fetch('/api/auth', {
             method: 'POST',
             headers:headers,
             body: formData

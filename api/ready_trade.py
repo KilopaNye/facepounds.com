@@ -10,7 +10,7 @@ ready_trade_system = Blueprint("ready_trade_system", __name__)
 
 
 
-@ready_trade_system.route("/api/ready-trade/get-order",methods=["GET"])
+@ready_trade_system.route("/api/ready-trade/buyer",methods=["GET"])
 def get_pre_order():
     decoded_token=decode_jwt()
     if decoded_token['id']:
@@ -24,7 +24,7 @@ def get_pre_order():
     else:
         return jsonify({'error':"尚未登入"}), 401
     
-@ready_trade_system.route("/api/ready-trade/get-trade",methods=["GET"])
+@ready_trade_system.route("/api/ready-trade/seller",methods=["GET"])
 def get_pre_trade():
     decoded_token=decode_jwt()
     if decoded_token['id']:

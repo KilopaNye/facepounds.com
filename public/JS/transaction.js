@@ -76,7 +76,7 @@ function getPreOrderByUUID() {
             "Authorization": `Bearer ${token}`
         }
 
-        fetch(`/api/trade-finish/get-ready-trade/${order_uuid}`, {
+        fetch(`/api/transaction/order/${order_uuid}`, {
             headers: headers,
         }).then(response => response.json()).then(data => {
             preOrderDomCreate(data["data"]);
@@ -201,7 +201,7 @@ function getMessageLoad() {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
     }
-    fetch(`/api/trade/get-message-load/${order_uuid}`, {
+    fetch(`/api/message-history/${order_uuid}`, {
         headers: headers,
     }).then(response => response.json()).then(data => {
         console.log(data);
@@ -252,7 +252,7 @@ function orderOK() {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         }
-        fetch(`/api/trade-finish/finish-trade`, {
+        fetch(`/api/transaction/order`, {
             headers: headers,
             method: "POST",
             body: JSON.stringify({ order_result })

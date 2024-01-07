@@ -14,7 +14,7 @@ def GoProduct(productId):
 		else:
 			return {
 					"error": True,
-					"message": "景點編號不正確"
+					"message": "編號不正確"
 				}, 400
 	except:
 			return {

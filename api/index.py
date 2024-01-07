@@ -5,7 +5,7 @@ from model.query_make import *
 
 index_system = Blueprint("index_system", __name__)
 
-@index_system.route("/product/get-info" ,methods=["POST"])
+@index_system.route("/product/info" ,methods=["POST"])
 def get_info():
 	try:
 		param = request.get_json()
