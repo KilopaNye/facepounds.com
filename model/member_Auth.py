@@ -2,9 +2,11 @@ from flask import *
 from datetime import *
 import jwt
 from model.service_connect.rds_pool import *
-
+from dotenv import *
+import os
+load_dotenv()
 cnxpool=connect_to_pool()
-
+jwt_key = os.getenv("jwt_key")
 def jwt_make(id,member_id,email):
 	payload = {
 		'exp': datetime.now() + timedelta(minutes=100800),
@@ -12,7 +14,7 @@ def jwt_make(id,member_id,email):
 		'email': email,
 		'id':id
 	}
-	key = '7451B034BF2BD44049C4879E2CD2A5E501061F55B30BFE734F319032A137EAD0'
+	key = jwt_key
 	encoded_jwt = jwt.encode(payload, key, algorithm='HS256')
 	return encoded_jwt
 
