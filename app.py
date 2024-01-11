@@ -18,7 +18,7 @@ from flask_cors import CORS
 
 load_dotenv()
 app = Flask(__name__, static_folder="public", static_url_path="/")
-app.secret_key = "WGXaTKE7JR9MzzykHVp1O8ix7cnkx5eOb400I5gPxXJI3I8saAUWZjDLxs6056M"
+app.secret_key = os.getenv("secret_key")
 wsgi_app = app.wsgi_app
 CORS(app)
 socketio = SocketIO(app,path='/mysocket',cors_allowed_origins="*")
@@ -123,7 +123,7 @@ def handle_message(message):
 def handle_send_message_to_room(data):
 	decoded_token = jwt.decode(
             data['token'],
-            key="7451B034BF2BD44049C4879E2CD2A5E501061F55B30BFE734F319032A137EAD0",
+            key=os.getenv("jwt_key"),
             algorithms="HS256",
         )
 	if decoded_token["id"]:
@@ -139,7 +139,7 @@ def handle_send_message_to_room(data):
 def on_join(info):
 	decoded_token = jwt.decode(
             info['token'],
-            key="7451B034BF2BD44049C4879E2CD2A5E501061F55B30BFE734F319032A137EAD0",
+            key = os.getenv("jwt_key"),
             algorithms="HS256",
         )
 	if decoded_token["id"]:

@@ -114,7 +114,6 @@ def product_upload_sql(message_dict, owner_id, images_name):
                     "SELECT id,tag_name FROM product_tag WHERE tag_name=%s", (i,)
                 ),
                 result = cursor.fetchone()
-                print(result)
                 if result:
                     cursor.execute(
                         "INSERT INTO product_tag_relation(product_info_id,tag_id) VALUE(%s,%s)",
@@ -309,7 +308,6 @@ def get_self_info(param):
         )
         response = cursor.fetchall()
         con.commit()
-        print(response)
         return response
 
     except Exception as err:

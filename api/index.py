@@ -13,8 +13,6 @@ def get_info():
 		if result:
 			response = make_response(jsonify({"data":result}), 200)
 			response.headers["Content-type"] = "application/json"
-			# print(result)
-			print(result)
 			return response
 		else:
 			return {
