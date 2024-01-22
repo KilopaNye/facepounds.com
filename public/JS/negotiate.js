@@ -172,8 +172,8 @@ function getPreOrderByUUID() {
 }
 getPreOrderByUUID()
 
-var socket = io("facepounds.com",{
-    path:"/mysocket"
+var socket = io("facepounds.com", {
+    path: "/mysocket"
 });
 // var socket = io("http://localhost:5252");
 
@@ -399,33 +399,32 @@ socket.on('info_change_response', function (data) {
     info.value = data.message;
     info.style.backgroundColor = "#FFFFFF";
     if (identity == "buyer") {
-
         let btn = document.querySelector(`.${data.index}-btn`);
         btn.textContent = "確認"
         btn.style.backgroundColor = " #99EA52"
-
-        if (data.index == "amount") {
-            let amount = document.querySelector('.product-amount');
-            amount.textContent = data.message;
-            let amountCheck = document.querySelector(`.${data.index}-check`);
-            amountCheck.setAttribute('state', '0');
-        } else if (data.index == "price") {
-            let price = document.querySelector('.product-price');
-            price.textContent = data.message;
-            let priceCheck = document.querySelector(`.${data.index}-check`);
-            priceCheck.setAttribute('state', '0');
-        } else if (data.index == "site") {
-            let site = document.querySelector('.product-site');
-            site.textContent = data.message;
-            let siteCheck = document.querySelector(`.${data.index}-check`);
-            siteCheck.setAttribute('state', '0');
-        } else if (data.index == "time") {
-            let timeCheck = document.querySelector(`.${data.index}-check`);
-            timeCheck.setAttribute('state', '0');
-        }
-        stateCheck()
     }
-});
+    if (data.index == "amount") {
+        let amount = document.querySelector('.product-amount');
+        amount.textContent = data.message;
+        let amountCheck = document.querySelector(`.${data.index}-check`);
+        amountCheck.setAttribute('state', '0');
+    } else if (data.index == "price") {
+        let price = document.querySelector('.product-price');
+        price.textContent = data.message;
+        let priceCheck = document.querySelector(`.${data.index}-check`);
+        priceCheck.setAttribute('state', '0');
+    } else if (data.index == "site") {
+        let site = document.querySelector('.product-site');
+        site.textContent = data.message;
+        let siteCheck = document.querySelector(`.${data.index}-check`);
+        siteCheck.setAttribute('state', '0');
+    } else if (data.index == "time") {
+        let timeCheck = document.querySelector(`.${data.index}-check`);
+        timeCheck.setAttribute('state', '0');
+    }
+    stateCheck()
+}
+);
 
 function getTimeNow() {
     let now = new Date(); // 取得當前時間
@@ -452,7 +451,7 @@ function orderOK() {
     let title = document.querySelector('.product-name').textContent;
     let amountCheck = document.querySelector('.amount-check').value;
     let priceCheck = document.querySelector('.price-check').value;
-    let siteCheck = document.querySelector('.site-check').value;
+    let siteCheck = document.querySelector('.product-site').textContent;
     let timeCheck = document.querySelector('.time-check').value;
     let order_result = {
         name: title,
@@ -507,7 +506,7 @@ function buyer_state_ok() {
         }).then(response => response.json()).then(data => {
             console.log(data);
             if (data["data"]) {
-                
+
                 let orderBtn = document.querySelector('.order-btn');
                 let orderText = document.querySelector('.order-btn-text')
                 console.log(orderText.textContent)
@@ -536,7 +535,7 @@ socket.on("order-state-ok-response", () => {
         checkBtn.forEach(function (checkBtn) {
             checkBtn.style.display = 'none';
         });
-        
+
         let orderText = document.querySelector('.order-btn-text')
         orderText.textContent = "買家已確認，訂單可成立";
 

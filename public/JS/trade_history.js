@@ -38,7 +38,7 @@ function preOrderDom(data,identity) {
         orderText.appendChild(priceDiv);
 
         let siteDiv = document.createElement('div');
-        siteDiv.textContent = '面交地點：' + data[i]['owner_pre_site'];
+        siteDiv.textContent = '面交地點：' + data[i]['trade_site'];
         orderText.appendChild(siteDiv);
 
         let TTimeDiv = document.createElement('div');

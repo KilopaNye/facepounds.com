@@ -691,7 +691,7 @@ def get_trade_info(buyer_id):
         cursor = con.cursor(dictionary=True)
 
         cursor.execute(
-            "SELECT  members.username, img.image_url, pre.*, a.owner_pre_site, a.id, a.product_name, a.product_price, a.product_amount FROM ready_trade_info as pre JOIN product_info as a ON pre.product_id = a.id JOIN product_images as img ON img.product_id = a.id JOIN members ON members.id = a.owner_id  WHERE pre.buyer_id = %s GROUP BY a.id",
+            "SELECT  members.username, img.image_url, pre.*, a.owner_pre_site, a.id, a.product_name, a.product_price, a.product_amount FROM ready_trade_info as pre JOIN product_info as a ON pre.product_id = a.id JOIN product_images as img ON img.product_id = a.id JOIN members ON members.id = a.owner_id  WHERE pre.buyer_id = %s GROUP BY pre.id",
             (buyer_id,),
         )
         response = cursor.fetchall()
@@ -710,7 +710,7 @@ def get_order_info(seller_id):
         cursor = con.cursor(dictionary=True)
 
         cursor.execute(
-            "SELECT  members.username, img.image_url, pre.*, a.owner_pre_site, a.id, a.product_name, a.product_price, a.product_amount FROM ready_trade_info as pre JOIN product_info as a ON pre.product_id = a.id JOIN product_images as img ON img.product_id = a.id JOIN members ON members.id = a.owner_id  WHERE pre.seller_id = %s GROUP BY a.id",
+            "SELECT  members.username, img.image_url, pre.*, a.owner_pre_site, a.id, a.product_name, a.product_price, a.product_amount FROM ready_trade_info as pre JOIN product_info as a ON pre.product_id = a.id JOIN product_images as img ON img.product_id = a.id JOIN members ON members.id = a.owner_id  WHERE pre.seller_id = %s GROUP BY pre.id",
             (seller_id,),
         )
         response = cursor.fetchall()
